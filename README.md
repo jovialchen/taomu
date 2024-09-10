@@ -1,2 +1,2 @@
 # jovialchen.github.io
-my personal blog
+my digital garden
