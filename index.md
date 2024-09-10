@@ -3,10 +3,13 @@ title: Welcome to My Digital Garden
 ---
 # 🌟 Welcome to My Digital Garden 🌟
 
-!!! About ME
-  Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
-> Machine Learning Enthusiasts!
-> Animal Crossing, 江南百景图
+
+## About ME
+   > Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
+
+  > Machine Learning Enthusiasts!
+
+  > Animal Crossing, 江南百景图
 
 ---
 
