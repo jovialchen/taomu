@@ -1,5 +1,5 @@
 ---
-title: Welcome to My Digital Garden
+title: Jo's Digital Garden
 ---
 # 🌟 Welcome to My Digital Garden 🌟
 
