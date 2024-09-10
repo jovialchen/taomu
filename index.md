@@ -67,7 +67,7 @@ title: Jo's Digital Garden
 ## 🎯 Stay Tuned for More!
 
 
-   > I'm always adding new content, so bookmark this page and check back often!
+I'm always adding new content, so bookmark this page and check back often!
 ---
 ✨ **Follow me on [GitHub](https://github.com/jovialchen) for updates!**
 
