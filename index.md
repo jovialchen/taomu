@@ -3,7 +3,8 @@ title: Welcome to My Digital Garden
 ---
 # 🌟 Welcome to My Digital Garden 🌟
 
-> Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
+!!! About ME
+  Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
 > Machine Learning Enthusiasts!
 > Animal Crossing, 江南百景图
 
@@ -14,6 +15,8 @@ title: Welcome to My Digital Garden
 - [🔧 Tech & Coding](#tech--coding)
 - [🎨 Life System](#design--creativity)
 - [📈 Just Fun](#data--analytics)
+
+
 ---
 
 ## 📐 Tech & Coding
@@ -30,6 +33,6 @@ title: Welcome to My Digital Garden
 
 > I'm always adding new content, so bookmark this page and check back often!
 ---
-✨ **Follow me on [GitHub](#) for updates!**
+✨ **Follow me on [GitHub](https://github.com/jovialchen) for updates!**
 
 ---
