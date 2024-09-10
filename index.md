@@ -32,7 +32,10 @@ title: Welcome to My Digital Garden
 > "Because life is better when you’re having fun!"
 
 ---
+
+
 ## 🎯 Stay Tuned for More!
+
 
 > I'm always adding new content, so bookmark this page and check back often!
 ---
