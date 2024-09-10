@@ -26,7 +26,7 @@ title: Jo's Digital Garden
 <table>
 <tr>
   <td>
-    <img src="https://example.com/tech_image.png" alt="Tech Image" width="150">
+    <img src="![image](https://github.com/user-attachments/assets/9896f38e-e8db-4518-a6fa-2c3cfcdc8cf0)" alt="Tech Image" width="150">
   </td>
   <td>
     <h2>📐 Tech & Coding</h2>
