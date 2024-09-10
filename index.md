@@ -22,14 +22,44 @@ title: Jo's Digital Garden
 
 ---
 
-## 📐 Tech & Coding
-> "Where logic meets creativity, and code comes to life!"
+<!-- Tech & Coding Section with Image -->
+<table>
+<tr>
+  <td>
+    <img src="https://example.com/tech_image.png" alt="Tech Image" width="150">
+  </td>
+  <td>
+    <h2>📐 Tech & Coding</h2>
+    <blockquote>"Where logic meets creativity, and code comes to life!"</blockquote>
+  </td>
+</tr>
+</table>
 
-## 🌱 Life System
-> "Optimizing life, one system at a time."
+<!-- Life System Section with Image -->
+<table>
+<tr>
+  <td>
+    <img src="https://example.com/life_system.png" alt="Life System Image" width="150">
+  </td>
+  <td>
+    <h2>🌱 Life System</h2>
+    <blockquote>"Optimizing life, one system at a time."</blockquote>
+  </td>
+</tr>
+</table>
 
-## 🎉 Just Fun
-> "Because life is better when you’re having fun!"
+<!-- Just Fun Section with Image -->
+<table>
+<tr>
+  <td>
+    <img src="https://example.com/just_fun.png" alt="Just Fun Image" width="150">
+  </td>
+  <td>
+    <h2>🎉 Just Fun</h2>
+    <blockquote>"Because life is better when you’re having fun!"</blockquote>
+  </td>
+</tr>
+</table>
 
 ---
 
