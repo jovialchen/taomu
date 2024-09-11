@@ -26,7 +26,7 @@ title: Joy's Digital Garden
     <img src="assets/images/478c44ef-b8bc-46dd-80d8-e13077cca1d3.jfif" alt="Tech Image" width="150">
   </td>
   <td>
-    <h2>📐 Tech & Coding</h2>
+    <h2><a href="{{ site.url }}/categories/tech/">📐 Tech & Coding</a></h2>
     <blockquote>"Where logic meets creativity, and code comes to life!"</blockquote>
   </td>
 </tr>
@@ -39,7 +39,7 @@ title: Joy's Digital Garden
     <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
   <td>
-    <h2>🌱 Life Canvas</h2>
+    <h2><a href="{{ site.url }}/categories/life">🌱 Life Canvas</a></h2>
     <blockquote>"Life is a blank canvas, paint it beautifully."</blockquote>
   </td>
 </tr>
@@ -52,7 +52,7 @@ title: Joy's Digital Garden
     <img src="assets/images/df47d168-7b2a-4925-b276-8a49f84c1956.jfif" alt="Just Fun Image" width="150">
   </td>
   <td>
-    <h2>🎉 Just Fun</h2>
+    <h2><a href="{{ site.url }}/categories/fun>🎉 Just Fun</a></h2>
     <blockquote>"Fun is the best!"</blockquote>
   </td>
 </tr>
