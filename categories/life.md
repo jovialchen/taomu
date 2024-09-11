@@ -7,7 +7,7 @@ permalink: /categories/life/
 <table>
 <tr>
   <td>
-    <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
+    <img src="../assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
   <td>
     <h2>🌱 Life Canvas</h2>
