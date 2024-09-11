@@ -1,5 +1,5 @@
 ---
-title: Jo's Digital Garden
+title: Joy's Digital Garden
 ---
 # 🌟 Welcome to My Digital Garden 🌟
 
@@ -39,8 +39,8 @@ title: Jo's Digital Garden
     <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
   <td>
-    <h2>🌱 Life System</h2>
-    <blockquote>"Optimizing life, one system at a time."</blockquote>
+    <h2>🌱 Life Canvas</h2>
+    <blockquote>"Life is a blank canvas, paint it beautifully."</blockquote>
   </td>
 </tr>
 </table>
@@ -53,7 +53,7 @@ title: Jo's Digital Garden
   </td>
   <td>
     <h2>🎉 Just Fun</h2>
-    <blockquote>"Because life is better when you’re having fun!"</blockquote>
+    <blockquote>"Fun is the best!"</blockquote>
   </td>
 </tr>
 </table>
