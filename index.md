@@ -16,8 +16,8 @@ title: Jo's Digital Garden
 ## 📚 Table of Contents
 
 - [🔧 Tech & Coding](#tech--coding)
-- [🎨 Life System](#design--creativity)
-- [📈 Just Fun](#data--analytics)
+- [🎨 Life System](#life--system)
+- [📈 Just Fun](#just--fun)
 
 
 ---
