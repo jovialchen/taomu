@@ -2,7 +2,7 @@
 title: Yo Yo Ho
 ---
 ## 🌟 Welcome to My Digital Garden 🌟
-
+Happy plants and happy minds~
 
 ## About ME
    > Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
@@ -14,6 +14,8 @@ title: Yo Yo Ho
   > C/C++ Developer
 
   > Animal Crossing, 江南百景图
+
+  > Cultivating my own garden of knowledge.
 
 
 ---
