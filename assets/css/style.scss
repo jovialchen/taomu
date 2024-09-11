@@ -2,3 +2,13 @@
 ---
 
 @import "{{ site.theme }}";
+
+aside a.button {
+  display: block;
+  width: 138px;
+  padding-left: 64px;
+  margin-bottom: 20px;
+  font-size: 21px;
+  background: transparent url(../images/Picture1.png) 0 0 no-repeat;
+}
+

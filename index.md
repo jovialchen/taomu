@@ -16,7 +16,6 @@ title: Joy's Digital Garden
   > Animal Crossing, 江南百景图
 
 
-
 ---
 
 <!-- Tech & Coding Section with Image -->
@@ -27,7 +26,7 @@ title: Joy's Digital Garden
   </td>
   <td>
     <h2><a href="{{ site.url }}/categories/tech/">📐 Tech & Coding</a></h2>
-    <blockquote>"Where logic meets creativity, and code comes to life!"</blockquote>
+    <blockquote>"Code the Future, One Byte at a Time."</blockquote>
   </td>
 </tr>
 </table>
@@ -52,7 +51,7 @@ title: Joy's Digital Garden
     <img src="assets/images/df47d168-7b2a-4925-b276-8a49f84c1956.jfif" alt="Just Fun Image" width="150">
   </td>
   <td>
-    <h2><a href="{{ site.url }}/categories/fun>🎉 Just Fun</a></h2>
+    <h2><a href="{{ site.url }}/categories/fun">🎉 Just Fun</a></h2>
     <blockquote>"Fun is the best!"</blockquote>
   </td>
 </tr>
