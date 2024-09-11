@@ -35,11 +35,11 @@ title: Joy's Digital Garden
 <table>
 <tr>
   <td>
-    <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
-  </td>
-  <td>
     <h2><a href="{{ site.url }}/categories/life">🌱 Life Canvas</a></h2>
     <blockquote>"Life is a blank canvas, paint it beautifully."</blockquote>
+  </td>
+  <td>
+    <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
 </tr>
 </table>
