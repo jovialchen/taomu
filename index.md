@@ -9,15 +9,12 @@ title: Jo's Digital Garden
 
   > Machine Learning Enthusiasts!
 
+  > Telecom Engineer
+
+  > C/C++ Developer
+
   > Animal Crossing, 江南百景图
 
----
-
-## 📚 Table of Contents
-
-- [🔧 Tech & Coding](#tech--coding)
-- [🎨 Life System](#life--system)
-- [📈 Just Fun](#just--fun)
 
 
 ---
@@ -26,7 +23,7 @@ title: Jo's Digital Garden
 <table>
 <tr>
   <td>
-    <img src="![image](https://github.com/user-attachments/assets/9896f38e-e8db-4518-a6fa-2c3cfcdc8cf0)" alt="Tech Image" width="150">
+    <img src="assets/images/478c44ef-b8bc-46dd-80d8-e13077cca1d3.jfif" alt="Tech Image" width="150">
   </td>
   <td>
     <h2>📐 Tech & Coding</h2>
@@ -39,7 +36,7 @@ title: Jo's Digital Garden
 <table>
 <tr>
   <td>
-    <img src="https://example.com/life_system.png" alt="Life System Image" width="150">
+    <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
   <td>
     <h2>🌱 Life System</h2>
@@ -52,7 +49,7 @@ title: Jo's Digital Garden
 <table>
 <tr>
   <td>
-    <img src="https://example.com/just_fun.png" alt="Just Fun Image" width="150">
+    <img src="assets/images/df47d168-7b2a-4925-b276-8a49f84c1956.jfif" alt="Just Fun Image" width="150">
   </td>
   <td>
     <h2>🎉 Just Fun</h2>
@@ -60,15 +57,5 @@ title: Jo's Digital Garden
   </td>
 </tr>
 </table>
-
----
-
-
-### 🎯 Stay Tuned for More!
-
-
-<blockquote>I'm always adding new content, so bookmark this page and check back often!</blockquote>
----
-✨ **Follow me on [GitHub](https://github.com/jovialchen) for updates!**
 
 ---
