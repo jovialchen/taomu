@@ -6,3 +6,5 @@ permalink: /categories/fun/
 ---
 # 🎉 Just Fun
 ## Fun is the best!
+
+![alt text](image.png)
