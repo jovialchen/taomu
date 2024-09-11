@@ -1,7 +1,7 @@
 ---
-title: Joy's Digital Garden
+title: Yo Yo Ho
 ---
-# 🌟 Welcome to My Digital Garden 🌟
+## 🌟 Welcome to My Digital Garden 🌟
 
 
 ## About ME
