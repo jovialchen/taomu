@@ -5,17 +5,11 @@ title: Yo Yo Ho
 Happy plants and happy minds~
 
 ## About ME
-   > Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
+ > Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
 
-  > Machine Learning Enthusiasts!
-
-  > Telecom Engineer
-
-  > C/C++ Developer
+  > Machine Learning Enthusiasts/Telecom Engineer/C/C++ Developer
 
   > Animal Crossing, 江南百景图
-
-  > Cultivating my own garden of knowledge.
 
 
 ---
