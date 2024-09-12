@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2024-09-12 18:09:54
+date: 2024-09-12
 title: Notes taking from Programmers' perspective
 categories: life
 ---
