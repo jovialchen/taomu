@@ -28,7 +28,7 @@ categories: life
   - **系统视图**：通过笔记星图，可以从整体上把握知识体系。
 
 ## 直到有一天看到了Dendron有这么一行介绍:
-!!!quote Dendron builds on top of the past five decades of programming languages and developer tooling. We apply the key lessons from software to the management of general knowledge. We make managing general knowledge like managing code and your PKM like an IDE.
+> Dendron builds on top of the past five decades of programming languages and developer tooling. We apply the key lessons from software to the management of general knowledge. We make managing general knowledge like managing code and your PKM like an IDE.
 
 ## 于是想到, 记笔记是不是也可以用做程序员多年攒下的流程经验去做. 是不是可以用维护代码的方式来维护自己的知识系统.
 
