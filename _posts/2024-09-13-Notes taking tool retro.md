@@ -16,7 +16,7 @@ categories: life
 - **同步方式**: git/网盘  
 - **输出工具**: Canva，剪映  
 - **输出平台**: SNS, 头马会议, 学习小组, GitHub, 工作
-![alt text](<napkin-selection (7).png>)
+![alt text](4.png)
 ### 当前的笔记系统  
 1. **知识整理**  
    - 使用Inbox存放不确定的问题、想法  
@@ -27,12 +27,12 @@ categories: life
 5. **项目管理**: 采用卡片笔记整理法
 6. **我的人生故事**: 这个故事该怎么讲，我的人生是一件怎样的艺术品
 
-![alt text](<napkin-selection (3).png>)
+![alt text](2.png)
 
 ## 过去的经历  
 
 ### 学生时代  
-![alt text](<napkin-selection (4).png>)
+![alt text](3.png)
 
 #### 笔记方式  
   
@@ -47,13 +47,13 @@ categories: life
 ### 工作后  
 Step 1:
 
-![alt text](<napkin-selection (8).png>)
+![alt text](5.png)
 Step 2:
 
-![alt text](<napkin-selection (9).png>)
+![alt text](6.png)
 
 Step 3:
-![alt text](<napkin-selection (10).png>)
+![alt text](7.png)
 
 #### 笔记软件  
   
