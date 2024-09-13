@@ -52,30 +52,6 @@ categories: life
 ### Markdown：基础且强大 Part 3
 * **示例：**
   * **HTML：** 实现更复杂的布局和交互。
-    * HTML 示例：
-```html
-<details>
-<summary>Step 1: Install Java</summary>
-
-1. Download and install JRE from [Open Logic official website](https://www.openlogic.com/openjdk-downloads).  
-   <span style="color:gray">JDK and JRE have differences. JDK (Java Development Kit) includes the Java Runtime Environment (JRE) and Java development tools. On the other hand, JRE (Java Runtime Environment) is the environment required to run Java programs. If you only want to run Java programs, you only need to install the JRE. However, if you wish to develop Java programs, you must install the JDK.</span>
-   - Select the version needed for Neo4j. We use JAVA 11. Select to download the msi file.  
-      1. Open the downloaded .msi file.
-      2. Install JRE following the instructions and keep notes of your installation path.
-
-</details>
-```
-<details>
-<summary>Step 1: Install Java</summary>
-
-1. Download and install JRE from [Open Logic official website](https://www.openlogic.com/openjdk-downloads).  
-   <span style="color:gray">JDK and JRE have differences. JDK (Java Development Kit) includes the Java Runtime Environment (JRE) and Java development tools. On the other hand, JRE (Java Runtime Environment) is the environment required to run Java programs. If you only want to run Java programs, you only need to install the JRE. However, if you wish to develop Java programs, you must install the JDK.</span>
-   - Select the version needed for Neo4j. We use JAVA 11. Select to download the msi file.  
-      1. Open the downloaded .msi file.
-      2. Install JRE following the instructions and keep notes of your installation path.
-
-</details>
-
   * **LaTeX：** 精准排版数学公式。
     * LaTeX 示例： 
     $$\nabla f(x, y, z) = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z}\right)$$
@@ -92,6 +68,8 @@ b_{21} & b_{22}
 a_{11}b_{11} + a_{12}b_{21} & a_{11}b_{12} + a_{12}b_{22} \\
 a_{21}b_{11} + a_{22}b_{21} & a_{21}b_{12} + a_{22}b_{22}
 \end{bmatrix}$$
+
+
 
 
   * **Mermaid：** 创建流程图、时序图等。
