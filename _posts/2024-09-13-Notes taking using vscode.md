@@ -121,7 +121,7 @@ Markdown to PPT, Amazing tool.
 我自己的文件夹建立:
 
 
-![alt text](1.png)
+![alt text](../assets/blogimages/1.png)
 ---
 
 ### 用Excel和markdown记录时间
