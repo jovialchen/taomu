@@ -251,7 +251,7 @@ Markdown to PPT, Amazing tool.
 我自己的文件夹建立:
 
 
-![alt text](用vscode和Obsidian跨主机打造笔记系统/my_sys.excalidraw.png)
+![alt text](my_sys.excalidraw.png)
 ---
 
 ### 用Excel和markdown记录时间
