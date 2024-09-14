@@ -32,6 +32,7 @@ categories: life
 ## 过去的经历  
 
 ### 学生时代  
+我的学生时代笔记示意图
     <img src="{{ post.url }}/assets/blogimages/3.png" alt="Life System Image">
 
 #### 笔记方式  
@@ -46,10 +47,8 @@ categories: life
   
 ### 工作后  
 Step 1:
-
     <img src="{{ post.url }}/assets/blogimages/5.png" alt="Life System Image">
 Step 2:
-
     <img src="{{ post.url }}/assets/blogimages/6.png" alt="Life System Image">
 
 Step 3:
@@ -64,7 +63,7 @@ Step 3:
 #### 打卡软件  
   
 - **iCheck（类似应用）**  
-    - (不确定是不是叫这个名字， 但是app store很多这种软件）
+    - (不确定是不是叫这个名字， 但是app store很多这种软件)
   - **优点**: 直观，游戏化设计，多设备同步  
   - **缺点**: 数据导出困难  
   
