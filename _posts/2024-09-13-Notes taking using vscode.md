@@ -107,7 +107,9 @@ Markdown to PPT, Amazing tool.
      - 十二个兴趣问题：诺贝尔奖得主的信息抓取法
 3. Nick Milo: Access, Ace(STIR) -> 先进的电脑双链时代产物.
    - https://www.youtube.com/watch?v=p0zWJ-TLghw&t=605s
-   - - 我自己的感受: 太过注重细节, 但是大家需要自己的实践去确定自己的细节.
+   - 我自己的感受: Access太过注重细节, 但是大家需要自己的实践去确定自己的细节.
+   - Ace的理论就好很多
+   - https://forum.obsidian.md/t/the-ultimate-folder-system-a-quixotic-journey-to-ace/
 
 4. 我自己的理解: Project Driven
 
@@ -121,7 +123,18 @@ Markdown to PPT, Amazing tool.
 我自己的文件夹建立:
 
 
-![alt text](../assets/blogimages/1.png)
+    <img src="{{ post.url }}/assets/blogimages/1.png" alt="Life System Image">
+
+我自己的重点:
+1. 最核心的内容体积要小, 要精炼,便于查找便于同步.
+2. 领域用树形结构确定.
+3. 标签确定输出目标
+4. 用类型定义项目的来源
+5. 确定每个内容的复习计划,频率
+6. 每一件事情都是因为不想做了或者没必要做了再不去做, 而不是因为忘掉了,所以不做了.
+---
+
+
 ---
 
 ### 用Excel和markdown记录时间
