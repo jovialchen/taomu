@@ -99,19 +99,27 @@ Markdown to PPT, Amazing tool.
        - 我自己的实践: 把知识库里的内容链接到Project的笔记中
        - logxpert
      - How to take smart notes? 中文译者很有心得.
+     - 费曼说 
 
-2. <打造第二大脑>
+  !!!quote 直到做了科普演讲我才确定这个东西自己是真的懂了
+
+1. <打造第二大脑>
      - 原则: CODE
      - 笔记组织形式: PARA 
      - https://www.buildingasecondbrain.com/
-     - 十二个兴趣问题：诺贝尔奖得主的信息抓取法
-3. Nick Milo: Access, Ace(STIR) -> 先进的电脑双链时代产物.
+     - 十二个兴趣问题：诺贝尔奖得主的信息抓取法 - 依然是费曼
+2. Nick Milo: Access, Ace(STIR) -> 先进的电脑双链时代产物.
    - https://www.youtube.com/watch?v=p0zWJ-TLghw&t=605s
    - 我自己的感受: Access太过注重细节, 但是大家需要自己的实践去确定自己的细节.
    - Ace的理论就好很多
    - https://forum.obsidian.md/t/the-ultimate-folder-system-a-quixotic-journey-to-ace/
+3. Commonplace book
+   1. https://www.masterclass.com/articles/how-to-keep-a-commonplace-book
 
-4. 我自己的理解: Project Driven
+4. Organize your tags
+   1. https://frankbuck.org/evernote-tags/
+     - 分类的创建成本高，检索成本低，所以分类只有数量少，重叠部分少，才能提高自顶向下查找的命中率。
+      - 标签创建成本低，但是检索成本高，所以标签可以是跨类别的，标签越具体，组合越丰富，关键词命中率越高。
 
 ---
 ### 一点儿碎碎念
