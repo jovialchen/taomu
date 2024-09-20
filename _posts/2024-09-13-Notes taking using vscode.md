@@ -5,7 +5,7 @@ title: Using vscode to take notes with all kinds of cutomization
 categories: life
 ---
 # 用 VS Code 打造个性化笔记系统
----
+
 ### 为什么选择 VS Code？Part 1
 **Obsidian也可以实现的功能**
   * **本地化、安全：** 文件全部存储在本地，避免数据丢失truetrue
@@ -19,13 +19,13 @@ categories: life
       * **kanban:** mark headboard
   * **兼容性强：** 即使文件格式不支持直接打开，VS Code 仍能显示文件。 
   * **Git：** 版本控制和同步。
----
 
 ### 为什么选择 VS Code？Part 2
 **只有代码IDE能解决的问题**
   * **Jupyter:** 可以看Jupyter Notebook.
   * **一站式解决方案：** 结合 Python 或者你最熟悉的编程语言，快速实现更多极度定制化的功能, 免去自己写插件的时间和痛苦。
----
+
+
 ### Vscode哪里没有其他专门为笔记使用的软件好?
 - 无法同步到手机, 只能在电脑上使用. 
   - 解决方案 同步使用Obsidian
@@ -35,10 +35,11 @@ categories: life
 - 没有富文本编辑器.全靠语法渲染.没有个性字体.
 - pdf support会差一些, 相比及之下obsidian可能可以直接修改pdf文档
 - 不像其他笔记软件一样对笔记本身的支持那么强大丰富. 比如Obsidian开始有直接支持拖拽的插件.
----
+
 ### Markdown：基础且强大 Part 1
 * **AI 辅助写作：** 利用 AI 生成 Markdown 初稿，提高效率。
----
+
+
 ### Markdown：基础且强大 Part 2
 * **相关插件：**
     * **语法高亮、预览：** Markdown All in One/preview enhanced
@@ -47,7 +48,6 @@ categories: life
     * **Mermaid：**  Markdown Preview Mermaid Support
     * **Footnote：** Markdown Footnotes
     * **better looking markdown table:**: Markdown Table Prettifier
----
 
 ### Markdown：基础且强大 Part 3
 * **示例：**
@@ -77,7 +77,8 @@ categories: life
 * **环境管理：** Anaconda 用于管理 Python 环境。
 * **依赖管理：** 使用 `requirements.txt` 文件管理项目依赖。也方便同步到其他电脑设备.
 * **all-in-one:**, 我的英语单词复习计划, 每日打卡, 学习计划管理, sqllite建立简单数据库. 周总结, 日总结. 可以完全按照自己的需求定制化
----
+
+
 ### Foam：强大的笔记管理工具
 * **双向链接：** 建立笔记之间的关联。
 * **笔记图谱：** 可视化笔记之间的关系。可以自定义不同类型的笔记所显示的颜色. 笔记的类型在Markdown metadata中定义.
@@ -86,12 +87,11 @@ categories: life
 * **Placeholders:** 空link
 * **Orphans:** 没有link到任何其他的地方的笔记
 Another notes taking extension: Dendron
----
+
   
 ### Marp
 Markdown to PPT, Amazing tool.
 
----
 
 ### 相关书籍推荐
 1. <卡片笔记写作法>
@@ -121,7 +121,7 @@ Markdown to PPT, Amazing tool.
      - 分类的创建成本高，检索成本低，所以分类只有数量少，重叠部分少，才能提高自顶向下查找的命中率。
       - 标签创建成本低，但是检索成本高，所以标签可以是跨类别的，标签越具体，组合越丰富，关键词命中率越高。
 
----
+
 ### 一点儿碎碎念
 
 程序员的经验可以用到写笔记上. 
@@ -138,10 +138,8 @@ Markdown to PPT, Amazing tool.
 4. 用类型定义项目的来源
 5. 确定每个内容的复习计划,频率
 6. 每一件事情都是因为不想做了或者没必要做了再不去做, 而不是因为忘掉了,所以不做了.
----
 
 
----
 
 ### 用Excel和markdown记录时间
 
@@ -149,4 +147,3 @@ Markdown to PPT, Amazing tool.
 1. https://github.com/jovialchen/My-Personal-Management-System
 2. https://github.com/jovialchen/task-management-python-markdown
 
----
