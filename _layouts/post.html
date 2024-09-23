@@ -26,13 +26,7 @@ comments: true
     </script>
 -->
 
-<!-- Disqus -->
-    {% if site.theme.disqus_shortname %}
-        <div class="comments">
-            {% if page.comments %}
-                {% include disqus.html %}
-            {% endif %}
-        </div>
-    {% endif %}
+    <!-- Disqus -->
+    {% include disqus.html %}
 </div>
 
