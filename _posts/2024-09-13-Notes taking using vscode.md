@@ -5,7 +5,6 @@ title: Using vscode to take notes with all kinds of cutomization
 categories: life
 tags:
   - 记笔记
-comments: true
 ---
 # 用 VS Code 打造个性化笔记系统
 
