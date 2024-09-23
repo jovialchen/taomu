@@ -3,6 +3,8 @@ layout: post
 date: 2024-09-13
 title: Notes taking tool feeling
 categories: life
+tags:
+  - 记笔记
 ---
 # 笔记与自我管理工具使用记录及评测(个人向)  
   

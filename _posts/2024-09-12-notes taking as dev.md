@@ -3,6 +3,8 @@ layout: post
 date: 2024-09-12
 title: Notes taking from Programmers' perspective
 categories: life
+tags:
+  - 记笔记
 ---
 # 运用程序员多年的工作经验的养成的习惯整理笔记
 

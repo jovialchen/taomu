@@ -4,7 +4,8 @@ layout: default
 
 <div class="post-content">
     <h1>{{ page.title }}</h1>
-    <p><small>Published on {{ page.date }}</small></p>
+    <p><small>Published on {{ page.date | date: "%B %e, %Y" }}</p>small></p>
+    {% include post-tags.html %}
 
     <div>
         {{ content }}
