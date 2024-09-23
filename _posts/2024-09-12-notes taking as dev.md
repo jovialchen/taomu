@@ -5,6 +5,7 @@ title: Notes taking from Programmers' perspective
 categories: life
 tags:
   - 记笔记
+comments: true
 ---
 # 运用程序员多年的工作经验的养成的习惯整理笔记
 

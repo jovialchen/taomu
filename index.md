@@ -1,5 +1,6 @@
 ---
 title: Yo Yo Ho
+comments: true
 ---
 ## 🌟 Welcome to My Digital Garden 🌟
 Happy plants and happy minds~
