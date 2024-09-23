@@ -5,6 +5,13 @@ title: Notes taking from Programmers' perspective
 categories: life
 tags:
   - 记笔记
+  - vscode
+  - obsidian
+  - foam
+  - notion
+  - dendron
+  - flowus
+  - software_engineering
 ---
 # 运用程序员多年的工作经验的养成的习惯整理笔记
 

@@ -5,6 +5,13 @@ title: Using vscode to take notes with all kinds of cutomization
 categories: life
 tags:
   - 记笔记
+  - vscode
+  - markdown
+  - foam
+  - pkm
+  - 打造第二大脑
+  - 卡片笔记写作法
+  - nick_milo
 ---
 # 用 VS Code 打造个性化笔记系统
 
