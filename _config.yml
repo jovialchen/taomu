@@ -5,4 +5,4 @@ title: [Digital Garden]
 description: [of Joy the Gardener]
 permalink: /:categories/:title/
 theme:
-  disqus_shortname: "jovialchen"
+    disqus_shortname: "jovialchen"
