@@ -4,3 +4,5 @@ plugins:
 title: [Digital Garden]
 description: [of Joy the Gardener]
 permalink: /:categories/:title/
+theme:
+  disqus_shortname: "exampleshortname"

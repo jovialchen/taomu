@@ -14,12 +14,22 @@ layout: default
     <hr>
     <div class="post-footer">
         <p>Author: Joy.C</p>
-    </div>
-    <script src="https://utteranc.es/client.js"
+</div>
+<!--
+<script src="https://utteranc.es/client.js"
         repo="jovialchen/jovialchen.github.io"
         issue-term="pathname"
         theme="github-light"
         crossorigin="anonymous"
         async>
     </script>
+-->
+
+<!-- Disqus -->
+    {% if site.theme.disqus_shortname %}
+        <div class="comments">
+            {% include disqus.html %}
+        </div>
+    {% endif %}
 </div>
+
