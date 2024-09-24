@@ -7,9 +7,9 @@ Happy plants and happy minds~
 
 ## About Me 🌟
 
-✨ **Gemini | Former ENFP → Current ENTJ (What happened? 🤔) | Proud Ravenclaw Alumni** ✨
+✨ **Gemini / Former ENFP → Current ENTJ (What happened? 🤔) / Proud Ravenclaw Alumni** ✨
 
-🎓 **Tech Enthusiast | Telecom Engineer | C & C++ Developer | Machine Learning Aficionado**
+🎓 **Tech Enthusiast / Telecom Engineer / C & C++ Developer / Machine Learning Aficionado**
 
 🌟 Hello there! I'm a curious soul with a dynamic blend of creativity and logic. I started my journey as an ENFP, wandering through the world with endless ideas and enthusiasm, and somehow evolved into an ENTJ — maybe the tech world shaped me more than I realized!
 
