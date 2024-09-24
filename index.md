@@ -1,16 +1,44 @@
 ---
 title: Yo Yo Ho
 ---
-## 🌟 Welcome to My Digital Garden 🌟
+## 🌟 Welcome🌟
 Happy plants and happy minds~
 
-## About ME
- > Gemini, former ENFP, current ENTJ, Ravenclaw Alumni!
 
-  > Machine Learning Enthusiasts/Telecom Engineer/C/C++ Developer
+## About Me 🌟
 
-  > Animal Crossing, 江南百景图
+✨ **Gemini | Former ENFP → Current ENTJ (What happened? 🤔) | Proud Ravenclaw Alumni** ✨
 
+🎓 **Tech Enthusiast | Telecom Engineer | C & C++ Developer | Machine Learning Aficionado**
+
+🌟 Hello there! I'm a curious soul with a dynamic blend of creativity and logic. I started my journey as an ENFP, wandering through the world with endless ideas and enthusiasm, and somehow evolved into an ENTJ — maybe the tech world shaped me more than I realized!
+
+🔧 During the day, you'll find me diving into the realms of **machine learning** and **telecom engineering**, crafting code in **C & C++**. By night, I'm an avid gamer, building my dream island in *Animal Crossing* 🏝️ or getting lost in the historical charms of *江南百景图* 🏯.
+
+---
+
+### 🏷️ Blog Categories
+
+1. **Tech & Coding 💻**: 
+   Everything from low-level C++ intricacies to high-level machine learning marvels. Dive into the technical depths with me!
+
+2. **Life Canvas ⚙️**: 
+   Insights and strategies for navigating this crazy adventure called life. Time management hacks, personal growth musings, and more.
+
+3. **Just Fun 😄**: 
+   Light-hearted musings, game reviews, and things that make life a little brighter. Because we all need a break sometimes!
+
+---
+
+✨ Let's connect and explore the beautiful chaos of technology, life, and a bit of fun together!
+
+<script src="https://utteranc.es/client.js"
+        repo="jovialchen/jovialchen.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
 
 ---
 
