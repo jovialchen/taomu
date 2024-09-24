@@ -31,11 +31,12 @@ Happy plants and happy minds~
 1. **Tech & Coding 👩‍💻**:  
    Everything from low-level C++ intricacies to high-level machine learning marvels. Dive into the technical depths with me!  
   上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
-1. **Life Canvas 👩‍🎨**:  
+
+2. **Life Canvas 👩‍🎨**:  
    Insights and strategies for navigating this crazy adventure called life. Time management hacks, personal growth musings, and more.  
    关于如何驾驭这个名为生活的疯狂冒险的见解和策略。时间管理技巧、个人成长感悟等等。
 
-2. **Just Fun 😄**:  
+3. **Just Fun 😄**:  
    Light-hearted musings, game reviews, and things that make life a little brighter. Because we all need a break sometimes!  
    轻松的随笔、游戏评测，以及让生活变得更加明亮的小事。
 
