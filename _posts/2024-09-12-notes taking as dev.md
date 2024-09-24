@@ -1,12 +1,11 @@
 ---
 layout: post
 date: 2024-09-12
-title: Notes taking from Programmers' perspective
-categories: life
+title: 运用程序员多年的工作经验的养成的习惯整理笔记
+categories: life_canvas
 tags:
   - 记笔记
 ---
-# 运用程序员多年的工作经验的养成的习惯整理笔记
 
 ## 在研究各种笔记软件的时候看到好多程序员熟悉的模式
 ### 1. 双链与代码中的引用和模块化 (Obsidian, Foam, Dendron)

@@ -1,12 +1,11 @@
 ---
 layout: post
 date: 2024-09-13
-title: Notes taking tool feeling
-categories: life
+title: 笔记与自我管理工具使用记录及评测(个人向)  
+categories: life_canvas
 tags:
   - 记笔记
 ---
-# 笔记与自我管理工具使用记录及评测(个人向)  
   
 ## 当前使用  
 

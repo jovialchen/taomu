@@ -1,12 +1,11 @@
 ---
 layout: post
 date: 2024-09-13
-title: Using vscode to take notes with all kinds of cutomization
-categories: life
+title: 用 VS Code 打造个性化笔记系统
+categories: life_canvas
 tags:
   - 记笔记
 ---
-# 用 VS Code 打造个性化笔记系统
 
 ### 为什么选择 VS Code？Part 1
 **Obsidian也可以实现的功能**

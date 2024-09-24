@@ -2,7 +2,7 @@
 layout: category
 title: Just Fun
 category: fun
-permalink: /categories/fun/
+permalink: /categories/just_fun/
 ---
 ## 🎉Fun is the best!
 
