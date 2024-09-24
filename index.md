@@ -5,6 +5,9 @@ title: Yo Yo Ho
 Happy plants and happy minds~
 
 
+这里是~ 
+  **果不其然的博客**
+
 ## About Me 🌟
 
 ✨ **Gemini / Former ENFP → Current ENTJ (What happened? 🤔) / Proud Ravenclaw Alumni** ✨
