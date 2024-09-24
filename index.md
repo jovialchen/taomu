@@ -8,6 +8,9 @@ Happy plants and happy minds~
 这里是~ 
   **果不其然的博客**
 
+---
+
+
 ## About Me 🌟
 
 ✨ **Gemini / Former ENFP → Current ENTJ (What happened? 🤔) / Proud Ravenclaw Alumni** ✨
@@ -31,17 +34,7 @@ Happy plants and happy minds~
 3. **Just Fun 😄**: 
    Light-hearted musings, game reviews, and things that make life a little brighter. Because we all need a break sometimes!
 
----
 
-✨ Let's connect and explore the beautiful chaos of technology, life, and a bit of fun together!
-
-<script src="https://utteranc.es/client.js"
-        repo="jovialchen/jovialchen.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
 
 ---
 
@@ -85,3 +78,15 @@ Happy plants and happy minds~
 </table>
 
 ---
+
+
+
+✨ Let's connect and explore the beautiful chaos of technology, life, and a bit of fun together!
+
+<script src="https://utteranc.es/client.js"
+        repo="jovialchen/jovialchen.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
