@@ -4,9 +4,6 @@ permalink: /archives/
 ---
 
   <div class="container">
-    <header>
-      <h1>Blog Archive</h1>
-    </header>
     <section>
       {% for post in site.posts %}
         {% assign year = post.date | date: "%Y" %}
