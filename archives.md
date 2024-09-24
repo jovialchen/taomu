@@ -19,7 +19,7 @@ permalink: /archives/
           {% assign currentMonth = month_year %}
         {% endif %}
         
-        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a>- {{ post.date | date: "%Y-%m-%d" }}</li>
       {% endfor %}
       </ul>
     </section>
