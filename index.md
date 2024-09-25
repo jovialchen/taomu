@@ -4,13 +4,24 @@ title: Yo Yo Ho
 ## 🌟 Welcome 欢迎🌟
 
 
-这个博客是我的数字花园，会记录一些我在生活中的小发现。
+<table>
+<tr>
+  <td>
+    <p>这个博客是我的数字花园，会记录一些我在生活中的小发现。</p>
+    <p>快乐的花花草草，快乐的我~</p>
+  </td>
+  <td>
+    <img src="image.png" width='300'>
+  </td>
+  <td>
+    <p>This blog is my digital garden, where I record my eureka moments in my life.</p>
+    <p>Happy plants and happy minds~  </p>
+  </td>
+</tr>
+</table>
 
-快乐的花花草草，快乐的我~
 
-This blog is my digital garden, where I record my eureka moments in my life.
 
-Happy plants and happy minds~  
 
 
 
@@ -24,19 +35,16 @@ Happy plants and happy minds~
 
     上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
 
-    Everything from low-level C++ intricacies to high-level machine learning marvels. Dive into the technical depths with me!  
 
 2. **Life Canvas 👩‍🎨**:  
 
    关于如何驾驭这个名为生活的疯狂冒险的见解和策略。时间管理技巧、个人成长感悟等等。
 
-   Insights and strategies for navigating this crazy adventure called life. Time management hacks, personal growth musings, and more.  
 
 3. **Just Fun 😄**:  
 
    轻松的随笔、游戏评测，以及让生活变得更加明亮的小事。
 
-   Light-hearted musings, game reviews, and things that make life a little brighter. Because we all need a break sometimes!  
 
 ---
 
@@ -48,7 +56,7 @@ Happy plants and happy minds~
   </td>
   <td>
     <h2><a href="{{ site.url }}/categories/tech_coding/">📐 Tech & Coding 技术与编程</a></h2>
-    <blockquote>"Code the Future, One Byte at a Time." 一次一字节，编织未来。</blockquote>
+    <blockquote>"Code the Future, One Byte at a Time."</blockquote>
   </td>
 </tr>
 </table>
@@ -58,7 +66,7 @@ Happy plants and happy minds~
 <tr>
   <td>
     <h2><a href="{{ site.url }}/categories/life_canvas">🎨 Life Canvas 生活画布</a></h2>
-    <blockquote>"Life is a blank canvas, paint it beautifully." 生活是一张空白画布，请美丽地绘制它。</blockquote>
+    <blockquote>"Life is a blank canvas, paint it beautifully."</blockquote>
   </td>
   <td>
     <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
@@ -74,7 +82,7 @@ Happy plants and happy minds~
   </td>
   <td>
     <h2><a href="{{ site.url }}/categories/just_fun">🎉 Just Fun 轻松一刻</a></h2>
-    <blockquote>"Fun is the best!" 开心最好！</blockquote>
+    <blockquote>"Fun is the best!" blockquote>
   </td>
 </tr>
 </table>
