@@ -37,5 +37,7 @@ Payload Type 可以分为静态分配和动态分配两种：
     ```
 
 **[脚注]**
+
 [^def1]: RFC 3550 - RTP: A Transport Protocol for Real-time Applications
+
 [^def2]: RFC 3551 - RTP Profile for Audio and Video Conferences with Minimal Control
