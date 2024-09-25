@@ -82,7 +82,7 @@ title: Yo Yo Ho
   </td>
   <td>
     <h2><a href="{{ site.url }}/categories/just_fun">🎉 Just Fun 轻松一刻</a></h2>
-    <blockquote>"Fun is the best!" blockquote>
+    <blockquote>"Fun is the best!" </blockquote>
   </td>
 </tr>
 </table>
