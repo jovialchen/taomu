@@ -22,9 +22,9 @@ Happy plants and happy minds~
 
 1. **Tech & Coding 👩‍💻**:  
 
-  上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
+    上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
 
-   Everything from low-level C++ intricacies to high-level machine learning marvels. Dive into the technical depths with me!  
+    Everything from low-level C++ intricacies to high-level machine learning marvels. Dive into the technical depths with me!  
 
 2. **Life Canvas 👩‍🎨**:  
 
