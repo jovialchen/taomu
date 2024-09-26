@@ -35,21 +35,6 @@ title: Yo Yo Ho
 
 ### 🏷️ Blog Categories 博客分类
 
-1. **Tech & Coding 👩‍💻**:  
-
-    上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
-
-
-2. **Life Canvas 👩‍🎨**:  
-
-   关于如何驾驭这个名为生活的疯狂冒险的见解和策略。时间管理技巧、个人成长感悟等等。
-
-
-3. **Just Fun 😄**:  
-
-   轻松的随笔、游戏评测，以及让生活变得更加明亮的小事。
-
-
 ---
 
 <!-- Tech & Coding Section with Image -->
@@ -61,6 +46,11 @@ title: Yo Yo Ho
   <td>
     <h2><a href="{{ site.url }}/categories/tech_coding/">📐 Tech & Coding 技术与编程</a></h2>
     <blockquote>"Code the Future, One Byte at a Time."</blockquote>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    👩‍💻上班用C和C++, 见过很多C和C++的高手. 这两门语言实在过于难。一个不小心就Leak了。一直在做通信产品。从18年开始陆陆续续地看机器学习。
   </td>
 </tr>
 </table>
@@ -76,6 +66,11 @@ title: Yo Yo Ho
     <img src="assets/images/a2fdbdbe-7127-4c1b-99f8-90f9075587cf.jfif" alt="Life System Image" width="150">
   </td>
 </tr>
+<tr>
+  <td colspan="2">
+   👩‍🎨关于如何驾驭这个名为生活的疯狂冒险的见解和策略。时间管理技巧、个人成长感悟等等。
+  </td>
+</tr>
 </table>
 
 <!-- Just Fun Section with Image -->
@@ -87,6 +82,11 @@ title: Yo Yo Ho
   <td>
     <h2><a href="{{ site.url }}/categories/just_fun">🎉 Just Fun 轻松一刻</a></h2>
     <blockquote>"Fun is the best!" </blockquote>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+   😄轻松的随笔、游戏评测，以及让生活变得更加明亮的小事。
   </td>
 </tr>
 </table>
