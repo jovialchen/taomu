@@ -7,11 +7,13 @@ title: Yo Yo Ho
 <table>
 <tr>
   <td>
+    <img src="image.png" >
+  </td>
+</tr>
+<tr>
+  <td>
     <p>这个博客是我的数字花园，会记录一些我在生活中的小发现。</p>
     <p>快乐的花花草草，快乐的我~</p>
-  </td>
-  <td>
-    <img src="image.png" width='300'>
   </td>
   <td>
     <p>This blog is my digital garden, where I record my eureka moments in my life.</p>

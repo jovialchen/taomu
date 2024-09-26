@@ -36,8 +36,8 @@ Payload Type 可以分为静态分配和动态分配两种：
     a=fmtp:96 packetization-mode=1;profile-level-id=42e01f
     ```
 
-**[脚注]**
+**Reference**
 
-[^def1]: RFC 3550 - RTP: A Transport Protocol for Real-time Applications
+1. RFC 3550 - RTP: A Transport Protocol for Real-time Applications
 
-[^def2]: RFC 3551 - RTP Profile for Audio and Video Conferences with Minimal Control
+2. RFC 3551 - RTP Profile for Audio and Video Conferences with Minimal Control
