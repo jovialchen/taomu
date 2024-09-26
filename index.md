@@ -15,6 +15,8 @@ title: Yo Yo Ho
     <p>这个博客是我的数字花园，会记录一些我在生活中的小发现。</p>
     <p>快乐的花花草草，快乐的我~</p>
   </td>
+</tr>
+<tr>
   <td>
     <p>This blog is my digital garden, where I record my eureka moments in my life.</p>
     <p>Happy plants and happy minds~  </p>
