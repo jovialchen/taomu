@@ -121,3 +121,26 @@ aside a.button {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.social-links {
+  list-style: none;
+  padding: 0;
+}
+
+.social-links li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.social-links img {
+  width: 30px;
+  height: 30px;
+}

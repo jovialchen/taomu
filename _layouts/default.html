@@ -23,12 +23,6 @@
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
         </a>
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
-        {% if site.github.is_project_page %}
-          <a href="{{ site.github.repository_url }}" class="button"><small>View project on</small> GitHub</a>
-        {% endif %}
-        {% if site.github.is_user_page %}
-          <a href="{{ site.github.owner_url }}" class="button"><small>Follow me on</small> GitHub</a>
-        {% endif %}
       </div>
     </header>
 
@@ -50,6 +44,27 @@
             </nav>
         </aside>
       </div>
+      <footer>
+        <ul class="social-links">
+          <li>
+            <a href="https://www.xiaohongshu.com/user/profile/5f621096000000000100727f" target="_blank">
+              <img src="assets/icons/xiaohongshu.png" alt="xiaohongshu">
+            </a>
+          </li>
+          <ul class="social-links">
+            <li>
+              <a href="https://www.xiaohongshu.com/user/profile/5f621096000000000100727f" target="_blank">
+                <img src="assets/icons/linkedin.png" alt="linkedin">
+              </a>
+            </li>
+            <ul class="social-links">
+              <li>
+                <a href="https://github.com/jovialchen" target="_blank">
+                  <img src="assets/icons/github.png" alt="github">
+                </a>
+              </li>
+          </ul>
+      </footer>
     </div>
 
   </body>
