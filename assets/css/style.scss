@@ -130,14 +130,19 @@ footer {
   background-color: #f0f0f0;
 }
 
-.social-links {
-  list-style: none;
-  padding: 0;
-}
-
 .social-links li {
   display: inline-block;
   margin: 0 10px;
+}
+/* 假设你的 ul 元素的 class 为 social-links */
+.social-links {
+  display: flex; /* 或 inline-block */
+  justify-content: center; /* 水平居中 */
+}
+
+/* 如果使用 flex 布局，可以添加以下样式 */
+.social-links {
+  flex-direction: row;
 }
 
 .social-links img {
