@@ -1,6 +1,7 @@
 ---
 permalink: /categories/
 title: Categories
+layout: page
 ---
 
 

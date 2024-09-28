@@ -1,5 +1,6 @@
 ---
 title: Yo Yo Ho
+layout: page
 ---
 ## 🌟 Welcome 欢迎🌟
 

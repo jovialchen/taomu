@@ -1,6 +1,7 @@
 ---
 title: Blog Archive
 permalink: /archives/
+layout: page
 ---
 
   <div class="container">

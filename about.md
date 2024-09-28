@@ -1,5 +1,6 @@
 ---
 permalink: /about/
+layout: page
 ---
 ## About Me 关于我 🌟
 
