@@ -66,11 +66,11 @@ tags:
   </tr>
 </table>
 
-<img src="{{ post.url }}/assets/blogimages/9.png" alt="蒙德里安最著名的画作《组成Ⅱ号》">
+<img src="{{ post.url }}/assets/blogimages/10.png" alt="蒙德里安最著名的画作《组成Ⅱ号》">
 
 蒙德里安最著名的画作，真的好好看, 好喜欢。
 
-<img src="{{ post.url }}/assets/blogimages/10.png" alt="戴维·霍克尼的画作">
+<img src="{{ post.url }}/assets/blogimages/9.png" alt="戴维·霍克尼的画作">
 
 随便找了一幅戴维·霍克尼的画作，彼得罗教授真是太“无聊”了！哈哈哈哈哈
 
