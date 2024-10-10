@@ -1,7 +1,7 @@
 ---
 layout: category
 title: Just Fun
-category: fun
+category: just_fun
 permalink: /categories/just_fun/
 ---
 ## 🎉Fun is the best!
