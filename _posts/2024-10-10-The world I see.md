@@ -4,7 +4,7 @@ date: 2024-10-10
 categories: just_fun
 title: 读书笔记 - 《我看见的世界》
 tags:
-    - 读书笔记
+    - 看世界
 ---
 
 
