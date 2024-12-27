@@ -12,7 +12,7 @@ layout: default
   {% for post in site.posts %}
     {% if post.categories contains page.category %}
       <li>
-        <h3><a href="{{ post.url }}">{{ post.title }}</a> - {{ post.date | date: "%Y-%m-%d" }}</h3>
+        <h3><a href="{{ post.url }}/taomu">{{ post.title }}</a> - {{ post.date | date: "%Y-%m-%d" }}</h3>
       </li>
     {% endif %}
   {% endfor %}
