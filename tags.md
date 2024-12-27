@@ -21,7 +21,7 @@ layout: page
     <a name="{{ tag_name | slugize }}"></a>
     {% for post in site.tags[tag_name] %}
     <article class="archive-item">
-      <h4><a href="{{ root_url }}{{ post.url }}/taomu">{{post.title}}</a> - {{ post.date | date: "%Y-%m-%d" }}</h4>
+      <h4><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a> - {{ post.date | date: "%Y-%m-%d" }}</h4>
     </article>
     {% endfor %}
   </div>
