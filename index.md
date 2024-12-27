@@ -40,7 +40,7 @@ layout: page
     <img src="assets/images/478c44ef-b8bc-46dd-80d8-e13077cca1d3.jfif" alt="Tech Image" width="150">
   </td>
   <td>
-    <h2><a href="{{ site.url }}/categories/tech_coding/">📐 Tech & Coding 技术与编程</a></h2>
+    <h2><a href="{{ site.url }}/taomu/categories/tech_coding/">📐 Tech & Coding 技术与编程</a></h2>
     <blockquote>"Code the Future, One Byte at a Time."</blockquote>
   </td>
 </tr>
@@ -55,7 +55,7 @@ layout: page
 <table>
 <tr>
   <td>
-    <h2><a href="{{ site.url }}/categories/life_canvas">🎨 Life Canvas 生活画布</a></h2>
+    <h2><a href="{{ site.url }}/taomu/categories/life_canvas">🎨 Life Canvas 生活画布</a></h2>
     <blockquote>"Life is a blank canvas, paint it beautifully."</blockquote>
   </td>
   <td>
@@ -76,7 +76,7 @@ layout: page
     <img src="assets/images/df47d168-7b2a-4925-b276-8a49f84c1956.jfif" alt="Just Fun Image" width="150">
   </td>
   <td>
-    <h2><a href="{{ site.url }}/categories/just_fun">🎉 Just Fun 轻松一刻</a></h2>
+    <h2><a href="{{ site.url }}/taomu/categories/just_fun">🎉 Just Fun 轻松一刻</a></h2>
     <blockquote>"Fun is the best!" </blockquote>
   </td>
 </tr>
