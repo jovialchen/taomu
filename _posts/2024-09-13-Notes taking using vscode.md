@@ -130,7 +130,7 @@ Markdown to PPT, Amazing tool.
   - 重要的东西才写到笔记里. Distill
 
 我自己的文件夹建立:
-    <img src="{{ post.url }}/assets/blogimages/1.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/1.png" alt="Life System Image">
 
 我自己的重点:
 1. 最核心的内容体积要小, 要精炼,便于查找便于同步.

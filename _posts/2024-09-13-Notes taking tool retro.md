@@ -17,7 +17,7 @@ tags:
 - **同步方式**: git/网盘  
 - **输出工具**: Canva，剪映  
 - **输出平台**: SNS, 头马会议, 学习小组, GitHub, 工作
-    <img src="{{ post.url }}/assets/blogimages/4.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/4.png" alt="Life System Image">
 ### 当前的笔记系统  
 1. **知识整理**  
    - 使用Inbox存放不确定的问题、想法  
@@ -28,13 +28,13 @@ tags:
 5. **项目管理**: 采用卡片笔记整理法
 6. **我的人生故事**: 这个故事该怎么讲，我的人生是一件怎样的艺术品
 
-    <img src="{{ post.url }}/assets/blogimages/2.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/2.png" alt="Life System Image">
 
 ## 过去的经历  
 
 ### 学生时代  
 我的学生时代笔记示意图
-    <img src="{{ post.url }}/assets/blogimages/3.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/3.png" alt="Life System Image">
 
 #### 笔记方式  
   
@@ -48,12 +48,12 @@ tags:
   
 ### 工作后  
 Step 1:
-    <img src="{{ post.url }}/assets/blogimages/5.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/5.png" alt="Life System Image">
 Step 2:
-    <img src="{{ post.url }}/assets/blogimages/6.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/6.png" alt="Life System Image">
 
 Step 3:
-    <img src="{{ post.url }}/assets/blogimages/7.png" alt="Life System Image">
+    <img src="{{ site.baseurl }}/assets/blogimages/7.png" alt="Life System Image">
 
 #### 笔记软件  
   

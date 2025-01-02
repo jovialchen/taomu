@@ -11,7 +11,7 @@ tags:
 最近在读书会和朋友们一起读了李飞飞教授的《我看见的世界》，对这位影响世界的科学家，我愈发敬佩。
 
 
-<img src="{{ post.url }}/assets/blogimages/8.png" alt="book cover">
+<img src="{{ site.baseurl }}/assets/blogimages/8.png" alt="book cover">
 
 ## 表面是一本自传，实则内涵丰富
 
@@ -66,11 +66,11 @@ tags:
   </tr>
 </table>
 
-<img src="{{ post.url }}/assets/blogimages/10.png" alt="蒙德里安最著名的画作《组成Ⅱ号》">
+<img src="{{ site.baseurl }}/assets/blogimages/10.png" alt="蒙德里安最著名的画作《组成Ⅱ号》">
 
 蒙德里安最著名的画作，真的好好看, 好喜欢。
 
-<img src="{{ post.url }}/assets/blogimages/9.png" alt="戴维·霍克尼的画作">
+<img src="{{ site.baseurl }}/assets/blogimages/9.png" alt="戴维·霍克尼的画作">
 
 随便找了一幅戴维·霍克尼的画作，彼得罗教授真是太“无聊”了！哈哈哈哈哈
 
