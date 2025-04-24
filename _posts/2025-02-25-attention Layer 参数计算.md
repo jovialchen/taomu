@@ -5,6 +5,7 @@ date: 2025-02-25
 categories: tech_coding
 tags:
     - LLM
+    - Transformers
 ---
 
 一些关于transfomers的思考. 谢谢LLM解答.
