@@ -5,6 +5,7 @@ date: 2025-02-21
 categories: tech_coding
 tags:
     - LLM
+    - RAG
 ---
 
 最近一直在学习自然语言处理和大语言模型的一些基本概念, 这些内容是在ChatGPT, Deepseek等大语言模型的帮助下记录的。
