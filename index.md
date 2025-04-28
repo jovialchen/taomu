@@ -26,6 +26,10 @@ layout: page
 
 ---
 
+### 🏷️ Latest Update 最近更新
+
+---
+
 <ul>
   {% for post in site.posts limit:3 %}
     <li>
@@ -34,6 +38,7 @@ layout: page
     </li>
   {% endfor %}
 </ul>
+    <img src="assets/images/ani.gif" alt="Tech Image" width="150">
 
 
 ---
