@@ -38,7 +38,7 @@ layout: page
     </li>
   {% endfor %}
 </ul>
-<img src="assets/images/ani.gif" alt="Tech Image" width="150">
+<img src="assets/images/ani.gif" alt="Tech Image" width="300">
 
 
 ---

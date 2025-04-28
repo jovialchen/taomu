@@ -12,6 +12,25 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
 
+  
+    <script>
+      const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        autoplay: false,
+        loop: 'all',
+        order: 'list',
+        preload: 'auto',
+        audio: [
+          {
+            name: '绿袖子',
+            artist: 'Music by <a href="https://pixabay.com/zh/users/juliush-3921568/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=1776">Julius H.</a> from <a href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=1776">Pixabay</a>',
+            url: '/assets/music/greensleevs.mp3',
+            cover: '/assets/music/cover.png' // 封面图片，可选
+          }
+        ]
+      });
+    </script>
+
 {% seo %}
 
     {% include head-custom.html %}
@@ -43,6 +62,7 @@
                 <li><a href="{{ site.url }}/taomu/about/" class="button">About Me</a></li>
             </ul>
             </nav>
+            <div id="aplayer"></div>
         </aside>
       </div>
 
