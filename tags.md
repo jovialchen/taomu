@@ -19,11 +19,13 @@ layout: page
     {% capture tag_name %}{{ tag | first }}{% endcapture %}
     <h3 id="#{{ tag_name | slugize }}">{{ tag_name }} ({{ site.tags[tag_name] | size }})</h3>
     <a name="{{ tag_name | slugize }}"></a>
+    <ul>
     {% for post in site.tags[tag_name] %}
     <article class="archive-item">
-      <h4><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a> - {{ post.date | date: "%Y-%m-%d" }}</h4>
+      <li><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a> - {{ post.date | date: "%Y-%m-%d" }}</li>
     </article>
     {% endfor %}
+    </ul>
   </div>
 {% endfor %}
 </div>
