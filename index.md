@@ -36,9 +36,9 @@ layout: page
       <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a>- {{ post.date | date: "%Y-%m-%d" }}</h2>
       <p>{{ post.excerpt }}</p>
     </li>
+<li><img src="assets/images/ani.gif" alt="Tech Image" width="150"></li>
   {% endfor %}
 </ul>
-<img src="assets/images/ani.gif" alt="Tech Image" width="300">
 
 
 ---
