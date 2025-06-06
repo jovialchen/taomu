@@ -5,7 +5,6 @@ categories: just_fun
 title: 读书笔记 - 《我看见的世界》
 tags:
     - 读书
-    - machine_learning
 ---
 
 
