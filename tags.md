@@ -13,6 +13,28 @@ layout: page
 {% endfor %}
 </ul>
 
+<pre class="mermaid">
+mindmap
+  root((我的标签说明))
+    tech_coding
+      telecom
+      machine_learning
+        LLM
+          Tranformers
+          RAG
+        reinforcement_learning
+    life_canvas
+      记笔记
+      育儿
+    just_fun
+      读书
+      电影
+      哲学
+      看世界
+      我的日常
+      一点想法
+</pre>
+
 <div id="archives">
 {% for tag in site.tags %}
   <div class="archive-group">
