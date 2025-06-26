@@ -1,5 +1,5 @@
 ---
-title: "GraphRAG 和AI一起读论文
+title: "GraphRAG 和AI一起读论文"
 layout: post
 date: 2025-06-25
 categories: tech_coding
