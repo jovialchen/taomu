@@ -22,7 +22,10 @@ mindmap
         LLM
           Tranformers
           RAG
+            GraphRAG
         reinforcement_learning
+      programming_language
+        python
     life_canvas
       记笔记
       育儿
