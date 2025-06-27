@@ -7,7 +7,6 @@ tags:
     - model_context_protocol
 ---
 
-# lessons Learn in June 2025
 
 
 ## 情况1
@@ -18,7 +17,7 @@ tags:
 
 ---
 
-## 🛠️ 原因分析
+### 🛠️ 原因分析
 
 1. **`uv` CLI 执行行为差异**
    `uv run` 是一个 Rust 实现的运行器，它会：
@@ -33,7 +32,7 @@ tags:
 
 
 
-## ✅ 总结建议
+### ✅ 总结建议
 
 * **短期**：继续使用 `python main.py`，省心高效。
 * **管理依赖**：可以让 `uv` 管，但运行脚本留给 Python。
