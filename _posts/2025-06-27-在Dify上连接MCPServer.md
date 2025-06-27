@@ -7,6 +7,9 @@ tags:
     - model_context_protocol
 ---
 
+python版本 3.12.10
+mcp版本 1.10.0
+dify版本 1.3.1
 
 
 ## 情况1
