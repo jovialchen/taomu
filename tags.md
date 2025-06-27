@@ -23,6 +23,7 @@ mindmap
           Tranformers
           RAG
             GraphRAG
+            model_context_protocol
         reinforcement_learning
       programming_language
         python
