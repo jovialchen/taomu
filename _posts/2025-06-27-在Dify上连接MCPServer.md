@@ -7,13 +7,14 @@ tags:
     - model_context_protocol
 ---
 
+# lessons Learn in June 2025
+
 python版本 3.12.10
 mcp版本 1.10.0
 dify版本 1.3.1
 
-
 ## 情况1
-你遇到的情况是：
+遇到的情况是：
 
 * 用 `python main.py …` 执行时，`mcp.run(...)` 会正确调用 Uvicorn，监听 `0.0.0.0:8899` 并正常运行。
 * 而用 `uv run mcp run main.py`（实际上是 `uv` CLI）执行时，却没有输出也不启动服务，脚本似乎“卡住”了。
@@ -48,7 +49,7 @@ dify版本 1.3.1
 [3]: https://stackoverflow.com/questions/79237776/invalid-command-name-mainapp-when-i-execute-uvicorn-mainapp-reload?utm_source=chatgpt.com "invalid command name 'main:app' when I execute \"uvicorn main:app ..."
 
 ## 情况2
-你遇到的 400（Bad Request）是因为 FastMCP 的 Streamable‑HTTP transport 不支持通过 GET 请求打开 `/mcp` 的流。目前实现上只有 POST 是有效的，而 Dify（特别是它的 MCP‑SSE 插件）期望通过 GET 建立 SSE（Server‑Sent Events）连接，才会进行后续的 tool/resource 探测。这个问题在 FastMCP 的 issue #828 已被确认：**GET /mcp 返回 400** ([github.com][1])。
+遇到的 400（Bad Request）是因为 FastMCP 的 Streamable‑HTTP transport 不支持通过 GET 请求打开 `/mcp` 的流。目前实现上只有 POST 是有效的，而 Dify（特别是它的 MCP‑SSE 插件）期望通过 GET 建立 SSE（Server‑Sent Events）连接，才会进行后续的 tool/resource 探测。这个问题在 FastMCP 的 issue #828 已被确认：**GET /mcp 返回 400** ([github.com][1])。
 
 ---
 
@@ -60,7 +61,7 @@ FastMCP 支持 `transport="sse"`，它会对 `/mcp` 端点返回可用工具列�
 
 ```python
 if __name__ == "__main__":
-    mcp.run(transport="sse", host="0.0.0.0", port=8899)
+    mcp.run(transport="sse")
 ```
 
 然后在 Dify 的配置里指向 `http://你的地址:8899/mcp`，用 GET 请求就能正常订阅工具列表，不会再 400。
@@ -87,8 +88,8 @@ FastMCP 团队已意识到这个缺陷，预计会支持 GET+Streamable-HTTP 来
 
 ```json
 {
-  "sbc": {
-    "url": "http://10.99.42.70:8899/mcp",
+  "我的server": {
+    "url": "http://你的地址:8899/mcp",
     "transport": "streamable_http",
     "headers": { "Accept": "application/json, text/event-stream" }
   }
@@ -108,3 +109,25 @@ FastMCP 团队已意识到这个缺陷，预计会支持 GET+Streamable-HTTP 来
 [1]: https://github.com/jlowin/fastmcp/issues/828?utm_source=chatgpt.com "Support GET request to /mcp endpoint · Issue #828 · jlowin/fastmcp"
 [2]: https://blog.csdn.net/weixin_44894663/article/details/147858052?utm_source=chatgpt.com "dify插件接入fastmcp示例 - CSDN博客"
 
+## 情况3
+
+-----
+
+当需要指定IP地址和端口时，请使用 **FastMCP** 类进行实例化，而非直接调用 `mcp.run()`。
+
+具体而言，`mcp.run(transport="streamable-http", host="0.0.0.0", port=8899, log_level="DEBUG")` 这种用法会导致错误。
+
+正确的做法是，通过实例化 **FastMCP** 类来配置主机和端口，例如：
+
+```python
+mcp = FastMCP("Demo", host="0.0.0.0", port=8899)
+```
+
+## 情况4
+
+具体可见：
+https://github.com/modelcontextprotocol/python-sdk/pull/781
+
+
+如果设置成 /mcp 会报错307
+要设置成 /mcp/ 才行
