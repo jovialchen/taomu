@@ -18,6 +18,8 @@ mindmap
   root((我的标签说明))
     tech_coding
       telecom
+        computer_network
+        codec
       machine_learning
         LLM
           Tranformers
