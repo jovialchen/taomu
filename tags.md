@@ -17,7 +17,10 @@ layout: page
 mindmap
   root((我的标签说明))
     tech_coding
+      computer_science
       telecom
+        computer_network
+        codec
       machine_learning
         LLM
           Tranformers
