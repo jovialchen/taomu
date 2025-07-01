@@ -5,6 +5,7 @@ date: 2025-06-27
 categories: tech_coding
 tags:
     - model_context_protocol
+    - dify
 ---
 
 python版本 3.12.10

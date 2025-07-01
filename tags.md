@@ -24,6 +24,7 @@ mindmap
           RAG
             GraphRAG
             model_context_protocol
+            dify
         reinforcement_learning
       programming_language
         python
