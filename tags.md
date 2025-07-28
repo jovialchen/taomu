@@ -41,6 +41,7 @@ mindmap
       看世界
       我的日常
       一点想法
+      看画展
 </pre>
 
 <div id="archives">
