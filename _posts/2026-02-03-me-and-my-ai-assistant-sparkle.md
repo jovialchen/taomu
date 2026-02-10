@@ -2,9 +2,9 @@
 type: Blog
 create_date: 2026-02-03
 tags:
-  - From/MyAgentBestieSparkle
-  - To/BeMyBestSelf
-  - Life/Daily
+  - 我的日常
+  - LLM
+  - 一点想法
 platform: 小红书
 ---
 
