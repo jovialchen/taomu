@@ -2,12 +2,9 @@
 title: "2026年2月 AI 辅助开发+Agent 总结"
 layout: post
 date: 2026-02-21
-categories: tech_ai
+categories: tech_coding
 tags:
-    - AI
-    - Agent
-    - IDE
-    - Development
+    - LLM
 ---
 
 ## 1. IDE 核心能力对比：Rules 与 Skills
