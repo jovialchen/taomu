@@ -23,11 +23,12 @@ mindmap
         codec
       machine_learning
         LLM
-          Tranformers
+          Transformers
           RAG
             GraphRAG
             model_context_protocol
             dify
+          AIAgent
         reinforcement_learning
       programming_language
         python
