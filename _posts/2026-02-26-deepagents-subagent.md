@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 date: 2026-02-26
 title: Deep Agents SubAgent：上下文隔离与并行执行的利器
@@ -18,7 +18,7 @@ Deep Agents 的 SubAgent 机制允许主代理 (Orchestrator) 通过 `task` 工�
 
 其中，**General-Purpose SubAgent（通用子代理）** 是系统默认内置的子代理类型。它继承主代理的全部工具和能力，适用于任何需要隔离上下文、节省 token 的通用任务场景。
 
-```mermaid
+<pre class="mermaid">
 graph TB
     subgraph "Main Agent (Orchestrator)"
         MA[主代理 LLM]
@@ -41,7 +41,7 @@ graph TB
     TASK -- "subagent_type='custom-name'" --> CS
     GP -- "ToolMessage (最终结果)" --> MA
     CS -- "ToolMessage (最终结果)" --> MA
-```
+</pre>
 
 ## 为什么需要 General-Purpose SubAgent
 
@@ -109,7 +109,7 @@ if interrupt_on is not None:
     gp_middleware.append(HumanInTheLoopMiddleware(interrupt_on=interrupt_on))
 ```
 
-```mermaid
+<pre class="mermaid">
 graph LR
     subgraph "主代理 Middleware 栈"
         M1[TodoList] --> M2[Memory] --> M3[Skills] --> M4[Filesystem]
@@ -122,7 +122,7 @@ graph LR
         G3 --> G4[PromptCaching] --> G5[PatchToolCalls] --> G6[Skills]
         G6 --> G7[HITL]
     end
-```
+</pre>
 
 注意子代理的栈中**没有** `SubAgentMiddleware`（子代理不能再嵌套子代理）和 `MemoryMiddleware`（子代理不加载 AGENTS.md 记忆文件）。
 
@@ -176,7 +176,7 @@ _EXCLUDED_STATE_KEYS = {
 
 General-Purpose SubAgent 的一个关键优势是支持**并行执行**。当主代理在一次响应中发出多个 `task` 工具调用时，这些子代理可以并发运行：
 
-```mermaid
+<pre class="mermaid">
 graph TB
     USER[用户: 研究 A、B、C 三个主题并比较] --> MAIN[主代理]
     MAIN --> |"并行 task 调用"| T1[task: 研究 A]
@@ -190,7 +190,7 @@ graph TB
     GP3 --> |"精简报告 C"| MAIN
     MAIN --> RESULT[综合比较分析]
     RESULT --> USER
-```
+</pre>
 
 每个子代理在自己的上下文窗口中深入研究，可以消耗大量 token 进行搜索和分析，但最终只返回精简的结果。主代理的上下文中只保留三条精简报告，而非三份完整的研究过程。
 
@@ -312,7 +312,7 @@ class SubAgentMiddleware(AgentMiddleware):
 
 ## 完整数据流
 
-```mermaid
+<pre class="mermaid">
 sequenceDiagram
     participant User as 用户
     participant Main as 主代理
@@ -343,7 +343,7 @@ sequenceDiagram
     MW-->>Main: Command(update={messages: [ToolMessage("架构分析报告：...")]})
     Main->>Main: LLM 基于报告生成用户响应
     Main-->>User: "根据分析，这个代码库的架构是..."
-```
+</pre>
 
 ## 总结
 

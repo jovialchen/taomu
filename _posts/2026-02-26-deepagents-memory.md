@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 date: 2026-02-26
 title: Deep Agents Memory 机制：基于 AGENTS.md 的持久记忆系统
@@ -24,13 +24,13 @@ Memory 的核心特性：
 - 每次 Agent 运行只加载一次（已加载则跳过）
 - 通过 Backend 抽象层访问文件，支持多种存储后端
 
-```mermaid
+<pre class="mermaid">
 graph LR
     A["AGENTS.md 文件<br/>(用户级 + 项目级)"] --> B[MemoryMiddleware]
     B --> |"before_agent<br/>加载文件内容"| C[Agent State<br/>memory_contents]
     C --> |"wrap_model_call<br/>注入 System Prompt"| D[LLM]
     D --> |"edit_file 工具<br/>更新记忆"| A
-```
+</pre>
 
 ## AGENTS.md 文件格式
 
@@ -212,7 +212,7 @@ def _format_agent_memory(self, contents: dict[str, str]) -> str:
 
 Agent 通过 `edit_file` 工具更新 `AGENTS.md` 文件来实现记忆的持久化。这不是一个专门的记忆 API，而是复用了 `FilesystemMiddleware` 提供的文件编辑能力。
 
-```mermaid
+<pre class="mermaid">
 graph TD
     A[用户交互] --> B{Agent 判断是否需要记忆}
     B -- 是 --> C["调用 edit_file 工具"]
@@ -220,7 +220,7 @@ graph TD
     D --> E["AGENTS.md 文件更新"]
     E --> F["下次 Agent 运行时<br/>MemoryMiddleware 加载新内容"]
     B -- 否 --> G[继续正常处理]
-```
+</pre>
 
 ### 更新流程示例
 
@@ -260,7 +260,7 @@ edit_file(
 
 这是两者最核心的区别：
 
-```mermaid
+<pre class="mermaid">
 graph LR
     subgraph "MemoryMiddleware (全量加载)"
         MA["AGENTS.md<br/>完整内容"] --> MB["System Prompt<br/>全部注入"]
@@ -272,7 +272,7 @@ graph LR
         SC -- 是 --> SD["read_file<br/>加载完整指令"]
         SC -- 否 --> SE["跳过"]
     end
-```
+</pre>
 
 Memory 适合始终需要的上下文（项目规范、用户偏好），Skills 适合按需使用的工作流（研究流程、代码审查清单）。
 

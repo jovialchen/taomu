@@ -21,7 +21,7 @@ HITL 的核心实现依赖于：
 2. **LangGraph `interrupt` / `Command(resume=...)` 机制** — 底层的暂停/恢复原语
 3. **`InterruptOnConfig`** — 每个工具的中断配置（允许的决策类型、描述等）
 
-```mermaid
+<pre class="mermaid">
 graph LR
     A[LLM 生成 Tool Call] --> B{interrupt_on 配置?}
     B -- "True / InterruptOnConfig" --> C[HumanInTheLoopMiddleware]
@@ -32,7 +32,7 @@ graph LR
     F -- reject --> H[返回拒绝消息给 LLM]
     F -- edit --> I[修改参数后执行]
     B -- "False / 未配置" --> G
-```
+</pre>
 
 ## 核心数据模型
 
@@ -75,7 +75,7 @@ interrupt_on = {
 
 `HumanInTheLoopMiddleware` 始终是 Middleware 栈的**最后一层**。这意味着它在所有其他 Middleware 处理完毕后才介入，确保拦截的是最终要执行的工具调用。
 
-```mermaid
+<pre class="mermaid">
 graph TB
     subgraph "主代理 Middleware 栈"
         M1[TodoListMiddleware] --> M2[MemoryMiddleware]
@@ -90,7 +90,7 @@ graph TB
     end
 
     style M10 fill:#ff6b6b,color:#fff
-```
+</pre>
 
 ### 为什么是最后一层？
 
@@ -127,7 +127,7 @@ if interrupt_on is not None:
 
 ### 基本流程
 
-```mermaid
+<pre class="mermaid">
 sequenceDiagram
     participant User as 用户
     participant Agent as Deep Agent
@@ -171,13 +171,13 @@ sequenceDiagram
 
     Agent->>LLM: 继续推理（带 ToolMessage 结果）
     LLM-->>User: 最终响应
-```
+</pre>
 
 ### 并行工具调用的处理
 
 当 LLM 在一次响应中发出多个工具调用时，HITL 会将需要审批的调用**批量收集**，一次性呈现给用户：
 
-```mermaid
+<pre class="mermaid">
 graph TD
     A[LLM 返回 3 个 ToolCalls] --> B{逐个检查 interrupt_on}
 
@@ -194,7 +194,7 @@ graph TD
     F --> G["Command(resume={decisions: [approve, approve]})"]
     G --> H[sample_tool 执行]
     G --> I[get_soccer_scores 执行]
-```
+</pre>
 
 关键点：
 - **未配置中断的工具**（如 `get_weather: False`）会**立即执行**，不等待审批
@@ -264,7 +264,7 @@ Deep Agents CLI (`deepagents-cli`) 提供了两种 HITL 交互模式：交互式
 
 在交互式模式下，CLI 使用 Textual 框架渲染审批对话框：
 
-```mermaid
+<pre class="mermaid">
 graph TD
     subgraph "TextualUIAdapter 流式处理"
         A[agent.astream] --> B{stream chunk 类型}
@@ -286,7 +286,7 @@ graph TD
         F --> L
         L --> A
     end
-```
+</pre>
 
 #### ApprovalMenu 组件
 
@@ -305,7 +305,7 @@ graph TD
 
 非交互式模式 (`deepagents -n "task"`) 使用基于规则的自动决策：
 
-```mermaid
+<pre class="mermaid">
 graph TD
     A[收到 HITL 中断] --> B{action_name 是 Shell 工具?}
 
@@ -317,7 +317,7 @@ graph TD
     D -- 是 --> F{命令在 allow-list 中?}
     F -- 是 --> C
     F -- 否 --> G["拒绝 ✗<br/>Command not in allow-list"]
-```
+</pre>
 
 #### 非交互式 HITL 决策逻辑
 
@@ -356,7 +356,7 @@ def _make_hitl_decision(action_request, console):
 - `ls` — 列出目录
 - `read_file` — 读取文件
 - `glob` — 文件模式匹配
-- `grep` — 文件内容搜索
+- `grep` — 文本内容搜索
 - `write_todos` — 管理待办列表
 
 ## Checkpointer 依赖

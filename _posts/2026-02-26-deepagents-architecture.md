@@ -16,7 +16,7 @@ tags:
 
 Deep Agents 的核心是通过 `create_deep_agent()` 函数构建一个 LangGraph `CompiledStateGraph`。底层调用 `langchain.agents.create_agent()` 创建一个 tool-calling agent loop。
 
-```mermaid
+<pre class="mermaid">
 graph TD
     subgraph "create_deep_agent()"
         A[用户输入 / HumanMessage] --> B[System Prompt 组装]
@@ -56,11 +56,11 @@ graph TD
 
     C -.-> M1
     E -.-> T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9
-```
+</pre>
 
 ## 主代理 + 子代理架构
 
-```mermaid
+<pre class="mermaid">
 graph TB
     subgraph "Main Agent (Orchestrator)"
         MA[主代理 LLM]
@@ -85,7 +85,7 @@ graph TB
     MA_TASK -- "subagent_type=custom" --> CS
     GP -- "ToolMessage (最终结果)" --> MA
     CS -- "ToolMessage (最终结果)" --> MA
-```
+</pre>
 
 ---
 
@@ -104,7 +104,7 @@ Backend 是 Deep Agents 的文件存储抽象层。所有后端实现 `BackendPr
 
 ### 类继承关系
 
-```mermaid
+<pre class="mermaid">
 classDiagram
     class BackendProtocol {
         <<abstract>>
@@ -181,7 +181,7 @@ classDiagram
     SandboxBackendProtocol <|-- BaseSandbox
     FilesystemBackend <|-- LocalShellBackend
     SandboxBackendProtocol <|-- LocalShellBackend
-```
+</pre>
 
 注意 `LocalShellBackend` 是双重继承：它同时继承 `FilesystemBackend`（文件操作）和 `SandboxBackendProtocol`（Shell 执行能力）。
 
@@ -239,7 +239,7 @@ download_files(paths: list[str]) -> list[FileDownloadResponse]             # 批
 
 ## 完整数据流
 
-```mermaid
+<pre class="mermaid">
 graph TB
     subgraph "输入层"
         USER[用户] --> |"invoke(messages, files)"| AGENT
@@ -285,7 +285,7 @@ graph TB
     MW_AFTER --> |继续循环| LOOP
     LOOP --> |完成| RESULT[最终响应]
     RESULT --> USER
-```
+</pre>
 
 ---
 
