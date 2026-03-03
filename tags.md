@@ -33,6 +33,11 @@ mindmap
             ClaudeCode
             OpenAI
             Google
+            ACP
+            Zed
+            LangGraph
+            ContextWindow
+            Summarization
         reinforcement_learning
       programming_language
         python
