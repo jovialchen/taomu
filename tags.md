@@ -29,9 +29,15 @@ mindmap
             model_context_protocol
             dify
           AIAgent
+            DeepAgents
+            ClaudeCode
+            OpenAI
+            Google
         reinforcement_learning
       programming_language
         python
+      OpenSource
+      SDK
     life_canvas
       记笔记
       育儿
