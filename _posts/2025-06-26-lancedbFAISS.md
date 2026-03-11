@@ -1,5 +1,5 @@
----
-title: "研究了一下向量数据库: FAISS和LanceDB"
+﻿---
+title: "鐮旂┒浜嗕竴涓嬪悜閲忔暟鎹簱: FAISS鍜孡anceDB"
 layout: post
 date: 2025-06-26
 categories: tech_coding
@@ -8,30 +8,30 @@ tags:
 ---
 
 
-为了比较lancedb和FAISS在使用方法行区别, 这里使用 **FAISS** 和 **LanceDB** 分别实现：
+涓轰簡姣旇緝lancedb鍜孎AISS鍦ㄤ娇鐢ㄦ柟娉曡鍖哄埆, 杩欓噷浣跨敤 **FAISS** 鍜?**LanceDB** 鍒嗗埆瀹炵幇锛?
 
-* 将 10 条文本数据生成 embedding
-* 添加元数据（例如 ID、来源等）
-* 存储到本地
-* 查询用户问题，匹配出最相关的 1-2 条文本和元数据
-* 发给大语言模型（如 OpenAI GPT）
+* 灏?10 鏉℃枃鏈暟鎹敓鎴?embedding
+* 娣诲姞鍏冩暟鎹紙渚嬪 ID銆佹潵婧愮瓑锛?
+* 瀛樺偍鍒版湰鍦?
+* 鏌ヨ鐢ㄦ埛闂锛屽尮閰嶅嚭鏈€鐩稿叧鐨?1-2 鏉℃枃鏈拰鍏冩暟鎹?
+* 鍙戠粰澶ц瑷€妯″瀷锛堝 OpenAI GPT锛?
 
 ---
 
-## ✅ 一、FAISS 实现：带元数据本地向量检索
+## 鉁?涓€銆丗AISS 瀹炵幇锛氬甫鍏冩暟鎹湰鍦板悜閲忔绱?
 
-### 💾 本地保存结构
+### 馃捑 鏈湴淇濆瓨缁撴瀯
 
-* `index.faiss`：FAISS 向量索引
-* `metadata.json`：文本 + 元数据列表，按索引对齐
+* `index.faiss`锛欶AISS 鍚戦噺绱㈠紩
+* `metadata.json`锛氭枃鏈?+ 鍏冩暟鎹垪琛紝鎸夌储寮曞榻?
 
-### 📦 依赖
+### 馃摝 渚濊禆
 
 ```bash
 pip install faiss-cpu sentence-transformers openai
 ```
 
-### 🧩 1. 构建并保存索引和元数据
+### 馃З 1. 鏋勫缓骞朵繚瀛樼储寮曞拰鍏冩暟鎹?
 
 ```python
 import faiss
@@ -40,39 +40,39 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import os
 
-# 示例文本与元数据
+## 绀轰緥鏂囨湰涓庡厓鏁版嵁
 documents = [
-    {"text": "猫是哺乳动物。", "id": "doc1", "source": "百科"},
-    {"text": "狗喜欢追球。", "id": "doc2", "source": "宠物指南"},
-    {"text": "鲸鱼生活在海里。", "id": "doc3", "source": "海洋资料"},
-    {"text": "鸟类会飞。", "id": "doc4", "source": "动物分类"},
-    {"text": "鱼在水中游。", "id": "doc5", "source": "水生动物"},
-    {"text": "蛇是冷血动物。", "id": "doc6", "source": "爬行动物"},
-    {"text": "大象是最大的陆地动物。", "id": "doc7", "source": "哺乳动物资料"},
-    {"text": "老虎是猫科动物。", "id": "doc8", "source": "动物百科"},
-    {"text": "企鹅不会飞但会游泳。", "id": "doc9", "source": "极地动物"},
-    {"text": "袋鼠生活在澳洲。", "id": "doc10", "source": "澳洲自然"}
+    {"text": "鐚槸鍝轰钩鍔ㄧ墿銆?, "id": "doc1", "source": "鐧剧"},
+    {"text": "鐙楀枩娆㈣拷鐞冦€?, "id": "doc2", "source": "瀹犵墿鎸囧崡"},
+    {"text": "椴搁奔鐢熸椿鍦ㄦ捣閲屻€?, "id": "doc3", "source": "娴锋磱璧勬枡"},
+    {"text": "楦熺被浼氶銆?, "id": "doc4", "source": "鍔ㄧ墿鍒嗙被"},
+    {"text": "楸煎湪姘翠腑娓搞€?, "id": "doc5", "source": "姘寸敓鍔ㄧ墿"},
+    {"text": "铔囨槸鍐疯鍔ㄧ墿銆?, "id": "doc6", "source": "鐖鍔ㄧ墿"},
+    {"text": "澶ц薄鏄渶澶х殑闄嗗湴鍔ㄧ墿銆?, "id": "doc7", "source": "鍝轰钩鍔ㄧ墿璧勬枡"},
+    {"text": "鑰佽檸鏄尗绉戝姩鐗┿€?, "id": "doc8", "source": "鍔ㄧ墿鐧剧"},
+    {"text": "浼侀箙涓嶄細椋炰絾浼氭父娉炽€?, "id": "doc9", "source": "鏋佸湴鍔ㄧ墿"},
+    {"text": "琚嬮紶鐢熸椿鍦ㄦ境娲层€?, "id": "doc10", "source": "婢虫床鑷劧"}
 ]
 
-# 建立向量模型
+## 寤虹珛鍚戦噺妯″瀷
 model = SentenceTransformer("all-MiniLM-L6-v2")
 texts = [doc["text"] for doc in documents]
 embeddings = model.encode(texts).astype("float32")
 
-# 保存 FAISS 索引
+## 淇濆瓨 FAISS 绱㈠紩
 index = faiss.IndexFlatL2(embeddings.shape[1])
 index.add(embeddings)
 os.makedirs("faiss_db", exist_ok=True)
 faiss.write_index(index, "faiss_db/index.faiss")
 
-# 保存元数据
+## 淇濆瓨鍏冩暟鎹?
 with open("faiss_db/metadata.json", "w", encoding="utf-8") as f:
     json.dump(documents, f, ensure_ascii=False, indent=2)
 ```
 
 ---
 
-### 🧩 2. 加载并匹配查询（返回文本 + 元数据）
+### 馃З 2. 鍔犺浇骞跺尮閰嶆煡璇紙杩斿洖鏂囨湰 + 鍏冩暟鎹級
 
 ```python
 import openai
@@ -89,9 +89,9 @@ def query_faiss(query, top_k=2):
     D, I = index.search(query_vec, top_k)
 
     matched_docs = [metadata[i] for i in I[0]]
-    context = "\n".join([f"{doc['text']}（来源：{doc['source']}）" for doc in matched_docs])
+    context = "\n".join([f"{doc['text']}锛堟潵婧愶細{doc['source']}锛? for doc in matched_docs])
 
-    prompt = f"以下是相关信息：\n{context}\n\n请回答用户的问题：{query}"
+    prompt = f"浠ヤ笅鏄浉鍏充俊鎭細\n{context}\n\n璇峰洖绛旂敤鎴风殑闂锛歿query}"
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -100,52 +100,52 @@ def query_faiss(query, top_k=2):
 
     return response["choices"][0]["message"]["content"]
 
-# 示例
-print(query_faiss("企鹅怎么移动？"))
+## 绀轰緥
+print(query_faiss("浼侀箙鎬庝箞绉诲姩锛?))
 ```
 
 ---
 
-## ✅ 二、LanceDB 实现：embedding + 元数据本地管理
+## 鉁?浜屻€丩anceDB 瀹炵幇锛歟mbedding + 鍏冩暟鎹湰鍦扮鐞?
 
-### 📦 安装
+### 馃摝 瀹夎
 
 ```bash
 pip install lancedb sentence-transformers openai
 ```
 
-### 🧩 1. 存储数据和元信息
+### 馃З 1. 瀛樺偍鏁版嵁鍜屽厓淇℃伅
 
 ```python
 import lancedb
 from sentence_transformers import SentenceTransformer
 
-# 同样的文档数据
+## 鍚屾牱鐨勬枃妗ｆ暟鎹?
 docs = [
-    {"text": "猫是哺乳动物。", "id": "doc1", "source": "百科"},
-    {"text": "狗喜欢追球。", "id": "doc2", "source": "宠物指南"},
-    {"text": "鲸鱼生活在海里。", "id": "doc3", "source": "海洋资料"},
-    {"text": "鸟类会飞。", "id": "doc4", "source": "动物分类"},
-    {"text": "鱼在水中游。", "id": "doc5", "source": "水生动物"},
-    {"text": "蛇是冷血动物。", "id": "doc6", "source": "爬行动物"},
-    {"text": "大象是最大的陆地动物。", "id": "doc7", "source": "哺乳动物资料"},
-    {"text": "老虎是猫科动物。", "id": "doc8", "source": "动物百科"},
-    {"text": "企鹅不会飞但会游泳。", "id": "doc9", "source": "极地动物"},
-    {"text": "袋鼠生活在澳洲。", "id": "doc10", "source": "澳洲自然"}
+    {"text": "鐚槸鍝轰钩鍔ㄧ墿銆?, "id": "doc1", "source": "鐧剧"},
+    {"text": "鐙楀枩娆㈣拷鐞冦€?, "id": "doc2", "source": "瀹犵墿鎸囧崡"},
+    {"text": "椴搁奔鐢熸椿鍦ㄦ捣閲屻€?, "id": "doc3", "source": "娴锋磱璧勬枡"},
+    {"text": "楦熺被浼氶銆?, "id": "doc4", "source": "鍔ㄧ墿鍒嗙被"},
+    {"text": "楸煎湪姘翠腑娓搞€?, "id": "doc5", "source": "姘寸敓鍔ㄧ墿"},
+    {"text": "铔囨槸鍐疯鍔ㄧ墿銆?, "id": "doc6", "source": "鐖鍔ㄧ墿"},
+    {"text": "澶ц薄鏄渶澶х殑闄嗗湴鍔ㄧ墿銆?, "id": "doc7", "source": "鍝轰钩鍔ㄧ墿璧勬枡"},
+    {"text": "鑰佽檸鏄尗绉戝姩鐗┿€?, "id": "doc8", "source": "鍔ㄧ墿鐧剧"},
+    {"text": "浼侀箙涓嶄細椋炰絾浼氭父娉炽€?, "id": "doc9", "source": "鏋佸湴鍔ㄧ墿"},
+    {"text": "琚嬮紶鐢熸椿鍦ㄦ境娲层€?, "id": "doc10", "source": "婢虫床鑷劧"}
 ]
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 for doc in docs:
     doc["vector"] = model.encode(doc["text"]).tolist()
 
-# 建立本地 LanceDB
+## 寤虹珛鏈湴 LanceDB
 db = lancedb.connect("lancedb_dir")
 db.create_table("animals", data=docs, mode="overwrite")
 ```
 
 ---
 
-### 🧩 2. 查询并构造 prompt 给大模型
+### 馃З 2. 鏌ヨ骞舵瀯閫?prompt 缁欏ぇ妯″瀷
 
 ```python
 def query_lancedb(query, top_k=2):
@@ -154,11 +154,11 @@ def query_lancedb(query, top_k=2):
     result = table.search(vec).limit(top_k).to_df()
 
     context = "\n".join(
-        f"{row['text']}（来源：{row['source']}）"
+        f"{row['text']}锛堟潵婧愶細{row['source']}锛?
         for _, row in result.iterrows()
     )
 
-    prompt = f"以下是相关信息：\n{context}\n\n请回答用户的问题：{query}"
+    prompt = f"浠ヤ笅鏄浉鍏充俊鎭細\n{context}\n\n璇峰洖绛旂敤鎴风殑闂锛歿query}"
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -167,20 +167,20 @@ def query_lancedb(query, top_k=2):
 
     return response['choices'][0]['message']['content']
 
-# 示例
-print(query_lancedb("企鹅怎么移动？"))
+## 绀轰緥
+print(query_lancedb("浼侀箙鎬庝箞绉诲姩锛?))
 ```
 
 ---
 
-## ✅ 总结：FAISS vs LanceDB
+## 鉁?鎬荤粨锛欶AISS vs LanceDB
 
-| 功能点   | FAISS              | LanceDB        |
+| 鍔熻兘鐐?  | FAISS              | LanceDB        |
 | ----- | ------------------ | -------------- |
-| 向量存储  | 支持，高性能             | 支持，嵌套向量字段      |
-| 元数据支持 | 需手动并行存储            | 原生支持（字段化）      |
-| 本地结构  | `.faiss` + `.json` | 自动生成 DB 文件夹    |
-| 查询接口  | 数组索引 -> 查 JSON     | 类似 SQL，支持多字段查询 |
-| 推荐用途  | 海量向量数据             | 中小规模+结构化检索     |
+| 鍚戦噺瀛樺偍  | 鏀寔锛岄珮鎬ц兘             | 鏀寔锛屽祵濂楀悜閲忓瓧娈?     |
+| 鍏冩暟鎹敮鎸?| 闇€鎵嬪姩骞惰瀛樺偍            | 鍘熺敓鏀寔锛堝瓧娈靛寲锛?     |
+| 鏈湴缁撴瀯  | `.faiss` + `.json` | 鑷姩鐢熸垚 DB 鏂囦欢澶?   |
+| 鏌ヨ鎺ュ彛  | 鏁扮粍绱㈠紩 -> 鏌?JSON     | 绫讳技 SQL锛屾敮鎸佸瀛楁鏌ヨ |
+| 鎺ㄨ崘鐢ㄩ€? | 娴烽噺鍚戦噺鏁版嵁             | 涓皬瑙勬ā+缁撴瀯鍖栨绱?    |
 
 ---

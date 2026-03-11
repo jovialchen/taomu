@@ -1,7 +1,7 @@
----
+﻿---
 layout: post
 date: 2026-03-05
-title: "Deep Agents 中的 Hook 机制详解"
+title: "Deep Agents 涓殑 Hook 鏈哄埗璇﹁В"
 categories: tech_coding
 tags:
   - LLM
@@ -10,33 +10,26 @@ tags:
   - ProgrammingLanguage/Python
 ---
 
-# Deep Agents 中的 Hook 机制详解
+## Deep Agents 涓殑 Hook 鏈哄埗璇﹁В
 
-> **摘要：** Hook（钩子）是一种软件设计模式，允许开发者在程序执行的特定阶段插入自定义逻辑，而无需修改核心代码。本文深入分析 Deep Agents 项目中的 Hook 架构和实现细节。
+> **鎽樿锛?* Hook锛堥挬瀛愶級鏄竴绉嶈蒋浠惰璁℃ā寮忥紝鍏佽寮€鍙戣€呭湪绋嬪簭鎵ц鐨勭壒瀹氶樁娈垫彃鍏ヨ嚜瀹氫箟閫昏緫锛岃€屾棤闇€淇敼鏍稿績浠ｇ爜銆傛湰鏂囨繁鍏ュ垎鏋?Deep Agents 椤圭洰涓殑 Hook 鏋舵瀯鍜屽疄鐜扮粏鑺傘€?
+---
+
+## 1. 浠€涔堟槸 Hook锛?
+**Hook锛堥挬瀛愶級** 鏄竴绉嶈蒋浠惰璁℃ā寮忥紝鍏佽寮€鍙戣€呭湪绋嬪簭鎵ц鐨勭壒瀹氶樁娈垫彃鍏ヨ嚜瀹氫箟閫昏緫锛岃€屾棤闇€淇敼鏍稿績浠ｇ爜銆侶ook 鎻愪緵浜嗕竴绉?*鏉捐€﹀悎鐨勬墿灞曟満鍒?*锛屼娇寰楁鏋跺彲浠ュ湪棰勫畾涔夌殑鐢熷懡鍛ㄦ湡鐐逛笂璋冪敤鐢ㄦ埛鎻愪緵鐨勪唬鐮併€?
+### Hook 鐨勬牳蹇冪壒鐐?
+- **鎷︽埅鑳藉姏**锛氬湪鐗瑰畾鎵ц鐐瑰墠鍚庢彃鍏ラ€昏緫
+- **鍔ㄦ€佷慨鏀?*锛氬彲浠ヤ慨鏀硅緭鍏ュ弬鏁般€佽繑鍥炲€兼垨鎵ц娴佺▼
+- **鐘舵€佹寔涔呭寲**锛氬彲浠ュ湪澶氭璋冪敤涔嬮棿缁存姢鐘舵€?- **缁勫悎鎬?*锛氬涓?hook 鍙互閾惧紡缁勫悎浣跨敤
 
 ---
 
-## 1. 什么是 Hook？
+## 2. Deep Agents 椤圭洰涓殑 Hook 鏋舵瀯
 
-**Hook（钩子）** 是一种软件设计模式，允许开发者在程序执行的特定阶段插入自定义逻辑，而无需修改核心代码。Hook 提供了一种**松耦合的扩展机制**，使得框架可以在预定义的生命周期点上调用用户提供的代码。
+鍦?Deep Agents 椤圭洰涓紝hook 鏈哄埗涓昏閫氳繃 **Middleware锛堜腑闂翠欢锛?* 妯″紡瀹炵幇銆傞」鐩殑 middleware 绯荤粺鍩轰簬 LangChain 鐨?`AgentMiddleware` 鍩虹被鏋勫缓銆?
+### 2.1 鏍稿績鍩虹被锛欰gentMiddleware
 
-### Hook 的核心特点
-
-- **拦截能力**：在特定执行点前后插入逻辑
-- **动态修改**：可以修改输入参数、返回值或执行流程
-- **状态持久化**：可以在多次调用之间维护状态
-- **组合性**：多个 hook 可以链式组合使用
-
----
-
-## 2. Deep Agents 项目中的 Hook 架构
-
-在 Deep Agents 项目中，hook 机制主要通过 **Middleware（中间件）** 模式实现。项目的 middleware 系统基于 LangChain 的 `AgentMiddleware` 基类构建。
-
-### 2.1 核心基类：AgentMiddleware
-
-所有 middleware 都继承自 `langchain.agents.middleware.types.AgentMiddleware`，该类定义了以下核心 hook 方法：
-
+鎵€鏈?middleware 閮界户鎵胯嚜 `langchain.agents.middleware.types.AgentMiddleware`锛岃绫诲畾涔変簡浠ヤ笅鏍稿績 hook 鏂规硶锛?
 ```python
 class AgentMiddleware:
     def wrap_model_call(
@@ -44,32 +37,30 @@ class AgentMiddleware:
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> Awaitable[ModelResponse]:
-        """拦截每次 LLM 请求的核心 hook"""
+        """鎷︽埅姣忔 LLM 璇锋眰鐨勬牳蹇?hook"""
         pass
 ```
 
-### 2.2 项目中的 Middleware 实现
+### 2.2 椤圭洰涓殑 Middleware 瀹炵幇
 
-项目实现了多种 middleware，每种都在特定的 hook 点上注入逻辑：
-
-| Middleware | 文件位置 | Hook 用途 |
+椤圭洰瀹炵幇浜嗗绉?middleware锛屾瘡绉嶉兘鍦ㄧ壒瀹氱殑 hook 鐐逛笂娉ㄥ叆閫昏緫锛?
+| Middleware | 鏂囦欢浣嶇疆 | Hook 鐢ㄩ€?|
 |------------|----------|----------|
-| `FilesystemMiddleware` | `libs/deepagents/deepagents/middleware/filesystem.py` | 动态过滤工具、注入文件系统状态 |
-| `SkillsMiddleware` | `libs/deepagents/deepagents/middleware/skills.py` | 注入 skill 指令到 system prompt |
-| `MemoryMiddleware` | `libs/deepagents/deepagents/middleware/memory.py` | 跨 turn 状态维护 |
-| `SummarizationMiddleware` | `libs/deepagents/deepagents/middleware/summarization.py` | 截断历史消息、注入摘要 |
-| `SubAgentMiddleware` | `libs/deepagents/deepagents/middleware/subagents.py` | 子代理工具注入和路由 |
+| `FilesystemMiddleware` | `libs/deepagents/deepagents/middleware/filesystem.py` | 鍔ㄦ€佽繃婊ゅ伐鍏枫€佹敞鍏ユ枃浠剁郴缁熺姸鎬?|
+| `SkillsMiddleware` | `libs/deepagents/deepagents/middleware/skills.py` | 娉ㄥ叆 skill 鎸囦护鍒?system prompt |
+| `MemoryMiddleware` | `libs/deepagents/deepagents/middleware/memory.py` | 璺?turn 鐘舵€佺淮鎶?|
+| `SummarizationMiddleware` | `libs/deepagents/deepagents/middleware/summarization.py` | 鎴柇鍘嗗彶娑堟伅銆佹敞鍏ユ憳瑕?|
+| `SubAgentMiddleware` | `libs/deepagents/deepagents/middleware/subagents.py` | 瀛愪唬鐞嗗伐鍏锋敞鍏ュ拰璺敱 |
 
 ---
 
-## 3. Hook 的具体实现分析
+## 3. Hook 鐨勫叿浣撳疄鐜板垎鏋?
+### 3.1 FilesystemMiddleware 鐨?Hook 瀹炵幇
 
-### 3.1 FilesystemMiddleware 的 Hook 实现
-
-`FilesystemMiddleware` 展示了如何在 `wrap_model_call` hook 中动态修改请求：
+`FilesystemMiddleware` 灞曠ず浜嗗浣曞湪 `wrap_model_call` hook 涓姩鎬佷慨鏀硅姹傦細
 
 ```python
-# libs/deepagents/deepagents/middleware/filesystem.py
+## libs/deepagents/deepagents/middleware/filesystem.py
 
 class FilesystemMiddleware(AgentMiddleware[FilesystemState, ToolRuntime]):
     async def wrap_model_call(
@@ -77,34 +68,26 @@ class FilesystemMiddleware(AgentMiddleware[FilesystemState, ToolRuntime]):
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> ModelResponse:
-        # Hook 点 1: 动态过滤工具列表
-        tools = list(request.tools)
+        # Hook 鐐?1: 鍔ㄦ€佽繃婊ゅ伐鍏峰垪琛?        tools = list(request.tools)
         if not self._backend_supports_execute():
-            # 如果后端不支持 execute，移除该工具
+            # 濡傛灉鍚庣涓嶆敮鎸?execute锛岀Щ闄よ宸ュ叿
             tools = [t for t in tools if t.name != "execute"]
 
-        # Hook 点 2: 注入 system prompt 上下文
-        modified_request = self._inject_filesystem_context(request, tools)
+        # Hook 鐐?2: 娉ㄥ叆 system prompt 涓婁笅鏂?        modified_request = self._inject_filesystem_context(request, tools)
 
-        # 调用下一个 middleware 或直接调用模型
-        response = await call_next(modified_request)
+        # 璋冪敤涓嬩竴涓?middleware 鎴栫洿鎺ヨ皟鐢ㄦā鍨?        response = await call_next(modified_request)
 
-        # Hook 点 3: 处理响应后的逻辑
+        # Hook 鐐?3: 澶勭悊鍝嶅簲鍚庣殑閫昏緫
         return self._process_response(response)
 ```
 
-**关键设计模式**：
-1. **请求拦截**：在 LLM 调用前修改 `ModelRequest`
-2. **工具过滤**：根据运行时条件动态调整可用工具
-3. **上下文注入**：向 system message 注入文件系统状态
-4. **响应处理**：在返回前处理模型响应
+**鍏抽敭璁捐妯″紡**锛?1. **璇锋眰鎷︽埅**锛氬湪 LLM 璋冪敤鍓嶄慨鏀?`ModelRequest`
+2. **宸ュ叿杩囨护**锛氭牴鎹繍琛屾椂鏉′欢鍔ㄦ€佽皟鏁村彲鐢ㄥ伐鍏?3. **涓婁笅鏂囨敞鍏?*锛氬悜 system message 娉ㄥ叆鏂囦欢绯荤粺鐘舵€?4. **鍝嶅簲澶勭悊**锛氬湪杩斿洖鍓嶅鐞嗘ā鍨嬪搷搴?
+### 3.2 SkillsMiddleware 鐨?Hook 瀹炵幇
 
-### 3.2 SkillsMiddleware 的 Hook 实现
-
-`SkillsMiddleware` 展示了如何注入 skill 指令：
-
+`SkillsMiddleware` 灞曠ず浜嗗浣曟敞鍏?skill 鎸囦护锛?
 ```python
-# libs/deepagents/deepagents/middleware/skills.py
+## libs/deepagents/deepagents/middleware/skills.py
 
 class SkillsMiddleware(AgentMiddleware[SkillsState, ToolRuntime]):
     async def wrap_model_call(
@@ -112,13 +95,12 @@ class SkillsMiddleware(AgentMiddleware[SkillsState, ToolRuntime]):
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> ModelResponse:
-        # 从配置的 sources 加载 skill 元数据
-        skills_metadata = await self._load_skills_metadata()
+        # 浠庨厤缃殑 sources 鍔犺浇 skill 鍏冩暟鎹?        skills_metadata = await self._load_skills_metadata()
 
-        # 构建 skill 指令文本
+        # 鏋勫缓 skill 鎸囦护鏂囨湰
         skill_instructions = self._build_skill_instructions(skills_metadata)
 
-        # Hook: 修改 system message，追加 skill 指令
+        # Hook: 淇敼 system message锛岃拷鍔?skill 鎸囦护
         modified_request = append_to_system_message(
             request,
             skill_instructions,
@@ -128,12 +110,11 @@ class SkillsMiddleware(AgentMiddleware[SkillsState, ToolRuntime]):
         return await call_next(modified_request)
 ```
 
-### 3.3 SummarizationMiddleware 的复杂 Hook 逻辑
+### 3.3 SummarizationMiddleware 鐨勫鏉?Hook 閫昏緫
 
-这是最复杂的 middleware，展示了多阶段 hook 处理：
-
+杩欐槸鏈€澶嶆潅鐨?middleware锛屽睍绀轰簡澶氶樁娈?hook 澶勭悊锛?
 ```python
-# libs/deepagents/deepagents/middleware/summarization.py
+## libs/deepagents/deepagents/middleware/summarization.py
 
 class SummarizationMiddleware(AgentMiddleware[SummarizationState, ToolRuntime]):
     async def wrap_model_call(
@@ -141,17 +122,14 @@ class SummarizationMiddleware(AgentMiddleware[SummarizationState, ToolRuntime]):
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> ModelResponse:
-        # Hook 阶段 1: Token 计数和上下文窗口检查
-        current_tokens = self._count_tokens(request.messages)
+        # Hook 闃舵 1: Token 璁℃暟鍜屼笂涓嬫枃绐楀彛妫€鏌?        current_tokens = self._count_tokens(request.messages)
         context_limit = self._get_context_limit(request.model)
 
-        # Hook 阶段 2: 如果超出阈值，执行截断和摘要
-        if current_tokens > self._truncation_threshold:
+        # Hook 闃舵 2: 濡傛灉瓒呭嚭闃堝€硷紝鎵ц鎴柇鍜屾憳瑕?        if current_tokens > self._truncation_threshold:
             request = self._truncate_old_messages(request)
             request = self._inject_summary_prompt(request)
 
-        # Hook 阶段 3: 响应后处理，更新摘要状态
-        response = await call_next(request)
+        # Hook 闃舵 3: 鍝嶅簲鍚庡鐞嗭紝鏇存柊鎽樿鐘舵€?        response = await call_next(request)
         self._update_summarization_state(response)
 
         return response
@@ -159,13 +137,11 @@ class SummarizationMiddleware(AgentMiddleware[SummarizationState, ToolRuntime]):
 
 ---
 
-## 4. Hook 的状态管理
-
-Middleware 使用 `AgentState` 来维护跨 turn 的状态：
+## 4. Hook 鐨勭姸鎬佺鐞?
+Middleware 浣跨敤 `AgentState` 鏉ョ淮鎶よ法 turn 鐨勭姸鎬侊細
 
 ```python
-# 定义状态结构
-class FilesystemState(AgentState):
+## 瀹氫箟鐘舵€佺粨鏋?class FilesystemState(AgentState):
     files: Annotated[NotRequired[dict[str, FileData]], _file_data_reducer]
     """Files in the filesystem."""
 
@@ -178,22 +154,20 @@ class SummarizationState(AgentState):
     """History of truncation events."""
 ```
 
-**状态特性**：
-- `PrivateStateAttr`：标记为私有状态，不传播到父 agent
-- `Annotated[..., _reducer]`：定义状态合并的 reducer 函数
-- `NotRequired`：状态字段是可选的
+**鐘舵€佺壒鎬?*锛?- `PrivateStateAttr`锛氭爣璁颁负绉佹湁鐘舵€侊紝涓嶄紶鎾埌鐖?agent
+- `Annotated[..., _reducer]`锛氬畾涔夌姸鎬佸悎骞剁殑 reducer 鍑芥暟
+- `NotRequired`锛氱姸鎬佸瓧娈垫槸鍙€夌殑
 
 ---
 
-## 5. Hook 的执行流程
-
+## 5. Hook 鐨勬墽琛屾祦绋?
 <pre class="mermaid">
 flowchart TD
     A[User Message] --> B[Agent Graph<br/>create_deep_agent]
-    B --> C[FilesystemMiddleware<br/>过滤工具 + 注入上下文]
-    C --> D[SkillsMiddleware<br/>注入 skill 指令]
-    D --> E[SummarizationMiddleware<br/>Token 管理 + 截断]
-    E --> F[SubAgentMiddleware<br/>子代理路由]
+    B --> C[FilesystemMiddleware<br/>杩囨护宸ュ叿 + 娉ㄥ叆涓婁笅鏂嘳
+    C --> D[SkillsMiddleware<br/>娉ㄥ叆 skill 鎸囦护]
+    D --> E[SummarizationMiddleware<br/>Token 绠＄悊 + 鎴柇]
+    E --> F[SubAgentMiddleware<br/>瀛愪唬鐞嗚矾鐢盷
     F --> G[LLM Model Call]
     G --> H[Response Processing]
     H --> I[Agent Response]
@@ -201,68 +175,62 @@ flowchart TD
 
 ---
 
-## 6. CLI 层的 Hook 扩展
+## 6. CLI 灞傜殑 Hook 鎵╁睍
 
-除了 SDK 层的 middleware，CLI 还有额外的 hook 机制：
-
-### 6.1 本地上下文 Hook (`local_context.py`)
+闄や簡 SDK 灞傜殑 middleware锛孋LI 杩樻湁棰濆鐨?hook 鏈哄埗锛?
+### 6.1 鏈湴涓婁笅鏂?Hook (`local_context.py`)
 
 ```python
-# libs/cli/deepagents_cli/local_context.py
+## libs/cli/deepagents_cli/local_context.py
 
 class LocalContextMiddleware(AgentMiddleware):
-    """CLI 特定的中间件，处理本地项目上下文"""
+    """CLI 鐗瑰畾鐨勪腑闂翠欢锛屽鐞嗘湰鍦伴」鐩笂涓嬫枃"""
 
     async def wrap_model_call(
         self,
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> ModelResponse:
-        # 检测项目根目录
+        # 妫€娴嬮」鐩牴鐩綍
         project_root = self._find_project_root()
 
-        # 注入项目特定的配置
-        request = self._inject_project_context(request, project_root)
+        # 娉ㄥ叆椤圭洰鐗瑰畾鐨勯厤缃?        request = self._inject_project_context(request, project_root)
 
         return await call_next(request)
 ```
 
-### 6.2 Tool Call Hook（工具调用拦截）
+### 6.2 Tool Call Hook锛堝伐鍏疯皟鐢ㄦ嫤鎴級
 
-CLI 在 `textual_adapter.py` 中实现了对工具调用的拦截：
-
+CLI 鍦?`textual_adapter.py` 涓疄鐜颁簡瀵瑰伐鍏疯皟鐢ㄧ殑鎷︽埅锛?
 ```python
-# libs/cli/deepagents_cli/textual_adapter.py
+## libs/cli/deepagents_cli/textual_adapter.py
 
 async def execute_task_textual(...):
-    # Hook: 在工具调用前请求用户批准
+    # Hook: 鍦ㄥ伐鍏疯皟鐢ㄥ墠璇锋眰鐢ㄦ埛鎵瑰噯
     if tool_call.requires_approval:
         approved = await self._request_user_approval(tool_call)
         if not approved:
             return self._reject_tool_call(tool_call)
 
-    # Hook: 工具调用后更新 UI
+    # Hook: 宸ュ叿璋冪敤鍚庢洿鏂?UI
     result = await execute_tool(tool_call)
     await self._update_ui_with_tool_result(result)
 ```
 
 ---
 
-## 7. Hook 的实际应用场景
-
-### 场景 1: 动态工具过滤
-
-当后端不支持某些功能时，`FilesystemMiddleware` 在 hook 中移除相关工具：
+## 7. Hook 鐨勫疄闄呭簲鐢ㄥ満鏅?
+### 鍦烘櫙 1: 鍔ㄦ€佸伐鍏疯繃婊?
+褰撳悗绔笉鏀寔鏌愪簺鍔熻兘鏃讹紝`FilesystemMiddleware` 鍦?hook 涓Щ闄ょ浉鍏冲伐鍏凤細
 
 ```python
 if not self._backend_supports_execute():
     tools = [t for t in tools if t.name != "execute"]
 ```
 
-### 场景 2: System Prompt 注入
+### 鍦烘櫙 2: System Prompt 娉ㄥ叆
 
-`SkillsMiddleware` 在每次 LLM 调用前注入 skill 指令：
-
+`SkillsMiddleware` 鍦ㄦ瘡娆?LLM 璋冪敤鍓嶆敞鍏?skill 鎸囦护锛?
 ```python
 skill_instructions = self._build_skill_instructions(skills_metadata)
 modified_request = append_to_system_message(
@@ -272,36 +240,32 @@ modified_request = append_to_system_message(
 )
 ```
 
-### 场景 3: 上下文窗口管理
-
-`SummarizationMiddleware` 在 hook 中管理 token 使用：
-
+### 鍦烘櫙 3: 涓婁笅鏂囩獥鍙ｇ鐞?
+`SummarizationMiddleware` 鍦?hook 涓鐞?token 浣跨敤锛?
 ```python
 if current_tokens > self._truncation_threshold:
     request = self._truncate_old_messages(request)
     request = self._inject_summary_prompt(request)
 ```
 
-### 场景 4: Human-in-the-Loop 审批
+### 鍦烘櫙 4: Human-in-the-Loop 瀹℃壒
 
-CLI 在工具调用前拦截并请求用户批准（通过 `approval.py` widget）：
+CLI 鍦ㄥ伐鍏疯皟鐢ㄥ墠鎷︽埅骞惰姹傜敤鎴锋壒鍑嗭紙閫氳繃 `approval.py` widget锛夛細
 
 ```python
-# libs/cli/deepagents_cli/widgets/approval.py
+## libs/cli/deepagents_cli/widgets/approval.py
 class ApprovalMenu:
     async def request_approval(self, tool_call: ToolCall) -> bool:
-        # 显示审批对话框
-        # 等待用户决策
-        # 返回 Approve/Reject/Edit
+        # 鏄剧ず瀹℃壒瀵硅瘽妗?        # 绛夊緟鐢ㄦ埛鍐崇瓥
+        # 杩斿洖 Approve/Reject/Edit
         pass
 ```
 
 ---
 
-## 8. 创建自定义 Hook
+## 8. 鍒涘缓鑷畾涔?Hook
 
-要创建自定义 hook，需要继承 `AgentMiddleware` 并实现 `wrap_model_call`：
-
+瑕佸垱寤鸿嚜瀹氫箟 hook锛岄渶瑕佺户鎵?`AgentMiddleware` 骞跺疄鐜?`wrap_model_call`锛?
 ```python
 from langchain.agents.middleware import AgentMiddleware
 from langchain.agents.middleware.types import ModelRequest, ModelResponse
@@ -312,17 +276,14 @@ class CustomMiddleware(AgentMiddleware[CustomState, ToolRuntime]):
         request: ModelRequest,
         call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
     ) -> ModelResponse:
-        # 前置处理：修改请求
-        modified_request = self._preprocess(request)
+        # 鍓嶇疆澶勭悊锛氫慨鏀硅姹?        modified_request = self._preprocess(request)
 
-        # 调用下一个 middleware 或模型
-        response = await call_next(modified_request)
+        # 璋冪敤涓嬩竴涓?middleware 鎴栨ā鍨?        response = await call_next(modified_request)
 
-        # 后置处理：修改响应
-        return self._postprocess(response)
+        # 鍚庣疆澶勭悊锛氫慨鏀瑰搷搴?        return self._postprocess(response)
 ```
 
-然后在创建 agent 时注册：
+鐒跺悗鍦ㄥ垱寤?agent 鏃舵敞鍐岋細
 
 ```python
 from deepagents import create_deep_agent
@@ -338,25 +299,21 @@ agent = create_deep_agent(
 
 ---
 
-## 9. 总结
+## 9. 鎬荤粨
 
-Deep Agents 项目中的 hook 机制具有以下特点：
+Deep Agents 椤圭洰涓殑 hook 鏈哄埗鍏锋湁浠ヤ笅鐗圭偣锛?
+1. **鍩轰簬 Middleware 妯″紡**锛氭墍鏈?hook 閮介€氳繃 `AgentMiddleware` 鍩虹被瀹炵幇
+2. **閾惧紡鎵ц**锛氬涓?middleware 鎸夋敞鍐岄『搴忓舰鎴愬鐞嗛摼
+3. **鐘舵€侀殧绂?*锛氭瘡涓?middleware 鏈夎嚜宸辩殑绉佹湁鐘舵€佺┖闂?4. **鍔ㄦ€佷慨鏀硅兘鍔?*锛氬彲浠ュ湪 hook 涓慨鏀硅姹傘€佸搷搴斻€佸伐鍏峰垪琛ㄣ€乻ystem prompt
+5. **缁勫悎鎬?*锛歮iddleware 鍙互缁勫悎浣跨敤锛屽舰鎴愬鏉傜殑澶勭悊閫昏緫
 
-1. **基于 Middleware 模式**：所有 hook 都通过 `AgentMiddleware` 基类实现
-2. **链式执行**：多个 middleware 按注册顺序形成处理链
-3. **状态隔离**：每个 middleware 有自己的私有状态空间
-4. **动态修改能力**：可以在 hook 中修改请求、响应、工具列表、system prompt
-5. **组合性**：middleware 可以组合使用，形成复杂的处理逻辑
-
-这种设计使得 Deep Agents 能够：
-- 灵活扩展新功能而无需修改核心代码
-- 支持多种后端和运行时环境
-- 实现 fine-grained 的访问控制和工具过滤
-- 提供跨 turn 的上下文管理和状态跟踪
-
+杩欑璁捐浣垮緱 Deep Agents 鑳藉锛?- 鐏垫椿鎵╁睍鏂板姛鑳借€屾棤闇€淇敼鏍稿績浠ｇ爜
+- 鏀寔澶氱鍚庣鍜岃繍琛屾椂鐜
+- 瀹炵幇 fine-grained 鐨勮闂帶鍒跺拰宸ュ叿杩囨护
+- 鎻愪緵璺?turn 鐨勪笂涓嬫枃绠＄悊鍜岀姸鎬佽窡韪?
 ---
 
-**参考资料：**
+**鍙傝€冭祫鏂欙細**
 - Deep Agents Repository: https://github.com/langchain-ai/deepagents
 - LangChain Agents Middleware: https://python.langchain.com/docs/modules/agents/middleware
 

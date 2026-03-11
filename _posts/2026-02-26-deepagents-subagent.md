@@ -10,7 +10,7 @@ tags:
   - DeepAgents
 ---
 
-# Deep Agents General-Purpose SubAgent 详解
+## Deep Agents General-Purpose SubAgent 详解
 
 ## 概述
 
@@ -101,10 +101,10 @@ gp_middleware = [
     AnthropicPromptCachingMiddleware(unsupported_model_behavior="ignore"),
     PatchToolCallsMiddleware(),
 ]
-# 如果主代理配置了 skills，子代理也会加载
+## 如果主代理配置了 skills，子代理也会加载
 if skills is not None:
     gp_middleware.append(SkillsMiddleware(backend=backend, sources=skills))
-# 如果主代理配置了 HITL，子代理也会继承
+## 如果主代理配置了 HITL，子代理也会继承
 if interrupt_on is not None:
     gp_middleware.append(HumanInTheLoopMiddleware(interrupt_on=interrupt_on))
 ```
@@ -269,7 +269,7 @@ CLI 会自动扫描用户级 (`~/.deepagents/agents/`) 和项目级 (`.deepagent
 ### 使用示例
 
 ```python
-# 主代理的 LLM 会生成类似这样的 tool call：
+## 主代理的 LLM 会生成类似这样的 tool call：
 task(
     description="""
     研究 Python 3.12 的新特性，重点关注：

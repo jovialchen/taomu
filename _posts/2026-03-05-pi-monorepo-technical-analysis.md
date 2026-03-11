@@ -1,7 +1,7 @@
----
+﻿---
 layout: post
 date: 2026-03-05
-title: "Pi Monorepo 技术架构分析文档"
+title: "Pi Monorepo 鎶€鏈灦鏋勫垎鏋愭枃妗?
 categories: tech_coding
 tags:
   - LLM
@@ -10,89 +10,77 @@ tags:
   - OpenSource
 ---
 
-# Pi Monorepo 技术架构分析文档
-
-> **摘要：** Pi Monorepo 是一个用于构建 AI 代理和管理 LLM 部署的工具集。这是一个 TypeScript 编写的 monorepo 项目，采用 npm workspaces 管理多个包。本文深入分析其架构设计、核心组件和扩展系统。
-
+## Pi Monorepo 鎶€鏈灦鏋勫垎鏋愭枃妗?
+> **鎽樿锛?* Pi Monorepo 鏄竴涓敤浜庢瀯寤?AI 浠ｇ悊鍜岀鐞?LLM 閮ㄧ讲鐨勫伐鍏烽泦銆傝繖鏄竴涓?TypeScript 缂栧啓鐨?monorepo 椤圭洰锛岄噰鐢?npm workspaces 绠＄悊澶氫釜鍖呫€傛湰鏂囨繁鍏ュ垎鏋愬叾鏋舵瀯璁捐銆佹牳蹇冪粍浠跺拰鎵╁睍绯荤粺銆?
 ---
 
-## 1. 项目概述
+## 1. 椤圭洰姒傝堪
 
-**Pi Monorepo** 是一个用于构建 AI 代理和管理 LLM 部署的工具集。这是一个 TypeScript 编写的 monorepo 项目，采用 npm workspaces 管理多个包。
-
-### 1.1 仓库信息
-- **仓库地址**: https://github.com/badlogic/pi-mono
+**Pi Monorepo** 鏄竴涓敤浜庢瀯寤?AI 浠ｇ悊鍜岀鐞?LLM 閮ㄧ讲鐨勫伐鍏烽泦銆傝繖鏄竴涓?TypeScript 缂栧啓鐨?monorepo 椤圭洰锛岄噰鐢?npm workspaces 绠＄悊澶氫釜鍖呫€?
+### 1.1 浠撳簱淇℃伅
+- **浠撳簱鍦板潃**: https://github.com/badlogic/pi-mono
 - **License**: MIT
-- **Node 版本要求**: >=20.0.0
-- **包管理器**: npm (workspaces)
+- **Node 鐗堟湰瑕佹眰**: >=20.0.0
+- **鍖呯鐞嗗櫒**: npm (workspaces)
 
-### 1.2 核心设计理念
-- **最小化核心**: 核心功能保持精简，通过扩展系统添加功能
-- **可扩展性**: 支持 Extensions、Skills、Prompt Templates、Themes
-- **多提供者支持**: 统一的 LLM API，支持 15+ 个提供者
-- **跨平台**: 支持 Windows、Linux、macOS、Termux (Android)
+### 1.2 鏍稿績璁捐鐞嗗康
+- **鏈€灏忓寲鏍稿績**: 鏍稿績鍔熻兘淇濇寔绮剧畝锛岄€氳繃鎵╁睍绯荤粺娣诲姞鍔熻兘
+- **鍙墿灞曟€?*: 鏀寔 Extensions銆丼kills銆丳rompt Templates銆乀hemes
+- **澶氭彁渚涜€呮敮鎸?*: 缁熶竴鐨?LLM API锛屾敮鎸?15+ 涓彁渚涜€?- **璺ㄥ钩鍙?*: 鏀寔 Windows銆丩inux銆乵acOS銆乀ermux (Android)
 
 ---
 
-## 2. Monorepo 结构
+## 2. Monorepo 缁撴瀯
 
 ```
 pi-mono/
-├── packages/
-│   ├── ai/           # @mariozechner/pi-ai - 统一 LLM API
-│   ├── agent/        # @mariozechner/pi-agent-core - Agent 运行时
-│   ├── coding-agent/ # @mariozechner/pi-coding-agent - 交互式编码代理 CLI
-│   ├── mom/          # @mariozechner/pi-mom - Slack 机器人
-│   ├── tui/          # @mariozechner/pi-tui - 终端 UI 库
-│   ├── web-ui/       # @mariozechner/pi-web-ui - Web 聊天 UI 组件
-│   └── pods/         # @mariozechner/pi-pods - vLLM 部署管理 CLI
-├── scripts/          # 构建和发布脚本
-├── .pi/              # 配置目录结构示例
-└── docs/             # 文档
+鈹溾攢鈹€ packages/
+鈹?  鈹溾攢鈹€ ai/           # @mariozechner/pi-ai - 缁熶竴 LLM API
+鈹?  鈹溾攢鈹€ agent/        # @mariozechner/pi-agent-core - Agent 杩愯鏃?鈹?  鈹溾攢鈹€ coding-agent/ # @mariozechner/pi-coding-agent - 浜や簰寮忕紪鐮佷唬鐞?CLI
+鈹?  鈹溾攢鈹€ mom/          # @mariozechner/pi-mom - Slack 鏈哄櫒浜?鈹?  鈹溾攢鈹€ tui/          # @mariozechner/pi-tui - 缁堢 UI 搴?鈹?  鈹溾攢鈹€ web-ui/       # @mariozechner/pi-web-ui - Web 鑱婂ぉ UI 缁勪欢
+鈹?  鈹斺攢鈹€ pods/         # @mariozechner/pi-pods - vLLM 閮ㄧ讲绠＄悊 CLI
+鈹溾攢鈹€ scripts/          # 鏋勫缓鍜屽彂甯冭剼鏈?鈹溾攢鈹€ .pi/              # 閰嶇疆鐩綍缁撴瀯绀轰緥
+鈹斺攢鈹€ docs/             # 鏂囨。
 ```
 
 ---
 
-## 3. 各包详细分析
+## 3. 鍚勫寘璇︾粏鍒嗘瀽
 
 ### 3.1 @mariozechner/pi-ai (packages/ai)
 
-**定位**: 统一的多提供者 LLM API 层
+**瀹氫綅**: 缁熶竴鐨勫鎻愪緵鑰?LLM API 灞?
+**鏍稿績鍔熻兘**:
+- 缁熶竴鐨勬祦寮?API 鎺ュ彛
+- 鑷姩妯″瀷鍙戠幇鍜屾彁渚涜€呴厤缃?- Token 鍜屾垚鏈拷韪?- 涓婁笅鏂囧簭鍒楀寲鍜岃法鎻愪緵鑰呭垏鎹?
+**鏀寔鐨勬彁渚涜€?*:
 
-**核心功能**:
-- 统一的流式 API 接口
-- 自动模型发现和提供者配置
-- Token 和成本追踪
-- 上下文序列化和跨提供者切换
-
-**支持的提供者**:
-
-| 提供者 | API 类型 | 认证方式 |
+| 鎻愪緵鑰?| API 绫诲瀷 | 璁よ瘉鏂瑰紡 |
 |--------|---------|---------|
-| Anthropic | 原生 API | API Key / OAuth |
+| Anthropic | 鍘熺敓 API | API Key / OAuth |
 | OpenAI | Chat Completions / Responses API | API Key / OAuth |
 | Google | Gemini API / Vertex AI | API Key / OAuth |
 | Amazon Bedrock | Converse API | AWS Credentials |
 | Azure OpenAI | Responses API | API Key |
-| Mistral | 原生 API | API Key |
-| Groq | OpenAI 兼容 | API Key |
-| xAI | OpenAI 兼容 | API Key |
-| OpenRouter | OpenAI 兼容 | API Key |
-| Cerebras | OpenAI 兼容 | API Key |
-| Vercel AI Gateway | OpenAI 兼容 | API Key |
-| GitHub Copilot | 原生 API | OAuth |
-| Google Gemini CLI | 原生 API | OAuth |
-| Google Antigravity | 原生 API | OAuth |
-| Hugging Face | OpenAI 兼容 | API Key |
+| Mistral | 鍘熺敓 API | API Key |
+| Groq | OpenAI 鍏煎 | API Key |
+| xAI | OpenAI 鍏煎 | API Key |
+| OpenRouter | OpenAI 鍏煎 | API Key |
+| Cerebras | OpenAI 鍏煎 | API Key |
+| Vercel AI Gateway | OpenAI 鍏煎 | API Key |
+| GitHub Copilot | 鍘熺敓 API | OAuth |
+| Google Gemini CLI | 鍘熺敓 API | OAuth |
+| Google Antigravity | 鍘熺敓 API | OAuth |
+| Hugging Face | OpenAI 鍏煎 | API Key |
 
-**核心技术组件**:
+**鏍稿績鎶€鏈粍浠?*:
 
 ```typescript
-// src/types.ts - 核心类型定义
+// src/types.ts - 鏍稿績绫诲瀷瀹氫箟
 interface Model<O> {
   id: string;
   provider: string;
-  api: Api;  // API 类型标识
+  api: Api;  // API 绫诲瀷鏍囪瘑
   options: O;
 }
 
@@ -107,29 +95,24 @@ interface ToolDefinition {
   parameters: TSchema;  // TypeBox schema
 }
 
-// src/stream.ts - 流式处理
+// src/stream.ts - 娴佸紡澶勭悊
 streamSimple<T extends Api>(model: Model<T>, context: StreamContext<T>): AsyncIterable<AssistantMessageEvent>
 ```
 
-**包依赖**:
-- `@anthropic-ai/sdk` - Anthropic 客户端
-- `openai` - OpenAI 客户端
-- `@google/genai` - Google AI 客户端
-- `@aws-sdk/client-bedrock-runtime` - AWS Bedrock
-- `@sinclair/typebox` - Schema 验证
-- `zod-to-json-schema` - Zod 转 JSON Schema
+**鍖呬緷璧?*:
+- `@anthropic-ai/sdk` - Anthropic 瀹㈡埛绔?- `openai` - OpenAI 瀹㈡埛绔?- `@google/genai` - Google AI 瀹㈡埛绔?- `@aws-sdk/client-bedrock-runtime` - AWS Bedrock
+- `@sinclair/typebox` - Schema 楠岃瘉
+- `zod-to-json-schema` - Zod 杞?JSON Schema
 
 ---
 
 ### 3.2 @mariozechner/pi-agent-core (packages/agent)
 
-**定位**: 状态管理的 Agent 运行时框架
-
-**核心架构**:
+**瀹氫綅**: 鐘舵€佺鐞嗙殑 Agent 杩愯鏃舵鏋?
+**鏍稿績鏋舵瀯**:
 
 ```typescript
-// Agent 状态管理
-interface AgentState {
+// Agent 鐘舵€佺鐞?interface AgentState {
   systemPrompt: string;
   model: Model<any>;
   thinkingLevel: ThinkingLevel;
@@ -141,7 +124,7 @@ interface AgentState {
   error?: string;
 }
 
-// 事件系统
+// 浜嬩欢绯荤粺
 type AgentEvent =
   | { type: "agent_start" }
   | { type: "agent_end"; messages: AgentMessage[] }
@@ -155,19 +138,19 @@ type AgentEvent =
   | { type: "tool_execution_end"; toolCallId: string; result: ToolResult };
 ```
 
-**核心特性**:
+**鏍稿績鐗规€?*:
 
-1. **消息流转**:
+1. **娑堟伅娴佽浆**:
    ```
-   AgentMessage[] → transformContext() → AgentMessage[] → convertToLlm() → Message[] → LLM
+   AgentMessage[] 鈫?transformContext() 鈫?AgentMessage[] 鈫?convertToLlm() 鈫?Message[] 鈫?LLM
    ```
 
-2. **Steering 和 Follow-up**:
-   - `steer()`: 中断当前工具执行，插入 steering 消息
-   - `followUp()`: 在 agent 完成后执行 follow-up 消息
-   - 支持 `"one-at-a-time"` 和 `"all"` 两种模式
+2. **Steering 鍜?Follow-up**:
+   - `steer()`: 涓柇褰撳墠宸ュ叿鎵ц锛屾彃鍏?steering 娑堟伅
+   - `followUp()`: 鍦?agent 瀹屾垚鍚庢墽琛?follow-up 娑堟伅
+   - 鏀寔 `"one-at-a-time"` 鍜?`"all"` 涓ょ妯″紡
 
-3. **工具系统**:
+3. **宸ュ叿绯荤粺**:
    ```typescript
    interface AgentTool<T> {
      name: string;
@@ -183,65 +166,59 @@ type AgentEvent =
    }
    ```
 
-4. **Session 管理**: 通过 `sessionId` 支持提供者级别的上下文缓存
+4. **Session 绠＄悊**: 閫氳繃 `sessionId` 鏀寔鎻愪緵鑰呯骇鍒殑涓婁笅鏂囩紦瀛?
+**鍖呬緷璧?*:
+- `@mariozechner/pi-ai` - LLM API 灞?
+#### 3.2.1 Agent 鐘舵€佹満
 
-**包依赖**:
-- `@mariozechner/pi-ai` - LLM API 层
-
-#### 3.2.1 Agent 状态机
-
-Agent 的核心是一个双层循环状态机：外层循环处理 Follow-up 消息队列，内层循环处理工具调用和 Steering 消息。
-
+Agent 鐨勬牳蹇冩槸涓€涓弻灞傚惊鐜姸鎬佹満锛氬灞傚惊鐜鐞?Follow-up 娑堟伅闃熷垪锛屽唴灞傚惊鐜鐞嗗伐鍏疯皟鐢ㄥ拰 Steering 娑堟伅銆?
 <pre class="mermaid">
 stateDiagram-v2
     [*] --> Idle
 
     state Running {
         state InnerLoop {
-            CheckSteering: 检查 Steering 消息
-            StreamResponse: LLM 流式响应
-            CheckToolCalls: 有工具调用？
-            ExecuteTools: 执行工具
-            CheckSteeringAfter: 检查 Steering 消息 (工具后)
+            CheckSteering: 妫€鏌?Steering 娑堟伅
+            StreamResponse: LLM 娴佸紡鍝嶅簲
+            CheckToolCalls: 鏈夊伐鍏疯皟鐢紵
+            ExecuteTools: 鎵ц宸ュ叿
+            CheckSteeringAfter: 妫€鏌?Steering 娑堟伅 (宸ュ叿鍚?
 
             [*] --> CheckSteering
             CheckSteering --> StreamResponse
             StreamResponse --> CheckToolCalls
-            CheckToolCalls --> ExecuteTools: 有工具调用
-            CheckToolCalls --> CheckSteeringAfter: 无工具调用
-            ExecuteTools --> CheckSteeringAfter
-            CheckSteeringAfter --> CheckSteering: 有 Steering 消息
-            CheckSteeringAfter --> [*]: 无 Steering 消息
+            CheckToolCalls --> ExecuteTools: 鏈夊伐鍏疯皟鐢?            CheckToolCalls --> CheckSteeringAfter: 鏃犲伐鍏疯皟鐢?            ExecuteTools --> CheckSteeringAfter
+            CheckSteeringAfter --> CheckSteering: 鏈?Steering 娑堟伅
+            CheckSteeringAfter --> [*]: 鏃?Steering 娑堟伅
         }
 
-        CheckFollowUp: 检查 Follow-up 消息
+        CheckFollowUp: 妫€鏌?Follow-up 娑堟伅
 
-        InnerLoop --> CheckFollowUp: 内层循环完成
-        CheckFollowUp --> InnerLoop: 有 Follow-up 消息
-        CheckFollowUp --> [*]: 无 Follow-up 消息
+        InnerLoop --> CheckFollowUp: 鍐呭眰寰幆瀹屾垚
+        CheckFollowUp --> InnerLoop: 鏈?Follow-up 娑堟伅
+        CheckFollowUp --> [*]: 鏃?Follow-up 娑堟伅
     }
 
     Idle --> Running: prompt() / continue()
-    Running --> Idle: agent_end 事件
+    Running --> Idle: agent_end 浜嬩欢
     Running --> Error: error / aborted
     Error --> Idle: reset()
 </pre>
 
-#### 3.2.2 状态说明
-
-| 状态 | 触发条件 | 转移 |
+#### 3.2.2 鐘舵€佽鏄?
+| 鐘舵€?| 瑙﹀彂鏉′欢 | 杞Щ |
 |------|---------|------|
-| `Idle` | 初始状态或 `reset()` 后 | → `Running` (调用 `prompt()` 或 `continue()`) |
-| `Running` | `prompt()` / `continue()` 调用 | → `Idle` (`agent_end`) 或 → `Error` (错误/中止) |
-| `CheckSteering` | 每个 turn 开始前 | 检查 steering 队列，注入消息后进入流式响应 |
-| `StreamResponse` | LLM 流式调用 | 发出 `message_start/update/end` 事件 |
-| `ExecuteTools` | assistant 消息包含 toolCall | 发出 `tool_execution_start/update/end` 事件 |
-| `CheckFollowUp` | 内层循环完成后 | 有 follow-up 则继续循环，否则退出 |
-| `Error` | 错误或被中止 | → `Idle` (调用 `reset()`) |
+| `Idle` | 鍒濆鐘舵€佹垨 `reset()` 鍚?| 鈫?`Running` (璋冪敤 `prompt()` 鎴?`continue()`) |
+| `Running` | `prompt()` / `continue()` 璋冪敤 | 鈫?`Idle` (`agent_end`) 鎴?鈫?`Error` (閿欒/涓) |
+| `CheckSteering` | 姣忎釜 turn 寮€濮嬪墠 | 妫€鏌?steering 闃熷垪锛屾敞鍏ユ秷鎭悗杩涘叆娴佸紡鍝嶅簲 |
+| `StreamResponse` | LLM 娴佸紡璋冪敤 | 鍙戝嚭 `message_start/update/end` 浜嬩欢 |
+| `ExecuteTools` | assistant 娑堟伅鍖呭惈 toolCall | 鍙戝嚭 `tool_execution_start/update/end` 浜嬩欢 |
+| `CheckFollowUp` | 鍐呭眰寰幆瀹屾垚鍚?| 鏈?follow-up 鍒欑户缁惊鐜紝鍚﹀垯閫€鍑?|
+| `Error` | 閿欒鎴栬涓 | 鈫?`Idle` (璋冪敤 `reset()`) |
 
-#### 3.2.3 事件序列
+#### 3.2.3 浜嬩欢搴忓垪
 
-**正常对话流程** (`prompt("Hello")`):
+**姝ｅ父瀵硅瘽娴佺▼** (`prompt("Hello")`):
 
 <pre class="mermaid">
 sequenceDiagram
@@ -257,7 +234,7 @@ sequenceDiagram
     Agent->>Listener: message_end (user)
     Agent->>LLM: streamSimple(context)
 
-    loop 流式响应
+    loop 娴佸紡鍝嶅簲
         LLM-->>Agent: text_delta / thinking_delta
         Agent->>Listener: message_update
     end
@@ -269,7 +246,7 @@ sequenceDiagram
     Agent-->>User: Promise resolved
 </pre>
 
-**带工具调用的流程** (`prompt("Read config.json")`):
+**甯﹀伐鍏疯皟鐢ㄧ殑娴佺▼** (`prompt("Read config.json")`):
 
 <pre class="mermaid">
 sequenceDiagram
@@ -299,7 +276,7 @@ sequenceDiagram
     Agent->>Listener: agent_end
 </pre>
 
-**Steering 消息中断流程**:
+**Steering 娑堟伅涓柇娴佺▼**:
 
 <pre class="mermaid">
 sequenceDiagram
@@ -317,7 +294,7 @@ sequenceDiagram
     Agent->>Tool1: execute_A()
     Agent->>Listener: tool_execution_start/end (A)
 
-    Note over Agent: Steering 消息到达!
+    Note over Agent: Steering 娑堟伅鍒拌揪!
     User->>Agent: steer("Stop! Do C instead")
 
     Agent->>Listener: tool_execution_end (B, skipped)
@@ -331,68 +308,62 @@ sequenceDiagram
 
 ### 3.3 @mariozechner/pi-coding-agent (packages/coding-agent)
 
-**定位**: 交互式编码代理 CLI，pi 的主要用户界面
+**瀹氫綅**: 浜や簰寮忕紪鐮佷唬鐞?CLI锛宲i 鐨勪富瑕佺敤鎴风晫闈?
+**杩愯妯″紡**:
 
-**运行模式**:
-
-| 模式 | 说明 |
+| 妯″紡 | 璇存槑 |
 |------|------|
-| Interactive (默认) | 交互式 TUI 界面 |
-| Print (`-p`) | 打印响应后退出 |
-| JSON (`--mode json`) | JSONL 事件流输出 |
-| RPC (`--mode rpc`) | 进程集成模式 |
+| Interactive (榛樿) | 浜や簰寮?TUI 鐣岄潰 |
+| Print (`-p`) | 鎵撳嵃鍝嶅簲鍚庨€€鍑?|
+| JSON (`--mode json`) | JSONL 浜嬩欢娴佽緭鍑?|
+| RPC (`--mode rpc`) | 杩涚▼闆嗘垚妯″紡 |
 
-**核心架构**:
+**鏍稿績鏋舵瀯**:
 
 ```typescript
-// 核心模块结构
+// 鏍稿績妯″潡缁撴瀯
 coding-agent/
-├── src/
-│   ├── cli/           # CLI 参数解析和命令处理
-│   ├── core/
-│   │   ├── agent-session.ts  # Agent 会话管理
-│   │   ├── model-registry.ts # 模型注册和发现
-│   │   ├── session-manager.ts # 会话持久化
-│   │   └── hooks/     # 生命周期钩子
-│   ├── modes/
-│   │   ├── interactive/  # 交互式模式
-│   │   │   ├── theme/    # 主题系统
-│   │   │   ├── editor/   # 编辑器组件
-│   │   │   └── ui/       # UI 渲染
-│   │   ├── print/     # 打印模式
-│   │   └── json/      # JSON 模式
-│   ├── tools/         # 内置工具
-│   │   ├── read.ts    # 读取文件
-│   │   ├── write.ts   # 写入文件
-│   │   ├── edit.ts    # 编辑文件
-│   │   ├── bash.ts    # 执行命令
-│   │   ├── grep.ts    # 搜索内容
-│   │   ├── find.ts    # 查找文件
-│   │   └── ls.ts      # 列出目录
-│   └── extensions/    # 扩展系统
+鈹溾攢鈹€ src/
+鈹?  鈹溾攢鈹€ cli/           # CLI 鍙傛暟瑙ｆ瀽鍜屽懡浠ゅ鐞?鈹?  鈹溾攢鈹€ core/
+鈹?  鈹?  鈹溾攢鈹€ agent-session.ts  # Agent 浼氳瘽绠＄悊
+鈹?  鈹?  鈹溾攢鈹€ model-registry.ts # 妯″瀷娉ㄥ唽鍜屽彂鐜?鈹?  鈹?  鈹溾攢鈹€ session-manager.ts # 浼氳瘽鎸佷箙鍖?鈹?  鈹?  鈹斺攢鈹€ hooks/     # 鐢熷懡鍛ㄦ湡閽╁瓙
+鈹?  鈹溾攢鈹€ modes/
+鈹?  鈹?  鈹溾攢鈹€ interactive/  # 浜や簰寮忔ā寮?鈹?  鈹?  鈹?  鈹溾攢鈹€ theme/    # 涓婚绯荤粺
+鈹?  鈹?  鈹?  鈹溾攢鈹€ editor/   # 缂栬緫鍣ㄧ粍浠?鈹?  鈹?  鈹?  鈹斺攢鈹€ ui/       # UI 娓叉煋
+鈹?  鈹?  鈹溾攢鈹€ print/     # 鎵撳嵃妯″紡
+鈹?  鈹?  鈹斺攢鈹€ json/      # JSON 妯″紡
+鈹?  鈹溾攢鈹€ tools/         # 鍐呯疆宸ュ叿
+鈹?  鈹?  鈹溾攢鈹€ read.ts    # 璇诲彇鏂囦欢
+鈹?  鈹?  鈹溾攢鈹€ write.ts   # 鍐欏叆鏂囦欢
+鈹?  鈹?  鈹溾攢鈹€ edit.ts    # 缂栬緫鏂囦欢
+鈹?  鈹?  鈹溾攢鈹€ bash.ts    # 鎵ц鍛戒护
+鈹?  鈹?  鈹溾攢鈹€ grep.ts    # 鎼滅储鍐呭
+鈹?  鈹?  鈹溾攢鈹€ find.ts    # 鏌ユ壘鏂囦欢
+鈹?  鈹?  鈹斺攢鈹€ ls.ts      # 鍒楀嚭鐩綍
+鈹?  鈹斺攢鈹€ extensions/    # 鎵╁睍绯荤粺
 ```
 
-**扩展系统**:
+**鎵╁睍绯荤粺**:
 
 ```typescript
 // ExtensionAPI
 interface ExtensionAPI {
-  // 工具注册
+  // 宸ュ叿娉ㄥ唽
   registerTool(tool: AgentTool<any>): void;
 
-  // 命令注册
+  // 鍛戒护娉ㄥ唽
   registerCommand(name: string, handler: CommandHandler): void;
 
-  // 事件监听
+  // 浜嬩欢鐩戝惉
   on(event: "tool_call" | "message" | "turn_end", handler: EventHandler): void;
 
-  // UI 组件
+  // UI 缁勪欢
   ui: {
     showOverlay(component: Component, options?: OverlayOptions): OverlayHandle;
     hideOverlay(): void;
   };
 
-  // 配置
+  // 閰嶇疆
   settings: {
     get<T>(key: string): Promise<T>;
     set<T>(key: string, value: T): Promise<void>;
@@ -400,192 +371,177 @@ interface ExtensionAPI {
 }
 ```
 
-**会话管理**:
-- 会话以 JSONL 格式存储在 `~/.pi/agent/sessions/`
-- 树形结构支持分支和跳转 (`/tree`, `/fork`)
-- 自动压缩防止上下文溢出
-
-**包依赖**:
+**浼氳瘽绠＄悊**:
+- 浼氳瘽浠?JSONL 鏍煎紡瀛樺偍鍦?`~/.pi/agent/sessions/`
+- 鏍戝舰缁撴瀯鏀寔鍒嗘敮鍜岃烦杞?(`/tree`, `/fork`)
+- 鑷姩鍘嬬缉闃叉涓婁笅鏂囨孩鍑?
+**鍖呬緷璧?*:
 - `@mariozechner/pi-ai`
 - `@mariozechner/pi-agent-core`
 - `@mariozechner/pi-tui`
-- `@silvia-odwyer/photon-node` - 图像处理
-- `marked` - Markdown 渲染
-- `diff` - 代码差异显示
-- `cli-highlight` - 语法高亮
+- `@silvia-odwyer/photon-node` - 鍥惧儚澶勭悊
+- `marked` - Markdown 娓叉煋
+- `diff` - 浠ｇ爜宸紓鏄剧ず
+- `cli-highlight` - 璇硶楂樹寒
 
 ---
 
 ### 3.4 @mariozechner/pi-tui (packages/tui)
 
-**定位**: 轻量级终端 UI 框架
+**瀹氫綅**: 杞婚噺绾х粓绔?UI 妗嗘灦
 
-**核心技术**:
+**鏍稿績鎶€鏈?*:
 
-1. **差分渲染策略**:
-   - **首次渲染**: 输出所有行
-   - **宽度变化**: 清屏并完整重绘
-   - **常规更新**: 仅渲染变化的行
-
-2. **同步输出**: 使用 CSI 2026 实现原子屏幕更新（无闪烁）
-
-3. **组件架构**:
+1. **宸垎娓叉煋绛栫暐**:
+   - **棣栨娓叉煋**: 杈撳嚭鎵€鏈夎
+   - **瀹藉害鍙樺寲**: 娓呭睆骞跺畬鏁撮噸缁?   - **甯歌鏇存柊**: 浠呮覆鏌撳彉鍖栫殑琛?
+2. **鍚屾杈撳嚭**: 浣跨敤 CSI 2026 瀹炵幇鍘熷瓙灞忓箷鏇存柊锛堟棤闂儊锛?
+3. **缁勪欢鏋舵瀯**:
 
 ```typescript
 interface Component {
-  render(width: number): string[];  // 渲染为字符串数组
-  handleInput?(data: string): void; // 处理键盘输入
-  invalidate?(): void;              // 清除缓存
+  render(width: number): string[];  // 娓叉煋涓哄瓧绗︿覆鏁扮粍
+  handleInput?(data: string): void; // 澶勭悊閿洏杈撳叆
+  invalidate?(): void;              // 娓呴櫎缂撳瓨
 }
 
 interface Focusable extends Component {
-  focused: boolean;  // IME 光标定位支持
+  focused: boolean;  // IME 鍏夋爣瀹氫綅鏀寔
 }
 ```
 
-**内置组件**:
+**鍐呯疆缁勪欢**:
 
-| 组件 | 用途 |
+| 缁勪欢 | 鐢ㄩ€?|
 |------|------|
-| `Container` | 组件容器 |
-| `Box` | 带背景和边距的容器 |
-| `Text` | 多行文本（自动换行） |
-| `TruncatedText` | 单行截断文本 |
-| `Input` | 单行输入 |
-| `Editor` | 多行编辑器（支持自动完成） |
-| `Markdown` | Markdown 渲染（带语法高亮） |
-| `SelectList` | 可选择列表 |
-| `SettingsList` | 设置面板 |
-| `Loader` / `CancellableLoader` | 加载动画 |
-| `Image` | 内联图像（Kitty/iTerm2 协议） |
-| `Spacer` | 空白间隔 |
+| `Container` | 缁勪欢瀹瑰櫒 |
+| `Box` | 甯﹁儗鏅拰杈硅窛鐨勫鍣?|
+| `Text` | 澶氳鏂囨湰锛堣嚜鍔ㄦ崲琛岋級 |
+| `TruncatedText` | 鍗曡鎴柇鏂囨湰 |
+| `Input` | 鍗曡杈撳叆 |
+| `Editor` | 澶氳缂栬緫鍣紙鏀寔鑷姩瀹屾垚锛?|
+| `Markdown` | Markdown 娓叉煋锛堝甫璇硶楂樹寒锛?|
+| `SelectList` | 鍙€夋嫨鍒楄〃 |
+| `SettingsList` | 璁剧疆闈㈡澘 |
+| `Loader` / `CancellableLoader` | 鍔犺浇鍔ㄧ敾 |
+| `Image` | 鍐呰仈鍥惧儚锛圞itty/iTerm2 鍗忚锛?|
+| `Spacer` | 绌虹櫧闂撮殧 |
 
-**关键技术特性**:
+**鍏抽敭鎶€鏈壒鎬?*:
 
 ```typescript
-// 覆盖层系统
-tui.showOverlay(component, {
+// 瑕嗙洊灞傜郴缁?tui.showOverlay(component, {
   anchor: 'center' | 'top-left' | 'bottom-right' | ...,
   width: 60 | "80%",
   maxWidth: 80,
   margin: { top: 1, right: 2, bottom: 1, left: 2 },
-  row: "25%",  // 百分比定位
-  col: 10,     // 绝对定位
+  row: "25%",  // 鐧惧垎姣斿畾浣?  col: 10,     // 缁濆瀹氫綅
 });
 
-// 焦点和 IME 支持
+// 鐒︾偣鍜?IME 鏀寔
 import { CURSOR_MARKER } from "@mariozechner/pi-tui";
-// 在渲染输出中插入 CURSOR_MARKER 以定位硬件光标
-
-// 键盘处理
+// 鍦ㄦ覆鏌撹緭鍑轰腑鎻掑叆 CURSOR_MARKER 浠ュ畾浣嶇‖浠跺厜鏍?
+// 閿洏澶勭悊
 import { matchesKey, Key } from "@mariozechner/pi-tui";
 if (matchesKey(data, Key.ctrl("c"))) { ... }
 if (matchesKey(data, Key.shift("tab"))) { ... }
 ```
 
-**包依赖**:
-- `chalk` - ANSI 样式
-- `marked` - Markdown 解析
-- `get-east-asian-width` - 东亚字符宽度处理
-- `@xterm/headless` - 测试支持
+**鍖呬緷璧?*:
+- `chalk` - ANSI 鏍峰紡
+- `marked` - Markdown 瑙ｆ瀽
+- `get-east-asian-width` - 涓滀簹瀛楃瀹藉害澶勭悊
+- `@xterm/headless` - 娴嬭瘯鏀寔
 
 ---
 
 ### 3.5 @mariozechner/pi-mom (packages/mom)
 
-**定位**: Slack 机器人，可自主管理工具和凭证
+**瀹氫綅**: Slack 鏈哄櫒浜猴紝鍙嚜涓荤鐞嗗伐鍏峰拰鍑瘉
 
-**核心特性**:
+**鏍稿績鐗规€?*:
 
-1. **自管理环境**:
-   - 自动安装工具（apk、npm 等）
-   - 自行配置凭证
-   - 自主创建工作流工具（Skills）
-
-2. **Docker 沙盒**:
+1. **鑷鐞嗙幆澧?*:
+   - 鑷姩瀹夎宸ュ叿锛坅pk銆乶pm 绛夛級
+   - 鑷閰嶇疆鍑瘉
+   - 鑷富鍒涘缓宸ヤ綔娴佸伐鍏凤紙Skills锛?
+2. **Docker 娌欑洅**:
    ```bash
-   # 创建沙盒
+   # 鍒涘缓娌欑洅
    docker run -d --name mom-sandbox \
      -v $(pwd)/data:/workspace \
      alpine:latest tail -f /dev/null
 
-   # 运行 mom
+   # 杩愯 mom
    mom --sandbox=docker:mom-sandbox ./data
    ```
 
-3. **数据存储结构**:
+3. **鏁版嵁瀛樺偍缁撴瀯**:
    ```
    data/
-   ├── MEMORY.md              # 全局记忆
-   ├── settings.json          # 全局设置
-   ├── skills/                # 全局技能
-   ├── events/                # 事件调度
-   └── <channel-id>/          # 每个 Slack 频道
-       ├── MEMORY.md          # 频道记忆
-       ├── log.jsonl          # 完整消息历史
-       ├── context.jsonl      # LLM 上下文
-       ├── attachments/       # 附件
-       ├── scratch/           # 工作目录
-       └── skills/            # 频道技能
-   ```
+   鈹溾攢鈹€ MEMORY.md              # 鍏ㄥ眬璁板繂
+   鈹溾攢鈹€ settings.json          # 鍏ㄥ眬璁剧疆
+   鈹溾攢鈹€ skills/                # 鍏ㄥ眬鎶€鑳?   鈹溾攢鈹€ events/                # 浜嬩欢璋冨害
+   鈹斺攢鈹€ <channel-id>/          # 姣忎釜 Slack 棰戦亾
+       鈹溾攢鈹€ MEMORY.md          # 棰戦亾璁板繂
+       鈹溾攢鈹€ log.jsonl          # 瀹屾暣娑堟伅鍘嗗彶
+       鈹溾攢鈹€ context.jsonl      # LLM 涓婁笅鏂?       鈹溾攢鈹€ attachments/       # 闄勪欢
+       鈹溾攢鈹€ scratch/           # 宸ヤ綔鐩綍
+       鈹斺攢鈹€ skills/            # 棰戦亾鎶€鑳?   ```
 
-4. **事件调度系统**:
+4. **浜嬩欢璋冨害绯荤粺**:
    ```typescript
-   // 事件类型
+   // 浜嬩欢绫诲瀷
    type Event =
-     | { type: "immediate"; channelId: string; text: string }  // 立即触发
-     | { type: "one-shot"; channelId: string; text: string; at: string }  // 一次性
-     | { type: "periodic"; channelId: string; text: string; schedule: string };  // 周期性
-   ```
+     | { type: "immediate"; channelId: string; text: string }  // 绔嬪嵆瑙﹀彂
+     | { type: "one-shot"; channelId: string; text: string; at: string }  // 涓€娆℃€?     | { type: "periodic"; channelId: string; text: string; schedule: string };  // 鍛ㄦ湡鎬?   ```
 
-5. **工具集**:
-   - `bash` - 执行 Shell 命令
-   - `read` - 读取文件
-   - `write` - 创建/覆盖文件
-   - `edit` - 精确编辑文件
-   - `attach` - 发送文件到 Slack
+5. **宸ュ叿闆?*:
+   - `bash` - 鎵ц Shell 鍛戒护
+   - `read` - 璇诲彇鏂囦欢
+   - `write` - 鍒涘缓/瑕嗙洊鏂囦欢
+   - `edit` - 绮剧‘缂栬緫鏂囦欢
+   - `attach` - 鍙戦€佹枃浠跺埌 Slack
 
-**包依赖**:
+**鍖呬緷璧?*:
 - `@mariozechner/pi-agent-core`
 - `@mariozechner/pi-ai`
 - `@mariozechner/pi-coding-agent`
 - `@slack/socket-mode`
 - `@slack/web-api`
-- `croner` - Cron 调度
-- `@anthropic-ai/sandbox-runtime` - 沙盒运行时
-
+- `croner` - Cron 璋冨害
+- `@anthropic-ai/sandbox-runtime` - 娌欑洅杩愯鏃?
 ---
 
 ### 3.6 @mariozechner/pi-web-ui (packages/web-ui)
 
-**定位**: Web 聊天 UI 组件库
-
-**技术栈**:
+**瀹氫綅**: Web 鑱婂ぉ UI 缁勪欢搴?
+**鎶€鏈爤**:
 - mini-lit Web Components
 - Tailwind CSS v4
 
-**核心组件**:
+**鏍稿績缁勪欢**:
 
 ```typescript
-// ChatPanel - 高级聊天界面
+// ChatPanel - 楂樼骇鑱婂ぉ鐣岄潰
 const chatPanel = new ChatPanel();
 await chatPanel.setAgent(agent, {
   onApiKeyRequired: (provider) => ApiKeyPromptDialog.prompt(provider),
-  onBeforeSend: async () => { /* 保存草稿等 */ },
+  onBeforeSend: async () => { /* 淇濆瓨鑽夌绛?*/ },
   toolsFactory: (agent, artifactsPanel) => [createJavaScriptReplTool()],
 });
 
-// AgentInterface - 底层聊天界面
+// AgentInterface - 搴曞眰鑱婂ぉ鐣岄潰
 const chat = document.createElement('agent-interface') as AgentInterface;
 chat.session = agent;
 chat.enableAttachments = true;
 chat.enableModelSelector = true;
 ```
 
-**消息类型扩展**:
+**娑堟伅绫诲瀷鎵╁睍**:
 
 ```typescript
-// 通过声明合并扩展消息类型
+// 閫氳繃澹版槑鍚堝苟鎵╁睍娑堟伅绫诲瀷
 interface UserMessageWithAttachments {
   role: 'user-with-attachments';
   content: string;
@@ -609,10 +565,10 @@ declare module '@mariozechner/pi-agent-core' {
 }
 ```
 
-**存储系统**:
+**瀛樺偍绯荤粺**:
 
 ```typescript
-// IndexedDB 存储后端
+// IndexedDB 瀛樺偍鍚庣
 const backend = new IndexedDBStorageBackend({
   dbName: 'my-app',
   stores: [
@@ -622,133 +578,125 @@ const backend = new IndexedDBStorageBackend({
   ],
 });
 
-// 存储 API
+// 瀛樺偍 API
 await storage.settings.set('proxy.enabled', true);
 await storage.providerKeys.set('anthropic', 'sk-ant-...');
 await storage.sessions.save(sessionData, metadata);
 ```
 
-**附件处理**:
-- 支持格式：PDF、DOCX、XLSX、PPTX、图片
-- 自动文本提取
-- 预览图像生成
+**闄勪欢澶勭悊**:
+- 鏀寔鏍煎紡锛歅DF銆丏OCX銆乆LSX銆丳PTX銆佸浘鐗?- 鑷姩鏂囨湰鎻愬彇
+- 棰勮鍥惧儚鐢熸垚
 
-**包依赖**:
+**鍖呬緷璧?*:
 - `@mariozechner/pi-ai`
 - `@mariozechner/pi-tui`
 - `@mariozechner/mini-lit`
-- `pdfjs-dist` - PDF 解析
-- `xlsx` - Excel 处理
-- `docx-preview` - Word 预览
-- `lucide` - 图标库
-
+- `pdfjs-dist` - PDF 瑙ｆ瀽
+- `xlsx` - Excel 澶勭悊
+- `docx-preview` - Word 棰勮
+- `lucide` - 鍥炬爣搴?
 ---
 
 ### 3.7 @mariozechner/pi-pods (packages/pods)
 
-**定位**: GPU Pod 上的 vLLM 部署管理工具
+**瀹氫綅**: GPU Pod 涓婄殑 vLLM 閮ㄧ讲绠＄悊宸ュ叿
 
-**核心功能**:
+**鏍稿績鍔熻兘**:
 
-1. **Pod 管理**:
+1. **Pod 绠＄悊**:
    ```bash
-   # 设置 Pod
+   # 璁剧疆 Pod
    pi pods setup dc1 "ssh root@1.2.3.4" \
      --mount "sudo mount -t nfs ... /mnt/hf-models"
 
-   # 列出 Pod
+   # 鍒楀嚭 Pod
    pi pods
 
-   # SSH 连接
+   # SSH 杩炴帴
    pi shell dc1
    ```
 
-2. **模型管理**:
+2. **妯″瀷绠＄悊**:
    ```bash
-   # 启动模型
+   # 鍚姩妯″瀷
    pi start Qwen/Qwen2.5-Coder-32B-Instruct --name qwen
 
-   # 配置选项
-   --memory <percent>    # GPU 内存分配
-   --context <size>      # 上下文窗口
-   --gpus <count>        # GPU 数量
-   --vllm <args...>      # 直接传递 vLLM 参数
+   # 閰嶇疆閫夐」
+   --memory <percent>    # GPU 鍐呭瓨鍒嗛厤
+   --context <size>      # 涓婁笅鏂囩獥鍙?   --gpus <count>        # GPU 鏁伴噺
+   --vllm <args...>      # 鐩存帴浼犻€?vLLM 鍙傛暟
    ```
 
-3. **预定义模型配置**:
-   - Qwen 系列 (2.5-Coder-32B, Qwen3-Coder-30B/480B)
-   - GPT-OSS 系列 (20B, 120B)
-   - GLM 系列 (GLM-4.5, GLM-4.5-Air)
+3. **棰勫畾涔夋ā鍨嬮厤缃?*:
+   - Qwen 绯诲垪 (2.5-Coder-32B, Qwen3-Coder-30B/480B)
+   - GPT-OSS 绯诲垪 (20B, 120B)
+   - GLM 绯诲垪 (GLM-4.5, GLM-4.5-Air)
 
-4. **Agent 集成**:
+4. **Agent 闆嗘垚**:
    ```bash
-   # 单次对话
+   # 鍗曟瀵硅瘽
    pi agent qwen "What is the Fibonacci sequence?"
 
-   # 交互模式
+   # 浜や簰妯″紡
    pi agent qwen -i
 
-   # 继续上次会话
+   # 缁х画涓婃浼氳瘽
    pi agent qwen -i -c
    ```
 
-**支持的 Pod 提供者**:
-- **DataCrunch**: 支持 NFS 共享存储（推荐）
-- **RunPod**: 网络卷持久化
-- **Vast.ai**、**Prime Intellect**、**AWS EC2**
+**鏀寔鐨?Pod 鎻愪緵鑰?*:
+- **DataCrunch**: 鏀寔 NFS 鍏变韩瀛樺偍锛堟帹鑽愶級
+- **RunPod**: 缃戠粶鍗锋寔涔呭寲
+- **Vast.ai**銆?*Prime Intellect**銆?*AWS EC2**
 
-**包依赖**:
+**鍖呬緷璧?*:
 - `@mariozechner/pi-agent-core`
-- `chalk` - 终端样式
+- `chalk` - 缁堢鏍峰紡
 
 ---
 
-## 4. 构建和开发工具
-
-### 4.1 构建系统
+## 4. 鏋勫缓鍜屽紑鍙戝伐鍏?
+### 4.1 鏋勫缓绯荤粺
 
 ```json
 {
   "scripts": {
     "clean": "cd packages/* && npm run clean",
     "build": "cd packages/tui && npm run build && cd ../ai && npm run build && ...",
-    "dev": "concurrently ...",  // 并行监控所有包
+    "dev": "concurrently ...",  // 骞惰鐩戞帶鎵€鏈夊寘
     "check": "biome check --write --error-on-warnings . && tsgo --noEmit",
     "test": "npm run test --workspaces"
   }
 }
 ```
 
-**构建工具**:
-- `tsgo` (TypeScript Go) - 主要编译器
-- `concurrently` - 并行任务
-- `biome` - 代码格式化和 linting
-- `shx` - 跨平台 shell 命令
+**鏋勫缓宸ュ叿**:
+- `tsgo` (TypeScript Go) - 涓昏缂栬瘧鍣?- `concurrently` - 骞惰浠诲姟
+- `biome` - 浠ｇ爜鏍煎紡鍖栧拰 linting
+- `shx` - 璺ㄥ钩鍙?shell 鍛戒护
 
-### 4.2 发布流程
+### 4.2 鍙戝竷娴佺▼
 
 ```bash
-# 版本管理（锁定步调，所有包版本一致）
-npm run release:patch    # Bug 修复和新功能
-npm run release:minor    # API 破坏性变更
-
-# 发布脚本自动化处理:
-# 1. 版本号提升
-# 2. CHANGELOG 定稿
-# 3. Git 提交和标签
-# 4. npm 发布
-# 5. 添加新的 [Unreleased] 章节
+## 鐗堟湰绠＄悊锛堥攣瀹氭璋冿紝鎵€鏈夊寘鐗堟湰涓€鑷达級
+npm run release:patch    # Bug 淇鍜屾柊鍔熻兘
+npm run release:minor    # API 鐮村潖鎬у彉鏇?
+## 鍙戝竷鑴氭湰鑷姩鍖栧鐞?
+## 1. 鐗堟湰鍙锋彁鍗?# 2. CHANGELOG 瀹氱
+## 3. Git 鎻愪氦鍜屾爣绛?# 4. npm 鍙戝竷
+## 5. 娣诲姞鏂扮殑 [Unreleased] 绔犺妭
 ```
 
-### 4.3 代码质量
+### 4.3 浠ｇ爜璐ㄩ噺
 
 ```json
 {
   "devDependencies": {
-    "@biomejs/biome": "2.3.5",       // Linting 和格式化
-    "@typescript/native-preview": "...",  // TypeScript 预览
+    "@biomejs/biome": "2.3.5",       // Linting 鍜屾牸寮忓寲
+    "@typescript/native-preview": "...",  // TypeScript 棰勮
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4",              // 测试框架
+    "vitest": "^3.2.4",              // 娴嬭瘯妗嗘灦
     "husky": "^9.1.7"                // Git hooks
   }
 }
@@ -756,16 +704,16 @@ npm run release:minor    # API 破坏性变更
 
 ---
 
-## 5. 扩展系统详解
+## 5. 鎵╁睍绯荤粺璇﹁В
 
-### 5.1 扩展类型
+### 5.1 鎵╁睍绫诲瀷
 
-| 类型 | 位置 | 用途 |
+| 绫诲瀷 | 浣嶇疆 | 鐢ㄩ€?|
 |------|------|------|
-| Extensions | `~/.pi/agent/extensions/`, `.pi/extensions/` | TypeScript 模块，完整功能扩展 |
-| Skills | `~/.pi/agent/skills/`, `.pi/skills/` | Markdown 格式的工具说明 |
-| Prompt Templates | `~/.pi/agent/prompts/`, `.pi/prompts/` | 可复用的提示模板 |
-| Themes | `~/.pi/agent/themes/`, `.pi/themes/` | TUI 主题 |
+| Extensions | `~/.pi/agent/extensions/`, `.pi/extensions/` | TypeScript 妯″潡锛屽畬鏁村姛鑳芥墿灞?|
+| Skills | `~/.pi/agent/skills/`, `.pi/skills/` | Markdown 鏍煎紡鐨勫伐鍏疯鏄?|
+| Prompt Templates | `~/.pi/agent/prompts/`, `.pi/prompts/` | 鍙鐢ㄧ殑鎻愮ず妯℃澘 |
+| Themes | `~/.pi/agent/themes/`, `.pi/themes/` | TUI 涓婚 |
 
 ### 5.2 Pi Packages
 
@@ -782,7 +730,7 @@ npm run release:minor    # API 破坏性变更
 }
 ```
 
-**安装方式**:
+**瀹夎鏂瑰紡**:
 ```bash
 pi install npm:@foo/pi-tools
 pi install git:github.com/user/repo
@@ -791,58 +739,49 @@ pi install https://github.com/user/repo@v1
 
 ---
 
-## 6. 安全考虑
+## 6. 瀹夊叏鑰冭檻
 
-### 6.1 Mom 安全风险
+### 6.1 Mom 瀹夊叏椋庨櫓
 
-1. **提示注入攻击**:
-   - 直接注入：恶意用户直接请求敏感信息
-   - 间接注入：通过恶意内容隐藏指令
+1. **鎻愮ず娉ㄥ叆鏀诲嚮**:
+   - 鐩存帴娉ㄥ叆锛氭伓鎰忕敤鎴风洿鎺ヨ姹傛晱鎰熶俊鎭?   - 闂存帴娉ㄥ叆锛氶€氳繃鎭舵剰鍐呭闅愯棌鎸囦护
 
-2. **缓解措施**:
-   - 使用 Docker 沙盒隔离
-   - 最小权限原则配置凭证
-   - 多实例隔离不同安全级别的团队
+2. **缂撹В鎺柦**:
+   - 浣跨敤 Docker 娌欑洅闅旂
+   - 鏈€灏忔潈闄愬師鍒欓厤缃嚟璇?   - 澶氬疄渚嬮殧绂讳笉鍚屽畨鍏ㄧ骇鍒殑鍥㈤槦
 
-### 6.2 扩展安全
+### 6.2 鎵╁睍瀹夊叏
 
-> **警告**: Pi 包以完全权限运行，扩展执行任意代码，Skills 可指示模型执行任何操作。安装前必须审查源代码。
-
+> **璀﹀憡**: Pi 鍖呬互瀹屽叏鏉冮檺杩愯锛屾墿灞曟墽琛屼换鎰忎唬鐮侊紝Skills 鍙寚绀烘ā鍨嬫墽琛屼换浣曟搷浣溿€傚畨瑁呭墠蹇呴』瀹℃煡婧愪唬鐮併€?
 ---
 
-## 7. 设计哲学
+## 7. 璁捐鍝插
 
-### 7.1 核心原则
+### 7.1 鏍稿績鍘熷垯
 
-1. **最小化核心**: 核心不包括 MCP、子代理、权限弹窗、计划模式等功能
-2. **用户自定义**: 通过扩展系统，用户可以按需添加功能
-3. **不预设工作流**: 不同团队有不同的需求，核心不强制任何工作流
+1. **鏈€灏忓寲鏍稿績**: 鏍稿績涓嶅寘鎷?MCP銆佸瓙浠ｇ悊銆佹潈闄愬脊绐椼€佽鍒掓ā寮忕瓑鍔熻兘
+2. **鐢ㄦ埛鑷畾涔?*: 閫氳繃鎵╁睍绯荤粺锛岀敤鎴峰彲浠ユ寜闇€娣诲姞鍔熻兘
+3. **涓嶉璁惧伐浣滄祦**: 涓嶅悓鍥㈤槦鏈変笉鍚岀殑闇€姹傦紝鏍稿績涓嶅己鍒朵换浣曞伐浣滄祦
 
-### 7.2 不内置的功能及原因
-
-| 功能 | 原因 | 替代方案 |
+### 7.2 涓嶅唴缃殑鍔熻兘鍙婂師鍥?
+| 鍔熻兘 | 鍘熷洜 | 鏇夸唬鏂规 |
 |------|------|---------|
-| MCP | 增加复杂性 | 构建 CLI 工具或扩展 |
-| 子代理 | 实现方式多样 | tmux 或自定义扩展 |
-| 权限弹窗 | 安全需求各异 | 容器隔离或自定义扩展 |
-| 计划模式 | 工作流差异大 | 文件记录或扩展 |
-| TODO 列表 | 混淆模型 | TODO.md 文件或扩展 |
-| 后台 bash | 可观测性差 | tmux |
+| MCP | 澧炲姞澶嶆潅鎬?| 鏋勫缓 CLI 宸ュ叿鎴栨墿灞?|
+| 瀛愪唬鐞?| 瀹炵幇鏂瑰紡澶氭牱 | tmux 鎴栬嚜瀹氫箟鎵╁睍 |
+| 鏉冮檺寮圭獥 | 瀹夊叏闇€姹傚悇寮?| 瀹瑰櫒闅旂鎴栬嚜瀹氫箟鎵╁睍 |
+| 璁″垝妯″紡 | 宸ヤ綔娴佸樊寮傚ぇ | 鏂囦欢璁板綍鎴栨墿灞?|
+| TODO 鍒楄〃 | 娣锋穯妯″瀷 | TODO.md 鏂囦欢鎴栨墿灞?|
+| 鍚庡彴 bash | 鍙娴嬫€у樊 | tmux |
 
 ---
 
-## 8. 技术亮点
-
-### 8.1 差分渲染
-TUI 使用三策略渲染系统：
-1. 首次渲染：完整输出
-2. 宽度变化：清屏重绘
-3. 常规更新：仅变化行
-
-结合 CSI 2026 同步输出，实现无闪烁渲染。
-
-### 8.2 事件驱动架构
-所有包使用统一的事件系统：
+## 8. 鎶€鏈寒鐐?
+### 8.1 宸垎娓叉煋
+TUI 浣跨敤涓夌瓥鐣ユ覆鏌撶郴缁燂細
+1. 棣栨娓叉煋锛氬畬鏁磋緭鍑?2. 瀹藉害鍙樺寲锛氭竻灞忛噸缁?3. 甯歌鏇存柊锛氫粎鍙樺寲琛?
+缁撳悎 CSI 2026 鍚屾杈撳嚭锛屽疄鐜版棤闂儊娓叉煋銆?
+### 8.2 浜嬩欢椹卞姩鏋舵瀯
+鎵€鏈夊寘浣跨敤缁熶竴鐨勪簨浠剁郴缁燂細
 ```typescript
 type AgentEvent =
   | { type: "agent_start" }
@@ -851,42 +790,30 @@ type AgentEvent =
   | ...
 ```
 
-### 8.3 跨提供者切换
-支持在会话中无缝切换 LLM 提供者，保持上下文连续性。
-
-### 8.4 树形会话存储
-JSONL 格式 + 父子 ID 结构，支持：
-- 原地分支
-- 任意点跳转
-- 历史保留
+### 8.3 璺ㄦ彁渚涜€呭垏鎹?鏀寔鍦ㄤ細璇濅腑鏃犵紳鍒囨崲 LLM 鎻愪緵鑰咃紝淇濇寔涓婁笅鏂囪繛缁€с€?
+### 8.4 鏍戝舰浼氳瘽瀛樺偍
+JSONL 鏍煎紡 + 鐖跺瓙 ID 缁撴瀯锛屾敮鎸侊細
+- 鍘熷湴鍒嗘敮
+- 浠绘剰鐐硅烦杞?- 鍘嗗彶淇濈暀
 
 ---
 
-## 9. 总结
+## 9. 鎬荤粨
 
-Pi Monorepo 是一个设计精良的 AI 代理工具集，具有以下特点：
-
-1. **模块化设计**: 7 个独立包，职责清晰分离
-2. **统一 API**: 统一的 LLM 和 Agent 接口
-3. **高度可扩展**: Extensions、Skills、Themes、Packages
-4. **跨平台支持**: 终端、Web、Slack 多界面
-5. **开发者友好**: TypeScript、完整类型定义、详细文档
-6. **安全意识**: Docker 沙盒、权限隔离
-
-**核心代码量估计**:
-- **pi-ai**: ~5000 行（提供者实现为主）
-- **pi-agent-core**: ~1500 行（Agent 状态和事件管理）
-- **pi-coding-agent**: ~10000+ 行（CLI、TUI、工具、扩展系统）
-- **pi-tui**: ~5000 行（组件库和渲染引擎）
-- **pi-mom**: ~3000 行（Slack 集成和沙盒）
-- **pi-web-ui**: ~5000 行（Web 组件）
-- **pi-pods**: ~1500 行（Pod 和 vLLM 管理）
-
-**总计约 30000+ 行 TypeScript 代码。**
+Pi Monorepo 鏄竴涓璁＄簿鑹殑 AI 浠ｇ悊宸ュ叿闆嗭紝鍏锋湁浠ヤ笅鐗圭偣锛?
+1. **妯″潡鍖栬璁?*: 7 涓嫭绔嬪寘锛岃亴璐ｆ竻鏅板垎绂?2. **缁熶竴 API**: 缁熶竴鐨?LLM 鍜?Agent 鎺ュ彛
+3. **楂樺害鍙墿灞?*: Extensions銆丼kills銆乀hemes銆丳ackages
+4. **璺ㄥ钩鍙版敮鎸?*: 缁堢銆乄eb銆丼lack 澶氱晫闈?5. **寮€鍙戣€呭弸濂?*: TypeScript銆佸畬鏁寸被鍨嬪畾涔夈€佽缁嗘枃妗?6. **瀹夊叏鎰忚瘑**: Docker 娌欑洅銆佹潈闄愰殧绂?
+**鏍稿績浠ｇ爜閲忎及璁?*:
+- **pi-ai**: ~5000 琛岋紙鎻愪緵鑰呭疄鐜颁负涓伙級
+- **pi-agent-core**: ~1500 琛岋紙Agent 鐘舵€佸拰浜嬩欢绠＄悊锛?- **pi-coding-agent**: ~10000+ 琛岋紙CLI銆乀UI銆佸伐鍏枫€佹墿灞曠郴缁燂級
+- **pi-tui**: ~5000 琛岋紙缁勪欢搴撳拰娓叉煋寮曟搸锛?- **pi-mom**: ~3000 琛岋紙Slack 闆嗘垚鍜屾矙鐩掞級
+- **pi-web-ui**: ~5000 琛岋紙Web 缁勪欢锛?- **pi-pods**: ~1500 琛岋紙Pod 鍜?vLLM 绠＄悊锛?
+**鎬昏绾?30000+ 琛?TypeScript 浠ｇ爜銆?*
 
 ---
 
-**参考资料：**
+**鍙傝€冭祫鏂欙細**
 - Pi Monorepo: https://github.com/badlogic/pi-mono
 
 ---

@@ -10,7 +10,7 @@ tags:
   - DeepAgents
 ---
 
-# Deep Agents Memory 机制详解
+## Deep Agents Memory 机制详解
 
 ## 概述
 
@@ -43,7 +43,7 @@ graph LR
 - 工具使用说明
 
 ```markdown
-# 项目指南
+## 项目指南
 
 ## 构建命令
 - `make test` — 运行单元测试
@@ -193,12 +193,12 @@ def _format_agent_memory(self, contents: dict[str, str]) -> str:
 ```xml
 <agent_memory>
 ~/.deepagents/agent/AGENTS.md
-# 用户偏好
+## 用户偏好
 - 偏好函数式编程
 - 使用 Python 3.11+
 
 /project/.deepagents/AGENTS.md
-# 项目指南
+## 项目指南
 - FastAPI 后端
 - 使用 PostgreSQL
 </agent_memory>
@@ -225,7 +225,7 @@ graph TD
 ### 更新流程示例
 
 ```python
-# Agent 内部的工具调用（由 LLM 生成）
+## Agent 内部的工具调用（由 LLM 生成）
 edit_file(
     file_path="~/.deepagents/agent/AGENTS.md",
     old="## 用户偏好",
@@ -297,7 +297,7 @@ agent = create_deep_agent(
     ],
 )
 
-# 直接调用，记忆从磁盘加载
+## 直接调用，记忆从磁盘加载
 result = agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
 ```
 
@@ -316,7 +316,7 @@ agent = create_deep_agent(
     checkpointer=MemorySaver(),
 )
 
-# 准备 FileData 格式的记忆内容
+## 准备 FileData 格式的记忆内容
 timestamp = datetime.now(UTC).isoformat()
 memory_files = {
     "/user/.deepagents/AGENTS.md": {
@@ -328,7 +328,7 @@ memory_files = {
 
 config = {"configurable": {"thread_id": "my-thread"}}
 
-# 通过 files 参数传入记忆内容
+## 通过 files 参数传入记忆内容
 result = agent.invoke(
     {
         "messages": [{"role": "user", "content": "Hello"}],
@@ -358,9 +358,9 @@ agent = create_deep_agent(
     store=store,
 )
 
-# StoreBackend 通过 namespace 隔离记忆
-# 有 assistant_id 时: namespace = (assistant_id, "filesystem")
-# 无 assistant_id 时: namespace = ("filesystem",)
+## StoreBackend 通过 namespace 隔离记忆
+## 有 assistant_id 时: namespace = (assistant_id, "filesystem")
+## 无 assistant_id 时: namespace = ("filesystem",)
 config = {
     "configurable": {"thread_id": "thread-1"},
     "metadata": {"assistant_id": "my-agent"},

@@ -1,7 +1,7 @@
----
+﻿---
 layout: post
 date: 2026-03-03
-title: "开源 AI Agent 与 SDK 对比指南"
+title: "寮€婧?AI Agent 涓?SDK 瀵规瘮鎸囧崡"
 categories: tech_coding
 tags:
   - AIAgent
@@ -13,7 +13,7 @@ tags:
   - Google
 ---
 
-# 开源 AI Agent 与 SDK 对比指南
+## 寮€婧?AI Agent 涓?SDK 瀵规瘮鎸囧崡
 
 ## 1. Goose
 
@@ -24,7 +24,7 @@ tags:
 - **Provide SDK:** No
 - **Support Skills:** Yes
 - **Programming Language:** Rust + TypeScript
-- **Notes:** 开源、可扩展的 AI 代理，超越代码建议，支持安装、执行、编辑和测试任何 LLM
+- **Notes:** 寮€婧愩€佸彲鎵╁睍鐨?AI 浠ｇ悊锛岃秴瓒婁唬鐮佸缓璁紝鏀寔瀹夎銆佹墽琛屻€佺紪杈戝拰娴嬭瘯浠讳綍 LLM
 
 ---
 
@@ -38,87 +38,73 @@ tags:
 - **Support Skills:** Yes
 - **Programming Language:** TypeScript
 - **Notes:** 
-  - 终端 AI 编码代理
-  - 支持 75+ LLM 提供商
-  - 具有原生 LSP 支持
-  - 支持多会话并行运行多个代理
+  - 缁堢 AI 缂栫爜浠ｇ悊
+  - 鏀寔 75+ LLM 鎻愪緵鍟?  - 鍏锋湁鍘熺敓 LSP 鏀寔
+  - 鏀寔澶氫細璇濆苟琛岃繍琛屽涓唬鐞?
+### SDK 鍏蜂綋寮曠敤鍜屼娇鐢ㄦ柟寮?
+**1. 瀹夎 SDK**
 
-### SDK 具体引用和使用方式
-
-**1. 安装 SDK**
-
-在您的项目目录中，通过 npm 或 yarn 等包管理器进行安装：
+鍦ㄦ偍鐨勯」鐩洰褰曚腑锛岄€氳繃 npm 鎴?yarn 绛夊寘绠＄悊鍣ㄨ繘琛屽畨瑁咃細
 
 ```bash
 npm install @opencode-ai/sdk
-# 或
-yarn add @opencode-ai/sdk
+## 鎴?yarn add @opencode-ai/sdk
 ```
 
-**2. 在代码中导入和初始化**
+**2. 鍦ㄤ唬鐮佷腑瀵煎叆鍜屽垵濮嬪寲**
 
-您可以在代码文件中导入 SDK 并创建客户端实例：
-
+鎮ㄥ彲浠ュ湪浠ｇ爜鏂囦欢涓鍏?SDK 骞跺垱寤哄鎴风瀹炰緥锛?
 ```javascript
-// 方式一：让 SDK 自动创建或连接到本地的 Opencode 实例
+// 鏂瑰紡涓€锛氳 SDK 鑷姩鍒涘缓鎴栬繛鎺ュ埌鏈湴鐨?Opencode 瀹炰緥
 import { createOpencode } from "@opencode-ai/sdk";
 const { client } = await createOpencode();
 
-// 方式二：连接到指定地址的已有 Opencode 实例
+// 鏂瑰紡浜岋細杩炴帴鍒版寚瀹氬湴鍧€鐨勫凡鏈?Opencode 瀹炰緥
 import { createOpencodeClient } from "@opencode-ai/sdk";
 const client = createOpencodeClient({ baseUrl: "http://localhost:4096" });
 ```
 
-**3. 调用 SDK 提供的方法**
+**3. 璋冪敤 SDK 鎻愪緵鐨勬柟娉?*
 
-获得 `client` 实例后，即可调用其丰富的 API 方法，例如：
+鑾峰緱 `client` 瀹炰緥鍚庯紝鍗冲彲璋冪敤鍏朵赴瀵岀殑 API 鏂规硶锛屼緥濡傦細
 
 ```javascript
-// 创建一个新的会话
-const session = await client.sessions.create();
+// 鍒涘缓涓€涓柊鐨勪細璇?const session = await client.sessions.create();
 
-// 在会话中执行指令
+// 鍦ㄤ細璇濅腑鎵ц鎸囦护
 const response = await client.sessions.instruction(session.id, {
-  instruction: "请分析当前目录下的 package.json 文件"
+  instruction: "璇峰垎鏋愬綋鍓嶇洰褰曚笅鐨?package.json 鏂囦欢"
 });
 
-// 搜索项目中的文件
+// 鎼滅储椤圭洰涓殑鏂囦欢
 const files = await client.files.search({
   query: "function component"
 });
 ```
 
-**总结**：Opencode SDK 的设计初衷就是为了被开发者**在代码中引用**，它将 Opencode 智能体的能力（如会话管理、文件操作、任务执行等）封装成了一系列编程接口，使您可以轻松地将 AI 代理功能嵌入到自己的应用程序、自动化脚本或工具链中。
-
+**鎬荤粨**锛歄pencode SDK 鐨勮璁″垵琛峰氨鏄负浜嗚寮€鍙戣€?*鍦ㄤ唬鐮佷腑寮曠敤**锛屽畠灏?Opencode 鏅鸿兘浣撶殑鑳藉姏锛堝浼氳瘽绠＄悊銆佹枃浠舵搷浣溿€佷换鍔℃墽琛岀瓑锛夊皝瑁呮垚浜嗕竴绯诲垪缂栫▼鎺ュ彛锛屼娇鎮ㄥ彲浠ヨ交鏉惧湴灏?AI 浠ｇ悊鍔熻兘宓屽叆鍒拌嚜宸辩殑搴旂敤绋嬪簭銆佽嚜鍔ㄥ寲鑴氭湰鎴栧伐鍏烽摼涓€?
 ---
 
 ## 3. Claude Code
 
 - **Owner:** Anthropic
-- **Source Code:** 专有（闭源）
+- **Source Code:** 涓撴湁锛堥棴婧愶級
 - **Documentation:** https://claude.ai/docs/code
 - **Open Source:** No
 - **Provide SDK:** [anthropics/claude-agent-sdk-python](https://github.com/anthropics/claude-agent-sdk-python)
 - **Support Skills:** Yes
 - **Programming Language:** TypeScript + Rust
 - **Notes:** 
-  - Anthropic 开发的基于终端的 AI 编码代理
-  - 具有完整的文件系统访问权限
-  - 可以读取、写入和编辑项目文件
-  - 运行终端命令
-  - 管理 Git 工作流
-
-### SDK 具体引用和使用方式
-
-这是 Anthropic 官方提供的 **Claude Agent SDK 的 Python 版本**。
-
-其核心功能是让开发者能在自己的 **Python 应用程序中直接集成和调用 Claude Code（Claude AI 代理）的全部能力**，而不仅限于通过命令行交互。
-
-- **嵌入式集成**：SDK 已自动捆绑 Claude Code CLI，无需单独安装，可直接在代码中调用。  
-- **双向对话**：支持与 Claude Code 进行双向、交互式的程序化对话
-- **自定义工具**：允许你将 Python 函数定义为"工具"供 Claude 调用，这些工具以**进程内 MCP 服务器**的形式运行，无需独立进程。
-- **钩子 (Hooks)**：允许你在 Claude 代理执行循环的特定节点插入自定义的 Python 函数，以实现确定的逻辑处理或自动反馈。
-
+  - Anthropic 寮€鍙戠殑鍩轰簬缁堢鐨?AI 缂栫爜浠ｇ悊
+  - 鍏锋湁瀹屾暣鐨勬枃浠剁郴缁熻闂潈闄?  - 鍙互璇诲彇銆佸啓鍏ュ拰缂栬緫椤圭洰鏂囦欢
+  - 杩愯缁堢鍛戒护
+  - 绠＄悊 Git 宸ヤ綔娴?
+### SDK 鍏蜂綋寮曠敤鍜屼娇鐢ㄦ柟寮?
+杩欐槸 Anthropic 瀹樻柟鎻愪緵鐨?**Claude Agent SDK 鐨?Python 鐗堟湰**銆?
+鍏舵牳蹇冨姛鑳芥槸璁╁紑鍙戣€呰兘鍦ㄨ嚜宸辩殑 **Python 搴旂敤绋嬪簭涓洿鎺ラ泦鎴愬拰璋冪敤 Claude Code锛圕laude AI 浠ｇ悊锛夌殑鍏ㄩ儴鑳藉姏**锛岃€屼笉浠呴檺浜庨€氳繃鍛戒护琛屼氦浜掋€?
+- **宓屽叆寮忛泦鎴?*锛歋DK 宸茶嚜鍔ㄦ崋缁?Claude Code CLI锛屾棤闇€鍗曠嫭瀹夎锛屽彲鐩存帴鍦ㄤ唬鐮佷腑璋冪敤銆? 
+- **鍙屽悜瀵硅瘽**锛氭敮鎸佷笌 Claude Code 杩涜鍙屽悜銆佷氦浜掑紡鐨勭▼搴忓寲瀵硅瘽
+- **鑷畾涔夊伐鍏?*锛氬厑璁镐綘灏?Python 鍑芥暟瀹氫箟涓?宸ュ叿"渚?Claude 璋冪敤锛岃繖浜涘伐鍏蜂互**杩涚▼鍐?MCP 鏈嶅姟鍣?*鐨勫舰寮忚繍琛岋紝鏃犻渶鐙珛杩涚▼銆?- **閽╁瓙 (Hooks)**锛氬厑璁镐綘鍦?Claude 浠ｇ悊鎵ц寰幆鐨勭壒瀹氳妭鐐规彃鍏ヨ嚜瀹氫箟鐨?Python 鍑芥暟锛屼互瀹炵幇纭畾鐨勯€昏緫澶勭悊鎴栬嚜鍔ㄥ弽棣堛€?
 ---
 
 ## 4. OpenClaw
@@ -132,31 +118,25 @@ const files = await client.files.search({
 - **Support ACP:** Yes, https://docs.openclaw.ai/tools/acp-agents
 - **Programming Language:** TypeScript + Node.js
 - **Notes:** 
-  - 开源自主 AI 代理框架
-  - 可在本地运行
-  - 连接超过 20 个消息平台
-  - 具有心跳调度器
-  - 支持浏览器自动化、文件读写、shell 命令等
-
-OpenClaw 的 ACP Agents 是一个用于调度外部 AI 编码工具（如 Claude Code、Codex）的协议系统。我试了一下没试出来。
-
+  - 寮€婧愯嚜涓?AI 浠ｇ悊妗嗘灦
+  - 鍙湪鏈湴杩愯
+  - 杩炴帴瓒呰繃 20 涓秷鎭钩鍙?  - 鍏锋湁蹇冭烦璋冨害鍣?  - 鏀寔娴忚鍣ㄨ嚜鍔ㄥ寲銆佹枃浠惰鍐欍€乻hell 鍛戒护绛?
+OpenClaw 鐨?ACP Agents 鏄竴涓敤浜庤皟搴﹀閮?AI 缂栫爜宸ュ叿锛堝 Claude Code銆丆odex锛夌殑鍗忚绯荤粺銆傛垜璇曚簡涓€涓嬫病璇曞嚭鏉ャ€?
 ---
 
 ## 5. Agentic Seek
 
-- **Owner:** 社区开源
-- **Source Code:** [Fosowl/agenticSeek: Fully Local Manus AI. No APIs, No $200 monthly bills. Enjoy an autonomous agent that thinks, browses the web, and code for the sole cost of electricity. 🔔 Official updates only via twitter @Martin993886460 (Beware of fake account)](https://github.com/Fosowl/agenticSeek)
+- **Owner:** 绀惧尯寮€婧?- **Source Code:** [Fosowl/agenticSeek: Fully Local Manus AI. No APIs, No $200 monthly bills. Enjoy an autonomous agent that thinks, browses the web, and code for the sole cost of electricity. 馃敂 Official updates only via twitter @Martin993886460 (Beware of fake account)](https://github.com/Fosowl/agenticSeek)
 - **Documentation:** https://fosowl.github.io/agenticSeek.html
 - **Open Source:** Yes
 - **Provide SDK:** No
 - **Support Skills:** Yes
 - **Programming Language:** Python
 - **Notes:** 
-  - 完全免费、开源的通用 AI 助手
-  - 具有语音功能
-  - 可以自主浏览网页
-  - 编写代码和执行复杂任务
-  - 数据本地存储
+  - 瀹屽叏鍏嶈垂銆佸紑婧愮殑閫氱敤 AI 鍔╂墜
+  - 鍏锋湁璇煶鍔熻兘
+  - 鍙互鑷富娴忚缃戦〉
+  - 缂栧啓浠ｇ爜鍜屾墽琛屽鏉備换鍔?  - 鏁版嵁鏈湴瀛樺偍
 
 ---
 
@@ -170,19 +150,17 @@ OpenClaw 的 ACP Agents 是一个用于调度外部 AI 编码工具（如 Claude
 - **Support Skills:** Yes
 - **Programming Language:** Python
 - **Notes:** 
-  - 基于 LangChain 和 LangGraph 构建的代理框架
-  - 具有规划工具
-  - 文件系统后端
-  - 生成子代理的能力
-  - 适用于复杂的代理任务
-  - **最新版本:** 0.4.4 (2026-02-26)
+  - 鍩轰簬 LangChain 鍜?LangGraph 鏋勫缓鐨勪唬鐞嗘鏋?  - 鍏锋湁瑙勫垝宸ュ叿
+  - 鏂囦欢绯荤粺鍚庣
+  - 鐢熸垚瀛愪唬鐞嗙殑鑳藉姏
+  - 閫傜敤浜庡鏉傜殑浠ｇ悊浠诲姟
+  - **鏈€鏂扮増鏈?** 0.4.4 (2026-02-26)
 
 ---
 
 ## 7. AgentZero
 
-- **Owner:** 社区开源
-- **Source Code:** [agent0ai/agent-zero: Agent Zero AI framework](https://github.com/agent0ai/agent-zero)
+- **Owner:** 绀惧尯寮€婧?- **Source Code:** [agent0ai/agent-zero: Agent Zero AI framework](https://github.com/agent0ai/agent-zero)
 - **Documentation:** https://agentzero.ai/docs
 - **Open Source:** Yes
 - **Provide SDK:** No
@@ -210,9 +188,9 @@ agent = Agent(name="Assistant", instructions="You are a helpful assistant")
 result = Runner.run_sync(agent, "Write a haiku about recursion in programming.")
 print(result.final_output)
 
-# Code within the code,
-# Functions calling themselves,
-# Infinite loop's dance.
+## Code within the code,
+## Functions calling themselves,
+## Infinite loop's dance.
 ```
 
 ---
@@ -227,15 +205,13 @@ print(result.final_output)
 - **Support Skills:** Yes
 - **Programming Language:** TypeScript + Python + Java + Go
 - **Notes:** 
-  - Google 的代理开发工具包
-  - 开源框架
-  - 帮助开发者构建、测试、评估和部署自主 AI 代理和多代理系统
-  - 深度集成 Google 生态系统
-
+  - Google 鐨勪唬鐞嗗紑鍙戝伐鍏峰寘
+  - 寮€婧愭鏋?  - 甯姪寮€鍙戣€呮瀯寤恒€佹祴璇曘€佽瘎浼板拰閮ㄧ讲鑷富 AI 浠ｇ悊鍜屽浠ｇ悊绯荤粺
+  - 娣卞害闆嗘垚 Google 鐢熸€佺郴缁?
 ```python
 from google.adk.agents.llm_agent import Agent
 
-# Mock tool implementation
+## Mock tool implementation
 def get_current_time(city: str) -> dict:
     """Returns the current time in a specified city."""
     return {"status": "success", "city": city, "time": "10:30 AM"}
@@ -251,19 +227,18 @@ root_agent = Agent(
 
 ---
 
-## 总结对比表
-
-| 项目 | 开源 | SDK | 语言 | 特点 |
+## 鎬荤粨瀵规瘮琛?
+| 椤圭洰 | 寮€婧?| SDK | 璇█ | 鐗圭偣 |
 |------|------|-----|------|------|
-| Goose | ✅ | ❌ | Rust+TS | 可扩展代理 |
-| Opencode | ✅ | ✅ | TS | 75+ LLM 支持 |
-| Claude Code | ❌ | ✅ | TS+Rust | 终端编码代理 |
-| OpenClaw | ✅ | ❌ | TS+Node | 多平台连接 |
-| Agentic Seek | ✅ | ❌ | Python | 完全本地运行 |
-| DeepAgents | ✅ | ✅ | Python | LangChain 生态 |
-| AgentZero | ✅ | ❌ | TS+Python | 社区驱动 |
-| OpenAI Agents | ✅ | ✅ | Python | 官方 SDK |
-| Google ADK | ✅ | ✅ | 多语言 | Google 生态 |
+| Goose | 鉁?| 鉂?| Rust+TS | 鍙墿灞曚唬鐞?|
+| Opencode | 鉁?| 鉁?| TS | 75+ LLM 鏀寔 |
+| Claude Code | 鉂?| 鉁?| TS+Rust | 缁堢缂栫爜浠ｇ悊 |
+| OpenClaw | 鉁?| 鉂?| TS+Node | 澶氬钩鍙拌繛鎺?|
+| Agentic Seek | 鉁?| 鉂?| Python | 瀹屽叏鏈湴杩愯 |
+| DeepAgents | 鉁?| 鉁?| Python | LangChain 鐢熸€?|
+| AgentZero | 鉁?| 鉂?| TS+Python | 绀惧尯椹卞姩 |
+| OpenAI Agents | 鉁?| 鉁?| Python | 瀹樻柟 SDK |
+| Google ADK | 鉁?| 鉁?| 澶氳瑷€ | Google 鐢熸€?|
 
 ---
 
