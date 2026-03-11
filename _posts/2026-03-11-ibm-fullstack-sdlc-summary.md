@@ -10,7 +10,7 @@ tags:
   - ActiveLearning
 ---
 
-# 1-1 Software Development Lifecycle 总结
+## 1-1 Software Development Lifecycle 总结
 
 > 学习 IBM Full Stack Cloud Developer Certificate 课程笔记 - Module 1-1
 
