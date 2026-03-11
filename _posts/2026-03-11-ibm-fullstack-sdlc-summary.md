@@ -6,7 +6,7 @@ categories: tech_coding
 tags:
   - SoftwareEngineering
   - SDLC
-  - IBM 证书学习
+  - IBM证书学习
   - ActiveLearning
 ---
 
