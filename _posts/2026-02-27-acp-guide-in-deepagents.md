@@ -1,7 +1,7 @@
 ﻿---
 layout: post
 date: 2026-02-27
-title: "Agent Client Protocol (ACP) 鍦?Deep Agents 涓殑浣跨敤鎸囧崡"
+title: "Agent Client Protocol (ACP) in Deepagents
 categories: tech_coding
 tags:
   - DeepAgents
@@ -11,99 +11,117 @@ tags:
   - LangGraph
 ---
 
-## Agent Client Protocol (ACP) 鍦?Deep Agents 涓殑浣跨敤鎸囧崡
+## 什么是 ACP？
 
-## 浠€涔堟槸 ACP锛?
-Agent Client Protocol (ACP) 鏄敱 [Zed Industries](https://zed.dev/) 鍙戣捣鐨勫紑鏀炬爣鍑嗗崗璁紝鐢ㄤ簬鏍囧噯鍖栦唬鐮佺紪杈戝櫒/IDE 涓?AI 缂栫爜 Agent 涔嬮棿鐨勯€氫俊銆傚畠鐨勫畾浣嶇被浼间簬 Language Server Protocol (LSP) 涔嬩簬璇█鏈嶅姟鍣ㄢ€斺€擜CP 灏?Agent 涓庣紪杈戝櫒瑙ｈ€︼紝浣垮緱浠讳綍 ACP 鍏煎鐨?Agent 鍙互鍦ㄤ换浣曟敮鎸?ACP 鐨勭紪杈戝櫒涓繍琛屻€?
-鍗忚瀹樻柟缃戠珯锛歔agentclientprotocol.com](https://agentclientprotocol.com/)
+Agent Client Protocol (ACP) 是由 [Zed Industries](https://zed.dev/) 发起的开放标准协议，用于标准化代码编辑器/IDE 与 AI 编码 Agent 之间的通信。它的定位类似于 Language Server Protocol (LSP) 之于语言服务器——ACP 将 Agent 与编辑器解耦，使得任何 ACP 兼容的 Agent 可以在任何支持 ACP 的编辑器中运行。
 
-### 鏍稿績浠峰€?
-- 娑堥櫎闆嗘垚寮€閿€锛氫笉鍐嶉渶瑕佷负姣忎釜 Agent-缂栬緫鍣ㄧ粍鍚堝仛瀹氬埗寮€鍙?- 骞挎硾鍏煎锛欰gent 鍙渶瀹炵幇涓€娆?ACP锛屽嵆鍙湪鎵€鏈夊吋瀹圭紪杈戝櫒涓娇鐢?- 寮€鍙戣€呰嚜鐢憋細鐢ㄦ埛鍙互鑷敱閫夋嫨 Agent 鍜岀紪杈戝櫒鐨勭粍鍚?
-### 閫氫俊妯″瀷
+协议官方网站：[agentclientprotocol.com](https://agentclientprotocol.com/)
 
-ACP 鍩轰簬 JSON-RPC 2.0 瑙勮寖锛屾敮鎸佷袱绉嶆秷鎭被鍨嬶細
+### 核心价值
 
-- Methods锛堟柟娉曪級锛氳姹?鍝嶅簲瀵癸紝鏈熸湜杩斿洖缁撴灉鎴栭敊璇?- Notifications锛堥€氱煡锛夛細鍗曞悜娑堟伅锛屼笉鏈熸湜鍝嶅簲
+- 消除集成开销：不再需要为每个 Agent-编辑器组合做定制开发
+- 广泛兼容：Agent 只需实现一次 ACP，即可在所有兼容编辑器中使用
+- 开发者自由：用户可以自由选择 Agent 和编辑器的组合
 
-鏀寔鏈湴锛坰tdio锛夊拰杩滅▼锛圚TTP/WebSocket锛変袱绉嶉儴缃叉ā寮忋€?
-## ACP 鍗忚鐢熷懡鍛ㄦ湡
+### 通信模型
 
-涓€涓吀鍨嬬殑 ACP 浼氳瘽娴佺▼濡備笅锛?
-<pre class="mermaid">
+ACP 基于 JSON-RPC 2.0 规范，支持两种消息类型：
+
+- Methods（方法）：请求-响应对，期望返回结果或错误
+- Notifications（通知）：单向消息，不期望响应
+
+支持本地（stdio）和远程（HTTP/WebSocket）两种部署模式。
+
+## ACP 协议生命周期
+
+一个典型的 ACP 会话流程如下：
+
+```mermaid
 sequenceDiagram
-    participant C as Client (缂栬緫鍣?
-    participant A as Agent (鏈嶅姟绔?
+    participant C as Client (编辑器)
+    participant A as Agent (服务端)
 
     rect rgb(240, 248, 255)
-        Note over C,A: 1. 鍒濆鍖栭樁娈?        C->>A: initialize (鍗忓晢鐗堟湰鍜岃兘鍔?
+        Note over C,A: 1. 初始化阶段
+        C->>A: initialize (协商版本和能力)
         A-->>C: InitializeResponse
     end
 
     rect rgb(240, 255, 240)
-        Note over C,A: 2. 浼氳瘽寤虹珛
-        C->>A: session/new (鍒涘缓浼氳瘽)
+        Note over C,A: 2. 会话建立
+        C->>A: session/new (创建会话)
         A-->>C: NewSessionResponse (session_id)
     end
 
     rect rgb(255, 248, 240)
-        Note over C,A: 3. Prompt 鍥炲悎
-        C->>A: session/prompt (鍙戦€佺敤鎴锋秷鎭?
-        A-)C: session/update (娴佸紡鏂囨湰)
-        A-)C: session/update (宸ュ叿璋冪敤閫氱煡)
-        A->>C: request_permission (鏉冮檺璇锋眰)
+        Note over C,A: 3. Prompt 回合
+        C->>A: session/prompt (发送用户消息)
+        A-)C: session/update (流式文本)
+        A-)C: session/update (工具调用通知)
+        A->>C: request_permission (权限请求)
         C-->>A: permission response (approve/reject)
-        A-)C: session/update (鏇村杩涘害)
-        A-->>C: PromptResponse (鍥炲悎缁撴潫)
+        A-)C: session/update (更多进度)
+        A-->>C: PromptResponse (回合结束)
     end
 
     rect rgb(255, 240, 240)
-        Note over C,A: 4. 鍙栨秷 (鍙€?
-        C-)A: session/cancel (涓柇澶勭悊)
+        Note over C,A: 4. 取消 (可选)
+        C-)A: session/cancel (中断处理)
     end
-</pre>
+```
 
-### Agent 绔柟娉?
-| 鏂规硶 | 璇存槑 |
+### Agent 端方法
+
+| 方法 | 说明 |
 |------|------|
-| `initialize` | 鍗忓晢鍗忚鐗堟湰锛屼氦鎹㈣兘鍔涘０鏄?|
-| `session/new` | 鍒涘缓鏂扮殑瀵硅瘽浼氳瘽 |
-| `session/prompt` | 鎺ユ敹鐢ㄦ埛娑堟伅骞跺鐞?|
-| `session/set_mode` | 鍒囨崲 Agent 杩愯妯″紡锛堝彲閫夛級 |
-| `session/cancel` | 鍙栨秷姝ｅ湪杩涜鐨勬搷浣滐紙閫氱煡锛?|
+| `initialize` | 协商协议版本，交换能力声明 |
+| `session/new` | 创建新的对话会话 |
+| `session/prompt` | 接收用户消息并处理 |
+| `session/set_mode` | 切换 Agent 运行模式（可选） |
+| `session/cancel` | 取消正在进行的操作（通知） |
 
-### Client 绔柟娉?
-| 鏂规硶 | 璇存槑 |
+### Client 端方法
+
+| 方法 | 说明 |
 |------|------|
-| `session/request_permission` | 璇锋眰鐢ㄦ埛鎺堟潈宸ュ叿璋冪敤 |
-| `session/update` | 鍙戦€佷細璇濇洿鏂伴€氱煡锛堟秷鎭€佸伐鍏疯皟鐢ㄣ€佽鍒掔瓑锛?|
-| `fs/read_text_file` | 璇诲彇鏂囦欢鍐呭锛堝彲閫夛級 |
-| `fs/write_text_file` | 鍐欏叆鏂囦欢鍐呭锛堝彲閫夛級 |
-| `terminal/*` | 缁堢鎿嶄綔绯诲垪锛堝彲閫夛級 |
+| `session/request_permission` | 请求用户授权工具调用 |
+| `session/update` | 发送会话更新通知（消息、工具调用、计划等） |
+| `fs/read_text_file` | 读取文件内容（可选） |
+| `fs/write_text_file` | 写入文件内容（可选） |
+| `terminal/*` | 终端操作系列（可选） |
 
 
-## Deep Agents 涓殑 ACP 鏋舵瀯
+## Deep Agents 中的 ACP 架构
 
-鍦?Deep Agents monorepo 涓紝ACP 闆嗘垚浣嶄簬 `libs/acp/` 鍖咃紙`deepagents-acp`锛夈€傚畠鐨勬牳蹇冧綔鐢ㄦ槸灏?Deep Agents SDK 鏋勫缓鐨?LangGraph Agent 妗ユ帴鍒?ACP 鍗忚锛屼娇鍏跺彲浠ュ湪 Zed 绛夋敮鎸?ACP 鐨勭紪杈戝櫒涓繍琛屻€?
-### 鍖呯粨鏋?
+在 Deep Agents monorepo 中，ACP 集成位于 `libs/acp/` 包（`deepagents-acp`）。它的核心作用是将 Deep Agents SDK 构建的 LangGraph Agent 桥接到 ACP 协议，使其可以在 Zed 等支持 ACP 的编辑器中运行。
+
+### 包结构
+
 ```
 libs/acp/
-鈹溾攢鈹€ deepagents_acp/
-鈹?  鈹溾攢鈹€ __init__.py          # 鍖呭叆鍙?鈹?  鈹溾攢鈹€ __main__.py          # 妯″潡鍏ュ彛鐐癸紙python -m deepagents_acp锛?鈹?  鈹溾攢鈹€ server.py            # 鏍稿績锛欰gentServerACP 绫?鈹?  鈹斺攢鈹€ utils.py             # 鍐呭鍧楄浆鎹€佸懡浠よВ鏋愮瓑宸ュ叿鍑芥暟
-鈹溾攢鈹€ examples/
-鈹?  鈹溾攢鈹€ demo_agent.py        # 瀹屾暣鐨?demo Agent锛堝惈妯″紡鍒囨崲銆丠ITL锛?鈹?  鈹斺攢鈹€ local_context.py     # 鏈湴涓婁笅鏂囦腑闂翠欢锛堟娴嬮」鐩幆澧冿級
-鈹溾攢鈹€ tests/
-鈹溾攢鈹€ pyproject.toml
-鈹斺攢鈹€ run_demo_agent.sh        # Zed 鍚姩鑴氭湰
+├── deepagents_acp/
+│   ├── __init__.py          # 包入口
+│   ├── __main__.py          # 模块入口点（python -m deepagents_acp）
+│   ├── server.py            # 核心：AgentServerACP 类
+│   └── utils.py             # 内容块转换、命令解析等工具函数
+├── examples/
+│   ├── demo_agent.py        # 完整的 demo Agent（含模式切换、HITL）
+│   └── local_context.py     # 本地上下文中间件（检测项目环境）
+├── tests/
+├── pyproject.toml
+└── run_demo_agent.sh        # Zed 启动脚本
 ```
 
-### 鏍稿績绫伙細`AgentServerACP`
+### 核心类：`AgentServerACP`
 
-`AgentServerACP` 鏄暣涓?ACP 闆嗘垚鐨勬牳蹇冿紝瀹冪户鎵胯嚜 `acp.Agent`锛圓CP Python SDK 鎻愪緵鐨勫熀绫伙級锛岃礋璐ｏ細
+`AgentServerACP` 是整个 ACP 集成的核心，它继承自 `acp.Agent`（ACP Python SDK 提供的基类），负责：
 
-1. 瀹炵幇 ACP 鍗忚鐨勬墍鏈夌敓鍛藉懆鏈熸柟娉?2. 灏?ACP 鍐呭鍧楋紙鏂囨湰銆佸浘鐗囥€佽祫婧愮瓑锛夎浆鎹负 LangChain 鏍煎紡
-3. 娴佸紡浼犺緭 Agent 鍝嶅簲鍒板鎴风
-4. 澶勭悊 Human-in-the-Loop (HITL) 鏉冮檺璇锋眰
-5. 绠＄悊浼氳瘽銆佽鍒掞紙Plan锛夊拰宸ュ叿璋冪敤鐘舵€?
+1. 实现 ACP 协议的所有生命周期方法
+2. 将 ACP 内容块（文本、图片、资源等）转换为 LangChain 格式
+3. 流式传输 Agent 响应到客户端
+4. 处理 Human-in-the-Loop (HITL) 权限请求
+5. 管理会话、计划（Plan）和工具调用状态
+
 ```python
 class AgentServerACP(ACPAgent):
     """ACP agent server that bridges Deep Agents with the Agent Client Protocol."""
@@ -117,23 +135,26 @@ class AgentServerACP(ACPAgent):
         ...
 ```
 
-鏋勯€犲嚱鏁版帴鍙椾袱绉嶅舰寮忕殑 Agent锛?- 鐩存帴浼犲叆涓€涓紪璇戝ソ鐨?`CompiledStateGraph`锛堢畝鍗曞満鏅級
-- 浼犲叆涓€涓伐鍘傚嚱鏁?`Callable[[AgentSessionContext], CompiledStateGraph]`锛堥渶瑕佹牴鎹細璇濅笂涓嬫枃鍔ㄦ€佸垱寤?Agent锛?
-### 鏋舵瀯灞傛鍥?
-<pre class="mermaid">
+构造函数接受两种形式的 Agent：
+- 直接传入一个编译好的 `CompiledStateGraph`（简单场景）
+- 传入一个工厂函数 `Callable[[AgentSessionContext], CompiledStateGraph]`（需要根据会话上下文动态创建 Agent）
+
+### 架构层次图
+
+```mermaid
 graph TB
-    subgraph Editor["缂栬緫鍣?(Zed 绛? 鈥?ACP Client"]
-        UI[鐢ㄦ埛鐣岄潰]
+    subgraph Editor["编辑器 (Zed 等) — ACP Client"]
+        UI[用户界面]
     end
 
     UI <-->|"JSON-RPC 2.0 (stdio)"| ACP
 
     subgraph Server["AgentServerACP"]
-        ACP["ACP 鍗忚灞?br/>initialize / new_session / prompt<br/>set_session_mode / cancel<br/>request_permission / session_update"]
-        ACP -->|"鍐呭鍧楄浆鎹?(utils.py)"| SDK
+        ACP["ACP 协议层<br/>initialize / new_session / prompt<br/>set_session_mode / cancel<br/>request_permission / session_update"]
+        ACP -->|"内容块转换 (utils.py)"| SDK
 
         SDK["Deep Agents SDK (LangGraph)<br/>create_deep_agent()<br/>CompiledStateGraph.astream()"]
-        SDK --- MW["涓棿浠舵爤"]
+        SDK --- MW["中间件栈"]
         MW --- HITL[HumanInTheLoopMiddleware]
         MW --- FS[FilesystemMiddleware]
         MW --- MEM[MemoryMiddleware]
@@ -144,24 +165,29 @@ graph TB
     style Server fill:#f0f7e8,stroke:#6ab04c
     style ACP fill:#fff3e0,stroke:#f5a623
     style SDK fill:#fce4ec,stroke:#e57373
-</pre>
+```
 
-### 鍏抽敭娴佺▼璇﹁В
+### 关键流程详解
 
-#### 1. 浼氳瘽鍒涘缓 (`new_session`)
+#### 1. 会话创建 (`new_session`)
 
-褰撶紪杈戝櫒鎵撳紑涓€涓柊鐨?Agent 绾跨▼鏃讹紝璋冪敤 `new_session`锛屼紶鍏ュ伐浣滅洰褰?`cwd` 鍜屽彲閫夌殑 MCP 鏈嶅姟鍣ㄥ垪琛ㄣ€傛湇鍔＄鐢熸垚鍞竴鐨?`session_id` 骞惰繑鍥炪€?
-濡傛灉閰嶇疆浜?`modes`锛堣繍琛屾ā寮忥級锛屼細鍦ㄥ搷搴斾腑杩斿洖鍙敤妯″紡鍒楄〃銆?
-#### 2. 娑堟伅澶勭悊 (`prompt`)
+当编辑器打开一个新的 Agent 线程时，调用 `new_session`，传入工作目录 `cwd` 和可选的 MCP 服务器列表。服务端生成唯一的 `session_id` 并返回。
 
-杩欐槸鏈€鏍稿績鐨勬柟娉曘€傚綋鐢ㄦ埛鍙戦€佹秷鎭椂锛?
-1. 灏?ACP 鍐呭鍧楋紙`TextContentBlock`銆乣ImageContentBlock` 绛夛級杞崲涓?LangChain 鐨勫妯℃€佸唴瀹规牸寮?2. 閫氳繃 `agent.astream()` 娴佸紡鎵ц Agent
-3. 瀹炴椂灏?Agent 鐨勬枃鏈緭鍑恒€佸伐鍏疯皟鐢ㄩ€氳繃 `session/update` 閫氱煡鎺ㄩ€佺粰瀹㈡埛绔?4. 閬囧埌涓柇锛坕nterrupt锛夋椂锛岄€氳繃 `request_permission` 璇锋眰鐢ㄦ埛鎺堟潈
-5. 澶勭悊鐢ㄦ埛鐨勬巿鏉冨喅绛栵紙approve/reject/approve_always锛夛紝鐒跺悗鎭㈠鎵ц
+如果配置了 `modes`（运行模式），会在响应中返回可用模式列表。
+
+#### 2. 消息处理 (`prompt`)
+
+这是最核心的方法。当用户发送消息时：
+
+1. 将 ACP 内容块（`TextContentBlock`、`ImageContentBlock` 等）转换为 LangChain 的多模态内容格式
+2. 通过 `agent.astream()` 流式执行 Agent
+3. 实时将 Agent 的文本输出、工具调用通过 `session/update` 通知推送给客户端
+4. 遇到中断（interrupt）时，通过 `request_permission` 请求用户授权
+5. 处理用户的授权决策（approve/reject/approve_always），然后恢复执行
 
 #### 3. Human-in-the-Loop (HITL)
 
-ACP 闆嗘垚鏀寔绮剧粏鐨勬潈闄愭帶鍒躲€傞€氳繃 `interrupt_on` 閰嶇疆锛屽彲浠ユ寚瀹氬摢浜涘伐鍏疯皟鐢ㄩ渶瑕佺敤鎴风‘璁わ細
+ACP 集成支持精细的权限控制。通过 `interrupt_on` 配置，可以指定哪些工具调用需要用户确认：
 
 ```python
 interrupt_config = {
@@ -171,11 +197,15 @@ interrupt_config = {
 }
 ```
 
-鏉冮檺璇锋眰鏀寔涓夌鍐崇瓥锛?- `approve`锛氭壒鍑嗘湰娆℃搷浣?- `reject`锛氭嫆缁濇湰娆℃搷浣?- `approve_always`锛氬缁堟壒鍑嗗悓绫绘搷浣滐紙鍩轰簬鍛戒护绛惧悕鐨勬櫤鑳藉尮閰嶏級
+权限请求支持三种决策：
+- `approve`：批准本次操作
+- `reject`：拒绝本次操作
+- `approve_always`：始终批准同类操作（基于命令签名的智能匹配）
 
-#### 4. 杩愯妯″紡 (`modes`)
+#### 4. 运行模式 (`modes`)
 
-Agent 鍙互瀹氫箟澶氱杩愯妯″紡锛岀敤鎴峰彲浠ュ湪缂栬緫鍣ㄤ腑鍒囨崲锛?
+Agent 可以定义多种运行模式，用户可以在编辑器中切换：
+
 ```python
 modes = SessionModeState(
     current_mode_id="accept_edits",
@@ -187,31 +217,38 @@ modes = SessionModeState(
 )
 ```
 
-鍒囨崲妯″紡鏃讹紝Agent 浼氳閲嶇疆骞朵娇鐢ㄦ柊妯″紡鐨勯厤缃噸鏂板垱寤恒€?
-#### 5. 璁″垝绠＄悊 (Plan/Todos)
+切换模式时，Agent 会被重置并使用新模式的配置重新创建。
 
-ACP 鏀寔鍚戝鎴风灞曠ず Agent 鐨勬墽琛岃鍒掋€傚綋 Agent 璋冪敤 `write_todos` 宸ュ叿鏃讹紝璁″垝浼氶€氳繃 `AgentPlanUpdate` 鎺ㄩ€佸埌缂栬緫鍣?UI锛?
+#### 5. 计划管理 (Plan/Todos)
+
+ACP 支持向客户端展示 Agent 的执行计划。当 Agent 调用 `write_todos` 工具时，计划会通过 `AgentPlanUpdate` 推送到编辑器 UI：
+
 ```python
-## 璁″垝鏉＄洰鍖呭惈鍐呭銆佺姸鎬佸拰浼樺厛绾?PlanEntry(content="瀹炵幇鐢ㄦ埛璁よ瘉", status="in_progress", priority="medium")
+# 计划条目包含内容、状态和优先级
+PlanEntry(content="实现用户认证", status="in_progress", priority="medium")
 ```
 
-璁″垝鏇存柊鏈夋櫤鑳界殑鑷姩鎵瑰噯閫昏緫鈥斺€斿鏋滃凡鏈変竴涓繘琛屼腑鐨勮鍒掞紝鍚庣画鐨勮鍒掓洿鏂颁細鑷姩鎵瑰噯锛屾棤闇€鐢ㄦ埛鍐嶆纭銆?
+计划更新有智能的自动批准逻辑——如果已有一个进行中的计划，后续的计划更新会自动批准，无需用户再次确认。
 
-## 濡備綍浣跨敤锛氬揩閫熶笂鎵?
-### 鍓嶇疆鏉′欢
+
+## 如何使用：快速上手
+
+### 前置条件
 
 - Python 3.11+
-- [uv](https://docs.astral.sh/uv/) 鍖呯鐞嗗櫒
-- 涓€涓敮鎸?ACP 鐨勭紪杈戝櫒锛堢洰鍓嶄富瑕佹槸 [Zed](https://zed.dev/)锛?- Anthropic API Key锛堟垨鍏朵粬 LLM 鎻愪緵鍟嗙殑 Key锛?
-### 瀹夎
+- [uv](https://docs.astral.sh/uv/) 包管理器
+- 一个支持 ACP 的编辑器（目前主要是 [Zed](https://zed.dev/)）
+- Anthropic API Key（或其他 LLM 提供商的 Key）
+
+### 安装
 
 ```bash
 uv add deepagents-acp
 ```
 
-### 绀轰緥 1锛氭渶绠€鍗曠殑 ACP Agent
+### 示例 1：最简单的 ACP Agent
 
-杩欐槸鍒涘缓涓€涓?ACP Agent 鐨勬渶灏忎唬鐮侊細
+这是创建一个 ACP Agent 的最小代码：
 
 ```python
 import asyncio
@@ -225,7 +262,7 @@ from deepagents_acp.server import AgentServerACP
 
 async def main() -> None:
     agent = create_deep_agent(
-        # 榛樿浣跨敤 Claude Sonnet锛屼篃鍙互鎸囧畾鍏朵粬妯″瀷
+        # 默认使用 Claude Sonnet，也可以指定其他模型
         checkpointer=MemorySaver(),
     )
     server = AgentServerACP(agent)
@@ -236,8 +273,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-杩欎釜 Agent 浼氳嚜甯?Deep Agents 鐨勫唴缃伐鍏凤紙鏂囦欢璇诲啓銆乻hell 鎵ц绛夛級锛屽彲浠ョ洿鎺ュ湪缂栬緫鍣ㄤ腑杩涜浠ｇ爜缂栬緫銆?
-### 绀轰緥 2锛氭坊鍔犺嚜瀹氫箟宸ュ叿
+这个 Agent 会自带 Deep Agents 的内置工具（文件读写、shell 执行等），可以直接在编辑器中进行代码编辑。
+
+### 示例 2：添加自定义工具
 
 ```python
 import asyncio
@@ -273,9 +311,10 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### 绀轰緥 3锛氬甫妯″紡鍒囨崲鍜?HITL 鐨勫畬鏁?Agent
+### 示例 3：带模式切换和 HITL 的完整 Agent
 
-杩欐槸涓€涓洿瀹屾暣鐨勭ず渚嬶紝灞曠ず浜嗗浣曢厤缃繍琛屾ā寮忓拰鏉冮檺鎺у埗锛?
+这是一个更完整的示例，展示了如何配置运行模式和权限控制：
+
 ```python
 import asyncio
 
@@ -291,7 +330,7 @@ from deepagents_acp.server import AgentServerACP, AgentSessionContext
 
 
 def get_interrupt_config(mode_id: str) -> dict:
-    """鏍规嵁妯″紡杩斿洖涓嶅悓鐨勬潈闄愭帶鍒堕厤缃€?""
+    """根据模式返回不同的权限控制配置。"""
     configs = {
         "supervised": {
             "edit_file": {"allowed_decisions": ["approve", "reject"]},
@@ -312,7 +351,7 @@ async def main() -> None:
     checkpointer = MemorySaver()
 
     def build_agent(context: AgentSessionContext) -> CompiledStateGraph:
-        """鏍规嵁浼氳瘽涓婁笅鏂囧姩鎬佸垱寤?Agent銆?""
+        """根据会话上下文动态创建 Agent。"""
         interrupt_config = get_interrupt_config(context.mode)
 
         def create_backend(tr: ToolRuntime | None = None) -> CompositeBackend:
@@ -336,18 +375,18 @@ async def main() -> None:
         available_modes=[
             SessionMode(
                 id="supervised",
-                name="鐩戠潱妯″紡",
-                description="鎵€鏈夋枃浠剁紪杈戝拰鍛戒护鎵ц閮介渶瑕佺‘璁?,
+                name="监督模式",
+                description="所有文件编辑和命令执行都需要确认",
             ),
             SessionMode(
                 id="semi_auto",
-                name="鍗婅嚜鍔ㄦā寮?,
-                description="鑷姩鎵ц鏂囦欢缂栬緫锛屽懡浠ゆ墽琛岄渶瑕佺‘璁?,
+                name="半自动模式",
+                description="自动执行文件编辑，命令执行需要确认",
             ),
             SessionMode(
                 id="autonomous",
-                name="鑷富妯″紡",
-                description="鎵€鏈夋搷浣滆嚜鍔ㄦ墽琛?,
+                name="自主模式",
+                description="所有操作自动执行",
             ),
         ],
     )
@@ -360,8 +399,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### 鍦?Zed 涓厤缃?
-鍒涘缓濂?Agent 鑴氭湰鍚庯紝鍦?Zed 鐨?`settings.json` 涓坊鍔狅細
+### 在 Zed 中配置
+
+创建好 Agent 脚本后，在 Zed 的 `settings.json` 中添加：
 
 ```json
 {
@@ -374,81 +414,93 @@ if __name__ == "__main__":
 }
 ```
 
-鍚姩鑴氭湰 `run_agent.sh`锛?
+启动脚本 `run_agent.sh`：
+
 ```bash
 #!/bin/bash
 SCRIPT_DIR="$(dirname "$0")"
 uv run --project "$SCRIPT_DIR" python "$SCRIPT_DIR/my_agent.py"
 ```
 
-涔熷彲浠ヤ娇鐢?[Toad](https://github.com/nichochar/toad) 宸ュ叿蹇€熷惎鍔細
+也可以使用 [Toad](https://github.com/nichochar/toad) 工具快速启动：
 
 ```bash
 uv tool install -U batrachian-toad --python 3.14
 toad acp "uv run python my_agent.py" .
 ```
 
-## 宸ュ叿璋冪敤鐨?UI 灞曠ず
+## 工具调用的 UI 展示
 
-`AgentServerACP` 浼氭牴鎹伐鍏风被鍨嬭嚜鍔ㄧ敓鎴愬悎閫傜殑 UI 灞曠ず锛?
-| 宸ュ叿鍚?| UI 灞曠ず | ToolKind |
+`AgentServerACP` 会根据工具类型自动生成合适的 UI 展示：
+
+| 工具名 | UI 展示 | ToolKind |
 |--------|---------|----------|
 | `read_file` | `Read \`path/to/file\`` | `read` |
-| `edit_file` | `Edit \`path/to/file\``锛堝惈 diff 棰勮锛?| `edit` |
+| `edit_file` | `Edit \`path/to/file\``（含 diff 预览） | `edit` |
 | `write_file` | `Write \`path/to/file\`` | `edit` |
 | `execute` | `Execute: \`command\`` | `execute` |
-| `ls` / `glob` / `grep` | 鎼滅储绫诲睍绀?| `search` |
-| 鍏朵粬宸ュ叿 | 宸ュ叿鍚嶇О | `other` |
+| `ls` / `glob` / `grep` | 搜索类展示 | `search` |
+| 其他工具 | 工具名称 | `other` |
 
-瀵逛簬 `edit_file`锛屽鏋滄彁渚涗簡 `old_string` 鍜?`new_string`锛屼細鑷姩鐢熸垚 diff 鍐呭灞曠ず缁欑敤鎴枫€?
-## 鍛戒护绛惧悕涓庢櫤鑳芥潈闄?
-褰撶敤鎴烽€夋嫨 "Always allow" 鏌愪釜鍛戒护鏃讹紝绯荤粺浼氭彁鍙栧懡浠ょ鍚嶈繘琛屽尮閰嶏紝鑰屼笉鏄畝鍗曞湴鍖归厤鏁翠釜鍛戒护瀛楃涓层€傝繖鏍锋棦瀹夊叏鍙堟柟渚匡細
+对于 `edit_file`，如果提供了 `old_string` 和 `new_string`，会自动生成 diff 内容展示给用户。
+
+## 命令签名与智能权限
+
+当用户选择 "Always allow" 某个命令时，系统会提取命令签名进行匹配，而不是简单地匹配整个命令字符串。这样既安全又方便：
 
 ```python
-## 鍛戒护绛惧悕鎻愬彇绀轰緥
-"npm install"           鈫?"npm install"
-"python -m pytest -q"   鈫?"python -m pytest"
-"uv run ruff check ."   鈫?"uv run ruff"
-"node -e 'code'"        鈫?"node -e"
-"cd dir && npm test"    鈫?["cd", "npm test"]
+# 命令签名提取示例
+"npm install"           → "npm install"
+"python -m pytest -q"   → "python -m pytest"
+"uv run ruff check ."   → "uv run ruff"
+"node -e 'code'"        → "node -e"
+"cd dir && npm test"    → ["cd", "npm test"]
 ```
 
-瀵逛簬瀹夊叏鏁忔劅鐨勫懡浠わ紙python銆乶ode銆乶pm銆乽v 绛夛級锛岀鍚嶄細鍖呭惈瀛愬懡浠や互閬垮厤杩囧害鎺堟潈銆?
-## 鍐呭鍧楄浆鎹?
-ACP 瀹氫箟浜嗗绉嶅唴瀹瑰潡绫诲瀷锛宍deepagents-acp` 鐨?`utils.py` 璐熻矗灏嗗畠浠浆鎹负 LangChain 鐨勫妯℃€佹牸寮忥細
+对于安全敏感的命令（python、node、npm、uv 等），签名会包含子命令以避免过度授权。
 
-| ACP 鍐呭鍧?| 杞崲缁撴灉 |
+## 内容块转换
+
+ACP 定义了多种内容块类型，`deepagents-acp` 的 `utils.py` 负责将它们转换为 LangChain 的多模态格式：
+
+| ACP 内容块 | 转换结果 |
 |------------|---------|
 | `TextContentBlock` | `{"type": "text", "text": "..."}` |
 | `ImageContentBlock` | `{"type": "image_url", "image_url": {"url": "data:...;base64,..."}}` |
-| `ResourceContentBlock` | 鏂囨湰鎻忚堪锛堝惈 URI銆佹弿杩般€丮IME 绫诲瀷锛?|
-| `EmbeddedResourceContentBlock` | 鍐呰仈鏂囨湰鎴?base64 鏁版嵁 |
-| `AudioContentBlock` | 鏆備笉鏀寔锛堟姏鍑?`NotImplementedError`锛?|
+| `ResourceContentBlock` | 文本描述（含 URI、描述、MIME 类型） |
+| `EmbeddedResourceContentBlock` | 内联文本或 base64 数据 |
+| `AudioContentBlock` | 暂不支持（抛出 `NotImplementedError`） |
 
-## 涓?MCP 鐨勫叧绯?
-ACP 鍜?MCP (Model Context Protocol) 鏄簰琛ョ殑鍗忚锛?
-- MCP锛氭爣鍑嗗寲 LLM 涓庡閮ㄥ伐鍏?鏁版嵁婧愪箣闂寸殑閫氫俊锛圓gent 鈫?宸ュ叿锛?- ACP锛氭爣鍑嗗寲缂栬緫鍣ㄤ笌 AI Agent 涔嬮棿鐨勯€氫俊锛堢紪杈戝櫒 鈫?Agent锛?
-<pre class="mermaid">
+## 与 MCP 的关系
+
+ACP 和 MCP (Model Context Protocol) 是互补的协议：
+
+- MCP：标准化 LLM 与外部工具/数据源之间的通信（Agent ↔ 工具）
+- ACP：标准化编辑器与 AI Agent 之间的通信（编辑器 ↔ Agent）
+
+```mermaid
 graph LR
-    E["馃枼锔?缂栬緫鍣?br/>(Zed, IDE)"] <-->|ACP| A["馃 Agent<br/>(Deep Agents)"] <-->|MCP| T["馃敡 宸ュ叿/鏁版嵁<br/>(澶栭儴鏈嶅姟)"]
+    E["🖥️ 编辑器<br/>(Zed, IDE)"] <-->|ACP| A["🤖 Agent<br/>(Deep Agents)"] <-->|MCP| T["🔧 工具/数据<br/>(外部服务)"]
 
     style E fill:#e8f4fd,stroke:#4a90d9
     style A fill:#f0f7e8,stroke:#6ab04c
     style T fill:#fff3e0,stroke:#f5a623
-</pre>
+```
 
-鍦?Deep Agents 涓紝`new_session` 鏂规硶鎺ュ彈 `mcp_servers` 鍙傛暟锛屽厑璁稿鎴风浼犲叆 MCP 鏈嶅姟鍣ㄩ厤缃紝Agent 鍙互鍒╃敤杩欎簺澶栭儴宸ュ叿鏉ュ寮鸿兘鍔涖€?
-## 渚濊禆鍏崇郴
+在 Deep Agents 中，`new_session` 方法接受 `mcp_servers` 参数，允许客户端传入 MCP 服务器配置，Agent 可以利用这些外部工具来增强能力。
+
+## 依赖关系
 
 ```
 deepagents-acp
-鈹溾攢鈹€ agent-client-protocol >= 0.8.0   # ACP Python SDK
-鈹溾攢鈹€ deepagents                        # Deep Agents SDK (LangGraph-based)
-鈹斺攢鈹€ python-dotenv >= 1.2.1            # 鐜鍙橀噺绠＄悊
+├── agent-client-protocol >= 0.8.0   # ACP Python SDK
+├── deepagents                        # Deep Agents SDK (LangGraph-based)
+└── python-dotenv >= 1.2.1            # 环境变量管理
 ```
 
-## 鍙傝€冭祫鏂?
-- [ACP 鍗忚瑙勮寖](https://agentclientprotocol.com/protocol/overview) - 鍗忚瀹屾暣瀹氫箟
-- [ACP Python SDK](https://github.com/agentclientprotocol/python-sdk) - Python 瀹炵幇
-- [Deep Agents 鏂囨。](https://docs.langchain.com/oss/python/deepagents/overview) - SDK 鏂囨。
-- [Zed 缂栬緫鍣╙(https://zed.dev/) - 鐩墠涓昏鐨?ACP 瀹㈡埛绔疄鐜?
+## 参考资料
+
+- [ACP 协议规范](https://agentclientprotocol.com/protocol/overview) - 协议完整定义
+- [ACP Python SDK](https://github.com/agentclientprotocol/python-sdk) - Python 实现
+- [Deep Agents 文档](https://docs.langchain.com/oss/python/deepagents/overview) - SDK 文档
+- [Zed 编辑器](https://zed.dev/) - 目前主要的 ACP 客户端实现

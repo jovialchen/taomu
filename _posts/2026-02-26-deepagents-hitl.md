@@ -1,7 +1,7 @@
 ﻿---
 layout: post
 date: 2026-02-26
-title: Deep Agents HITL 鏈哄埗锛氫汉宸ュ鎵逛腑鏂殑瀹屾暣瀹炵幇
+title: Deep Agents HITL 
 categories: tech_coding
 tags:
   - machine_learning
@@ -10,65 +10,151 @@ tags:
   - DeepAgents
 ---
 
-## Deep Agents Human-in-the-Loop (HITL) 鏈哄埗璇﹁В
 
-## 姒傝堪
+## 概述
 
-Deep Agents 鐨?Human-in-the-Loop (HITL) 鏈哄埗鍏佽鍦?Agent 鎵ц宸ュ叿璋冪敤涔嬪墠鏆傚仠鎵ц锛岀瓑寰呬汉宸ュ鎵广€傝繖鏄竴涓叧閿殑瀹夊叏鏈哄埗锛岀壒鍒槸鍦ㄦ秹鍙婃枃浠跺啓鍏ャ€丼hell 鍛戒护鎵ц銆佺綉缁滆姹傜瓑鍏锋湁鍓綔鐢ㄧ殑鎿嶄綔鏃躲€?
-HITL 鐨勬牳蹇冨疄鐜颁緷璧栦簬锛?1. **`HumanInTheLoopMiddleware`** 鈥?鏉ヨ嚜 `langchain.agents.middleware`锛屼綔涓?Middleware 鏍堢殑鏈€鍚庝竴灞?2. **LangGraph `interrupt` / `Command(resume=...)` 鏈哄埗** 鈥?搴曞眰鐨勬殏鍋?鎭㈠鍘熻
-3. **`InterruptOnConfig`** 鈥?姣忎釜宸ュ叿鐨勪腑鏂厤缃紙鍏佽鐨勫喅绛栫被鍨嬨€佹弿杩扮瓑锛?
-<pre class="mermaid">
+Deep Agents 的 Human-in-the-Loop (HITL) 机制允许在 Agent 执行工具调用之前暂停执行，等待人工审批。这是一个关键的安全机制，特别是在涉及文件写入、Shell 命令执行、网络请求等具有副作用的操作时。
+
+HITL 的核心实现依赖于：
+1. **`HumanInTheLoopMiddleware`** — 来自 `langchain.agents.middleware`，作为 Middleware 栈的最后一层
+2. **LangGraph `interrupt` / `Command(resume=...)` 机制** — 底层的暂停/恢复原语
+3. **`InterruptOnConfig`** — 每个工具的中断配置（允许的决策类型、描述等）
+
+```mermaid
 graph LR
-    A[LLM 鐢熸垚 Tool Call] --> B{interrupt_on 閰嶇疆?}
+    A[LLM 生成 Tool Call] --> B{interrupt_on 配置?}
     B -- "True / InterruptOnConfig" --> C[HumanInTheLoopMiddleware]
-    C --> D[LangGraph interrupt 鏆傚仠]
-    D --> E[绛夊緟浜哄伐鍐崇瓥]
-    E --> F{鍐崇瓥绫诲瀷}
-    F -- approve --> G[鎵ц Tool Call]
-    F -- reject --> H[杩斿洖鎷掔粷娑堟伅缁?LLM]
-    F -- edit --> I[淇敼鍙傛暟鍚庢墽琛宂
-    B -- "False / 鏈厤缃? --> G
-</pre>
+    C --> D[LangGraph interrupt 暂停]
+    D --> E[等待人工决策]
+    E --> F{决策类型}
+    F -- approve --> G[执行 Tool Call]
+    F -- reject --> H[返回拒绝消息给 LLM]
+    F -- edit --> I[修改参数后执行]
+    B -- "False / 未配置" --> G
+```
 
-## 鏍稿績鏁版嵁妯″瀷
+## 核心数据模型
 
-### `interrupt_on` 閰嶇疆
+### `interrupt_on` 配置
 
-`interrupt_on` 鏄竴涓瓧鍏革紝鏄犲皠宸ュ叿鍚嶇О鍒颁腑鏂厤缃細
+`interrupt_on` 是一个字典，映射工具名称到中断配置：
 
 ```python
 interrupt_on: dict[str, bool | InterruptOnConfig] | None
 ```
 
-閰嶇疆鏂瑰紡鏈変笁绉嶏細
+配置方式有三种：
 
-| 閰嶇疆鍊?| 鍚箟 | 榛樿 `allowed_decisions` |
+| 配置值 | 含义 | 默认 `allowed_decisions` |
 |--------|------|------------------------|
-| `True` | 鍚敤涓柇锛屼娇鐢ㄩ粯璁ら厤缃?| `["approve", "edit", "reject"]` |
-| `False` | 鏄惧紡绂佺敤璇ュ伐鍏风殑涓柇 | 鈥?|
-| `InterruptOnConfig` | 绮剧粏鎺у埗 | 鑷畾涔?|
+| `True` | 启用中断，使用默认配置 | `["approve", "edit", "reject"]` |
+| `False` | 显式禁用该工具的中断 | — |
+| `InterruptOnConfig` | 精细控制 | 自定义 |
 
 ### `InterruptOnConfig`
 
 ```python
 class InterruptOnConfig(TypedDict):
-    allowed_decisions: list[str]  # "approve", "edit", "reject" 鐨勫瓙闆?    description: str | Callable   # 涓柇鏃舵樉绀虹殑鎻忚堪淇℃伅
+    allowed_decisions: list[str]  # "approve", "edit", "reject" 的子集
+    description: str | Callable   # 中断时显示的描述信息
 ```
 
-### 閰嶇疆绀轰緥
+### 配置示例
 
 ```python
-## 绀轰緥 1: 绠€鍗曞竷灏旈厤缃?interrupt_on = {
-    "sample_tool": True,       # 鍚敤锛岄粯璁?approve/edit/reject
-    "get_weather": False,      # 绂佺敤锛岃嚜鍔ㄦ墽琛?    "get_soccer_scores": {"allowed_decisions": ["approve", "reject"]},  # 鍙厑璁告壒鍑嗘垨鎷掔粷锛屼笉鍏佽缂栬緫
+# 示例 1: 简单布尔配置
+interrupt_on = {
+    "sample_tool": True,       # 启用，默认 approve/edit/reject
+    "get_weather": False,      # 禁用，自动执行
+    "get_soccer_scores": {"allowed_decisions": ["approve", "reject"]},  # 只允许批准或拒绝，不允许编辑
+}
+
+# 示例 2: CLI 中的完整配置（带描述回调）
+interrupt_on = {
+    "execute": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_execute_description,
+    },
+    "write_file": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_write_file_description,
+    },
+    "edit_file": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_edit_file_description,
+    },
+    "web_search": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_web_search_description,
+    },
+    "fetch_url": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_fetch_url_description,
+    },
+    "task": {
+        "allowed_decisions": ["approve", "reject"],
+        "description": _format_task_description,
+    },
 }
 ```
 
-## Middleware 鏍堜腑鐨勪綅缃?
-`HumanInTheLoopMiddleware` 濮嬬粓鏄?Middleware 鏍堢殑**鏈€鍚庝竴灞?*銆傝繖鎰忓懗鐫€瀹冨湪鎵€鏈夊叾浠?Middleware 澶勭悊瀹屾瘯鍚庢墠浠嬪叆锛岀‘淇濇嫤鎴殑鏄渶缁堣鎵ц鐨勫伐鍏疯皟鐢ㄣ€?
-<pre class="mermaid">
+### 中断值结构 (Interrupt Value)
+
+当 HITL 中断发生时，LangGraph 的 `state.interrupts` 包含以下结构：
+
+```python
+# state.interrupts[0].value 的结构
+{
+    "action_requests": [
+        {
+            "name": "execute",           # 工具名称
+            "args": {"command": "ls -la"} # 工具参数
+        },
+        {
+            "name": "write_file",
+            "args": {"file_path": "/tmp/test.py", "content": "..."}
+        }
+    ],
+    "review_configs": [
+        {
+            "action_name": "execute",
+            "allowed_decisions": ["approve", "reject"]
+        },
+        {
+            "action_name": "write_file",
+            "allowed_decisions": ["approve", "edit", "reject"]
+        }
+    ]
+}
+```
+
+### 恢复决策结构 (Resume Decisions)
+
+```python
+# 恢复时传入的决策
+Command(resume={
+    "decisions": [
+        {"type": "approve"},                          # 批准
+        {"type": "reject"},                           # 拒绝
+        {"type": "reject", "message": "不允许执行"},   # 带消息的拒绝
+        {"type": "edit", "args": {"command": "ls"}},  # 编辑参数后批准
+    ]
+})
+
+# 多个 interrupt 时，按 interrupt_id 分组
+Command(resume={
+    "<interrupt_id_1>": {"decisions": [{"type": "approve"}]},
+    "<interrupt_id_2>": {"decisions": [{"type": "reject"}]},
+})
+```
+
+## Middleware 栈中的位置
+
+`HumanInTheLoopMiddleware` 始终是 Middleware 栈的**最后一层**。这意味着它在所有其他 Middleware 处理完毕后才介入，确保拦截的是最终要执行的工具调用。
+
+```mermaid
 graph TB
-    subgraph "涓讳唬鐞?Middleware 鏍?
+    subgraph "主代理 Middleware 栈"
         M1[TodoListMiddleware] --> M2[MemoryMiddleware]
         M2 --> M3[SkillsMiddleware]
         M3 --> M4[FilesystemMiddleware]
@@ -76,18 +162,19 @@ graph TB
         M5 --> M6[SummarizationMiddleware]
         M6 --> M7[AnthropicPromptCachingMiddleware]
         M7 --> M8[PatchToolCallsMiddleware]
-        M8 --> M9[鐢ㄦ埛鑷畾涔?Middleware]
-        M9 --> M10["HumanInTheLoopMiddleware 鈫?鏈€鍚庝竴灞?]
+        M8 --> M9[用户自定义 Middleware]
+        M9 --> M10["HumanInTheLoopMiddleware ← 最后一层"]
     end
 
     style M10 fill:#ff6b6b,color:#fff
-</pre>
+```
 
-### 涓轰粈涔堟槸鏈€鍚庝竴灞傦紵
+### 为什么是最后一层？
 
-鍦?`create_deep_agent()` 涓紝HITL Middleware 鐨勬坊鍔犻€昏緫濡備笅锛?
+在 `create_deep_agent()` 中，HITL Middleware 的添加逻辑如下：
+
 ```python
-## graph.py 涓殑鍏抽敭浠ｇ爜
+# graph.py 中的关键代码
 deepagent_middleware: list[AgentMiddleware] = [
     TodoListMiddleware(),
     MemoryMiddleware(...),
@@ -99,95 +186,108 @@ deepagent_middleware: list[AgentMiddleware] = [
     PatchToolCallsMiddleware(),
 ]
 
-## 鐢ㄦ埛鑷畾涔?middleware 鍦?HITL 涔嬪墠
+# 用户自定义 middleware 在 HITL 之前
 if middleware:
     deepagent_middleware.extend(middleware)
 
-## HITL 濮嬬粓鏈€鍚庢坊鍔?if interrupt_on is not None:
+# HITL 始终最后添加
+if interrupt_on is not None:
     deepagent_middleware.append(HumanInTheLoopMiddleware(interrupt_on=interrupt_on))
 ```
 
-杩欎釜椤哄簭淇濊瘉浜嗭細
-1. 鎵€鏈夊伐鍏锋敞鍐岋紙FilesystemMiddleware銆丼ubAgentMiddleware 绛夛級宸插畬鎴?2. 鎵€鏈?Prompt 淇敼锛圡emoryMiddleware銆丼killsMiddleware 绛夛級宸插簲鐢?3. HITL 鎷︽埅鐨勬槸瀹屾暣鐨勩€佹渶缁堢殑宸ュ叿璋冪敤鍒楄〃
+这个顺序保证了：
+1. 所有工具注册（FilesystemMiddleware、SubAgentMiddleware 等）已完成
+2. 所有 Prompt 修改（MemoryMiddleware、SkillsMiddleware 等）已应用
+3. HITL 拦截的是完整的、最终的工具调用列表
 
-## 瀹屾暣鎵ц娴佺▼
+## 完整执行流程
 
-### 鍩烘湰娴佺▼
+### 基本流程
 
-<pre class="mermaid">
+```mermaid
 sequenceDiagram
-    participant User as 鐢ㄦ埛
+    participant User as 用户
     participant Agent as Deep Agent
     participant LLM as LLM
     participant HITL as HumanInTheLoopMiddleware
     participant Tool as Tool Node
 
     User->>Agent: invoke({"messages": [HumanMessage]})
-    Agent->>LLM: 鎺ㄧ悊璇锋眰
+    Agent->>LLM: 推理请求
     LLM-->>Agent: AIMessage + ToolCalls
 
-    Note over Agent,HITL: HITL 妫€鏌ユ瘡涓?ToolCall
+    Note over Agent,HITL: HITL 检查每个 ToolCall
 
-    loop 瀵规瘡涓?ToolCall
-        Agent->>HITL: 妫€鏌?interrupt_on 閰嶇疆
-        alt 宸ュ叿鍦?interrupt_on 涓笖鍊间负 True/Config
-            HITL->>HITL: 鏀堕泦闇€瑕佸鎵圭殑 ToolCalls
-        else 宸ュ叿涓嶅湪 interrupt_on 涓垨鍊间负 False
-            HITL->>Tool: 鐩存帴鎵ц
-            Tool-->>Agent: ToolMessage 缁撴灉
+    loop 对每个 ToolCall
+        Agent->>HITL: 检查 interrupt_on 配置
+        alt 工具在 interrupt_on 中且值为 True/Config
+            HITL->>HITL: 收集需要审批的 ToolCalls
+        else 工具不在 interrupt_on 中或值为 False
+            HITL->>Tool: 直接执行
+            Tool-->>Agent: ToolMessage 结果
         end
     end
 
-    alt 鏈夐渶瑕佸鎵圭殑 ToolCalls
-        HITL-->>User: interrupt (鏆傚仠鎵ц)
-        Note over User: 鐢ㄦ埛鐪嬪埌瀹℃壒璇锋眰
+    alt 有需要审批的 ToolCalls
+        HITL-->>User: interrupt (暂停执行)
+        Note over User: 用户看到审批请求
         User->>Agent: Command(resume={"decisions": [...]})
 
-        loop 瀵规瘡涓喅绛?            alt approve
-                Agent->>Tool: 鎵ц鍘熷 ToolCall
-                Tool-->>Agent: ToolMessage 缁撴灉
+        loop 对每个决策
+            alt approve
+                Agent->>Tool: 执行原始 ToolCall
+                Tool-->>Agent: ToolMessage 结果
             else reject
-                Agent->>LLM: 杩斿洖鎷掔粷娑堟伅
+                Agent->>LLM: 返回拒绝消息
             else edit
-                Agent->>Tool: 鎵ц淇敼鍚庣殑 ToolCall
-                Tool-->>Agent: ToolMessage 缁撴灉
+                Agent->>Tool: 执行修改后的 ToolCall
+                Tool-->>Agent: ToolMessage 结果
             end
         end
     end
 
-    Agent->>LLM: 缁х画鎺ㄧ悊锛堝甫 ToolMessage 缁撴灉锛?    LLM-->>User: 鏈€缁堝搷搴?</pre>
+    Agent->>LLM: 继续推理（带 ToolMessage 结果）
+    LLM-->>User: 最终响应
+```
 
-### 骞惰宸ュ叿璋冪敤鐨勫鐞?
-褰?LLM 鍦ㄤ竴娆″搷搴斾腑鍙戝嚭澶氫釜宸ュ叿璋冪敤鏃讹紝HITL 浼氬皢闇€瑕佸鎵圭殑璋冪敤**鎵归噺鏀堕泦**锛屼竴娆℃€у憟鐜扮粰鐢ㄦ埛锛?
-<pre class="mermaid">
+### 并行工具调用的处理
+
+当 LLM 在一次响应中发出多个工具调用时，HITL 会将需要审批的调用**批量收集**，一次性呈现给用户：
+
+```mermaid
 graph TD
-    A[LLM 杩斿洖 3 涓?ToolCalls] --> B{閫愪釜妫€鏌?interrupt_on}
+    A[LLM 返回 3 个 ToolCalls] --> B{逐个检查 interrupt_on}
 
-    B --> C1["sample_tool 鈫?True 鈫?闇€瑕佸鎵?]
-    B --> C2["get_weather 鈫?False 鈫?鐩存帴鎵ц"]
-    B --> C3["get_soccer_scores 鈫?Config 鈫?闇€瑕佸鎵?]
+    B --> C1["sample_tool → True → 需要审批"]
+    B --> C2["get_weather → False → 直接执行"]
+    B --> C3["get_soccer_scores → Config → 需要审批"]
 
-    C2 --> D[get_weather 绔嬪嵆鎵ц]
+    C2 --> D[get_weather 立即执行]
 
-    C1 --> E["鎵归噺涓柇: action_requests = [sample_tool, get_soccer_scores]"]
+    C1 --> E["批量中断: action_requests = [sample_tool, get_soccer_scores]"]
     C3 --> E
 
-    E --> F[鐢ㄦ埛涓€娆℃€у鎵规墍鏈夊緟瀹℃壒鐨勮皟鐢╙
+    E --> F[用户一次性审批所有待审批的调用]
     F --> G["Command(resume={decisions: [approve, approve]})"]
-    G --> H[sample_tool 鎵ц]
-    G --> I[get_soccer_scores 鎵ц]
-</pre>
+    G --> H[sample_tool 执行]
+    G --> I[get_soccer_scores 执行]
+```
 
-鍏抽敭鐐癸細
-- **鏈厤缃腑鏂殑宸ュ叿**锛堝 `get_weather: False`锛変細**绔嬪嵆鎵ц**锛屼笉绛夊緟瀹℃壒
-- **闇€瑕佸鎵圭殑宸ュ叿**浼氳**鎵归噺鏀堕泦**鍒颁竴涓?interrupt 涓?- 鐢ㄦ埛鐨勫喅绛栨暟閲忓繀椤讳笌 `action_requests` 鏁伴噺涓€鑷?
-## 瀛愪唬鐞?(SubAgent) 涓殑 HITL
+关键点：
+- **未配置中断的工具**（如 `get_weather: False`）会**立即执行**，不等待审批
+- **需要审批的工具**会被**批量收集**到一个 interrupt 中
+- 用户的决策数量必须与 `action_requests` 数量一致
 
-### 閰嶇疆缁ф壙
+## 子代理 (SubAgent) 中的 HITL
 
-HITL 閰嶇疆鍦ㄥ瓙浠ｇ悊涓湁涓ょ妯″紡锛?
-#### 1. 缁ф壙鐖朵唬鐞嗛厤缃?
-褰撳瓙浠ｇ悊娌℃湁鎸囧畾鑷繁鐨?`interrupt_on` 鏃讹紝浣跨敤鐖朵唬鐞嗙殑閰嶇疆锛?
+### 配置继承
+
+HITL 配置在子代理中有两种模式：
+
+#### 1. 继承父代理配置
+
+当子代理没有指定自己的 `interrupt_on` 时，使用父代理的配置：
+
 ```python
 agent = create_deep_agent(
     model=model,
@@ -199,12 +299,13 @@ agent = create_deep_agent(
     },
     checkpointer=checkpointer,
 )
-## general-purpose 瀛愪唬鐞嗚嚜鍔ㄧ户鎵夸笂杩?interrupt_on 閰嶇疆
+# general-purpose 子代理自动继承上述 interrupt_on 配置
 ```
 
-#### 2. 瀛愪唬鐞嗚嚜瀹氫箟閰嶇疆
+#### 2. 子代理自定义配置
 
-瀛愪唬鐞嗗彲浠ヨ鐩栫埗浠ｇ悊鐨?HITL 閰嶇疆锛?
+子代理可以覆盖父代理的 HITL 配置：
+
 ```python
 agent = create_deep_agent(
     model=model,
@@ -221,7 +322,8 @@ agent = create_deep_agent(
             "description": "A subagent that can handle all sorts of tasks",
             "system_prompt": "You are a task handler.",
             "tools": [sample_tool, get_weather, get_soccer_scores],
-            # 瀛愪唬鐞嗚嚜瀹氫箟锛歴ample_tool 涓嶉渶瑕佸鎵癸紝get_weather 闇€瑕佸鎵?            "interrupt_on": {
+            # 子代理自定义：sample_tool 不需要审批，get_weather 需要审批
+            "interrupt_on": {
                 "sample_tool": False,
                 "get_weather": True,
                 "get_soccer_scores": True,
@@ -231,28 +333,94 @@ agent = create_deep_agent(
 )
 ```
 
-## CLI 涓殑 HITL 瀹炵幇
+### 子代理 HITL 的内部实现
 
-Deep Agents CLI (`deepagents-cli`) 鎻愪緵浜嗕袱绉?HITL 浜や簰妯″紡锛氫氦浜掑紡 (Textual TUI) 鍜岄潪浜や簰寮忋€?
-### 浜や簰寮忔ā寮?(Textual TUI)
+```mermaid
+graph TB
+    subgraph "create_deep_agent()"
+        A[interrupt_on 配置] --> B{构建 general-purpose 子代理}
+        A --> C{构建自定义子代理}
 
-鍦ㄤ氦浜掑紡妯″紡涓嬶紝CLI 浣跨敤 Textual 妗嗘灦娓叉煋瀹℃壒瀵硅瘽妗嗭細
+        B --> D["gp_middleware 末尾添加<br/>HumanInTheLoopMiddleware(interrupt_on=父配置)"]
 
-<pre class="mermaid">
+        C --> E{子代理有自己的 interrupt_on?}
+        E -- 是 --> F["使用子代理自己的 interrupt_on"]
+        E -- 否 --> G["不添加 HITL Middleware"]
+
+        A --> H{构建主代理}
+        H --> I["deepagent_middleware 末尾添加<br/>HumanInTheLoopMiddleware(interrupt_on=父配置)"]
+    end
+```
+
+在 `graph.py` 中的具体实现：
+
+```python
+# General-purpose 子代理的 middleware 构建
+gp_middleware = [
+    TodoListMiddleware(),
+    FilesystemMiddleware(backend=backend),
+    SummarizationMiddleware(...),
+    AnthropicPromptCachingMiddleware(...),
+    PatchToolCallsMiddleware(),
+]
+if interrupt_on is not None:
+    gp_middleware.append(HumanInTheLoopMiddleware(interrupt_on=interrupt_on))
+
+# 自定义子代理在 SubAgentMiddleware._get_subagents() 中处理
+# subagents.py 中的逻辑：
+interrupt_on = spec.get("interrupt_on")
+if interrupt_on:
+    middleware.append(HumanInTheLoopMiddleware(interrupt_on=interrupt_on))
+```
+
+### 子代理中断的传播
+
+子代理的中断会**向上传播**到父代理的 LangGraph 图中。由于 `subgraphs=True` 的流式配置，父代理可以捕获子代理的中断事件：
+
+```mermaid
+sequenceDiagram
+    participant User as 用户
+    participant Main as 主代理
+    participant Sub as 子代理
+    participant HITL as HITL Middleware
+
+    User->>Main: "使用 task_handler 执行任务"
+    Main->>Sub: task(description="...", subagent_type="task_handler")
+    Sub->>Sub: LLM 推理 → ToolCalls
+    Sub->>HITL: 检查子代理的 interrupt_on
+    HITL-->>Main: interrupt 向上传播
+    Main-->>User: 暂停，等待审批
+
+    User->>Main: Command(resume={"decisions": [...]})
+    Main->>Sub: 恢复子代理执行
+    Sub->>Sub: 执行已批准的工具
+    Sub-->>Main: 返回结果 (ToolMessage)
+    Main-->>User: 最终响应
+```
+
+## CLI 中的 HITL 实现
+
+Deep Agents CLI (`deepagents-cli`) 提供了两种 HITL 交互模式：交互式 (Textual TUI) 和非交互式。
+
+### 交互式模式 (Textual TUI)
+
+在交互式模式下，CLI 使用 Textual 框架渲染审批对话框：
+
+```mermaid
 graph TD
-    subgraph "TextualUIAdapter 娴佸紡澶勭悊"
-        A[agent.astream] --> B{stream chunk 绫诲瀷}
-        B -- "updates + __interrupt__" --> C[瑙ｆ瀽 HITLRequest]
-        B -- "messages" --> D[娓叉煋 AI/Tool 娑堟伅]
+    subgraph "TextualUIAdapter 流式处理"
+        A[agent.astream] --> B{stream chunk 类型}
+        B -- "updates + __interrupt__" --> C[解析 HITLRequest]
+        B -- "messages" --> D[渲染 AI/Tool 消息]
 
         C --> E{session_state.auto_approve?}
-        E -- 鏄?--> F[鑷姩鎵瑰噯鎵€鏈塢
-        E -- 鍚?--> G[鏄剧ず ApprovalMenu]
+        E -- 是 --> F[自动批准所有]
+        E -- 否 --> G[显示 ApprovalMenu]
 
-        G --> H{鐢ㄦ埛閫夋嫨}
+        G --> H{用户选择}
         H -- "1/y: Approve" --> I["ApproveDecision"]
         H -- "2/n: Reject" --> J["RejectDecision"]
-        H -- "3/a: Auto-approve all" --> K["鍚敤 auto_approve + ApproveDecision"]
+        H -- "3/a: Auto-approve all" --> K["启用 auto_approve + ApproveDecision"]
 
         I --> L["Command(resume={decisions})"]
         J --> L
@@ -260,40 +428,59 @@ graph TD
         F --> L
         L --> A
     end
-</pre>
+```
 
-#### ApprovalMenu 缁勪欢
+#### ApprovalMenu 组件
 
-`ApprovalMenu` 鏄竴涓?Textual `Container` 缁勪欢锛屾彁渚涗互涓嬪姛鑳斤細
+`ApprovalMenu` 是一个 Textual `Container` 组件，提供以下功能：
 
-| 蹇嵎閿?| 鎿嶄綔 |
+| 快捷键 | 操作 |
 |--------|------|
-| `1` / `y` / `Enter`(閫変腑 Approve) | 鎵瑰噯鎵€鏈夊緟瀹℃壒鐨勫伐鍏疯皟鐢?|
-| `2` / `n` / `Enter`(閫変腑 Reject) | 鎷掔粷鎵€鏈夊緟瀹℃壒鐨勫伐鍏疯皟鐢?|
-| `3` / `a` / `Enter`(閫変腑 Auto-approve) | 鍚敤鑷姩鎵瑰噯锛堟湰娆′細璇濆唴鎵€鏈夊悗缁皟鐢ㄨ嚜鍔ㄦ壒鍑嗭級 |
-| `e` | 灞曞紑/鎶樺彔 Shell 鍛戒护璇︽儏 |
-| `鈫慲 / `k` | 鍚戜笂绉诲姩閫夋嫨 |
-| `鈫揱 / `j` | 鍚戜笅绉诲姩閫夋嫨 |
+| `1` / `y` / `Enter`(选中 Approve) | 批准所有待审批的工具调用 |
+| `2` / `n` / `Enter`(选中 Reject) | 拒绝所有待审批的工具调用 |
+| `3` / `a` / `Enter`(选中 Auto-approve) | 启用自动批准（本次会话内所有后续调用自动批准） |
+| `e` | 展开/折叠 Shell 命令详情 |
+| `↑` / `k` | 向上移动选择 |
+| `↓` / `j` | 向下移动选择 |
 
-### 闈炰氦浜掑紡妯″紡
+#### 工具特定的审批预览
 
-闈炰氦浜掑紡妯″紡 (`deepagents -n "task"`) 浣跨敤鍩轰簬瑙勫垯鐨勮嚜鍔ㄥ喅绛栵細
+CLI 为不同工具类型提供了专门的审批预览组件：
 
-<pre class="mermaid">
+| 工具 | 预览组件 | 显示内容 |
+|------|---------|---------|
+| `write_file` | `WriteFileApprovalWidget` | 文件路径 + 语法高亮的文件内容 |
+| `edit_file` | `EditFileApprovalWidget` | 文件路径 + 彩色 diff 对比 |
+| `execute` | Shell 命令显示 | 命令文本（可展开/折叠） |
+| 其他工具 | `GenericApprovalWidget` | 参数键值对列表 |
+
+#### 自动批准 (Auto-Approve)
+
+当用户在审批菜单中选择 "Auto-approve all" 后：
+1. `session_state.auto_approve` 设为 `True`
+2. 状态栏更新显示自动批准已启用
+3. 后续所有中断自动以 `ApproveDecision` 响应
+4. 此设置仅在当前会话内有效
+
+### 非交互式模式
+
+非交互式模式 (`deepagents -n "task"`) 使用基于规则的自动决策：
+
+```mermaid
 graph TD
-    A[鏀跺埌 HITL 涓柇] --> B{action_name 鏄?Shell 宸ュ叿?}
+    A[收到 HITL 中断] --> B{action_name 是 Shell 工具?}
 
-    B -- 鍚?--> C["鑷姩鎵瑰噯 鉁?]
+    B -- 否 --> C["自动批准 ✓"]
 
-    B -- 鏄?--> D{鏈?shell_allow_list?}
-    D -- 鍚?--> E["鑷姩鎷掔粷 鉁?br/>Shell commands not permitted"]
+    B -- 是 --> D{有 shell_allow_list?}
+    D -- 否 --> E["自动拒绝 ✗<br/>Shell commands not permitted"]
 
-    D -- 鏄?--> F{鍛戒护鍦?allow-list 涓?}
-    F -- 鏄?--> C
-    F -- 鍚?--> G["鎷掔粷 鉁?br/>Command not in allow-list"]
-</pre>
+    D -- 是 --> F{命令在 allow-list 中?}
+    F -- 是 --> C
+    F -- 否 --> G["拒绝 ✗<br/>Command not in allow-list"]
+```
 
-#### 闈炰氦浜掑紡 HITL 鍐崇瓥閫昏緫
+#### 非交互式 HITL 决策逻辑
 
 ```python
 def _make_hitl_decision(action_request, console):
@@ -309,77 +496,140 @@ def _make_hitl_decision(action_request, console):
         else:
             return {"type": "reject", "message": f"Command '{command}' not in allow-list..."}
 
-    # 闈?Shell 宸ュ叿鑷姩鎵瑰噯
+    # 非 Shell 工具自动批准
     return {"type": "approve"}
 ```
 
-## CLI 涓鎷︽埅鐨勫伐鍏?
-鍦?CLI 鐨勯粯璁ら厤缃腑锛坄auto_approve=False`锛夛紝浠ヤ笅宸ュ叿浼氳Е鍙?HITL 瀹℃壒锛?
-| 宸ュ叿鍚嶇О | 璇存槑 | `allowed_decisions` |
+关键规则：
+- **无 `--shell-allow-list`**：Shell 禁用，其他工具全部自动批准
+- **有 `--shell-allow-list`**：Shell 启用但受限，命令必须在白名单中
+- 支持管道命令检查（`ls | grep` 中的每个命令都必须在白名单中）
+- 命令替换（`$(whoami)`）会被拒绝
+
+#### 迭代限制
+
+非交互式模式有一个安全上限 `_MAX_HITL_ITERATIONS = 50`，防止 Agent 陷入无限重试循环（例如反复尝试被拒绝的命令）。
+
+## CLI 中被拦截的工具
+
+在 CLI 的默认配置中（`auto_approve=False`），以下工具会触发 HITL 审批：
+
+| 工具名称 | 说明 | `allowed_decisions` |
 |----------|------|-------------------|
-| `execute` | Shell 鍛戒护鎵ц | `["approve", "reject"]` |
-| `write_file` | 鍐欏叆鏂囦欢 | `["approve", "reject"]` |
-| `edit_file` | 缂栬緫鏂囦欢 | `["approve", "reject"]` |
-| `web_search` | 缃戠粶鎼滅储 | `["approve", "reject"]` |
-| `fetch_url` | 鑾峰彇 URL 鍐呭 | `["approve", "reject"]` |
-| `task` | 鍚姩瀛愪唬鐞?| `["approve", "reject"]` |
+| `execute` | Shell 命令执行 | `["approve", "reject"]` |
+| `write_file` | 写入文件 | `["approve", "reject"]` |
+| `edit_file` | 编辑文件 | `["approve", "reject"]` |
+| `web_search` | 网络搜索 | `["approve", "reject"]` |
+| `fetch_url` | 获取 URL 内容 | `["approve", "reject"]` |
+| `task` | 启动子代理 | `["approve", "reject"]` |
 
-浠ヤ笅宸ュ叿**涓嶄細**瑙﹀彂 HITL锛堝彧璇绘搷浣滐級锛?- `ls` 鈥?鍒楀嚭鐩綍
-- `read_file` 鈥?璇诲彇鏂囦欢
-- `glob` 鈥?鏂囦欢妯″紡鍖归厤
-- `grep` 鈥?鏂囨湰鍐呭鎼滅储
-- `write_todos` 鈥?绠＄悊寰呭姙鍒楄〃
+以下工具**不会**触发 HITL（只读操作）：
+- `ls` — 列出目录
+- `read_file` — 读取文件
+- `glob` — 文件模式匹配
+- `grep` — 文件内容搜索
+- `write_todos` — 管理待办列表
 
-## Checkpointer 渚濊禆
+## Checkpointer 依赖
 
-HITL 鏈哄埗**蹇呴』**閰嶅悎 LangGraph Checkpointer 浣跨敤銆侰heckpointer 璐熻矗锛?
-1. **鎸佷箙鍖栦腑鏂姸鎬?* 鈥?褰?`interrupt` 鍙戠敓鏃讹紝Agent 鐨勫畬鏁寸姸鎬侊紙娑堟伅鍘嗗彶銆佸緟鎵ц鐨勫伐鍏疯皟鐢ㄧ瓑锛夎淇濆瓨
-2. **鎭㈠鎵ц** 鈥?褰?`Command(resume=...)` 鍒拌揪鏃讹紝浠庝繚瀛樼殑鐘舵€佹仮澶嶆墽琛?3. **绾跨▼闅旂** 鈥?閫氳繃 `thread_id` 纭繚涓嶅悓瀵硅瘽鐨勪腑鏂姸鎬佷簰涓嶅共鎵?
+HITL 机制**必须**配合 LangGraph Checkpointer 使用。Checkpointer 负责：
+
+1. **持久化中断状态** — 当 `interrupt` 发生时，Agent 的完整状态（消息历史、待执行的工具调用等）被保存
+2. **恢复执行** — 当 `Command(resume=...)` 到达时，从保存的状态恢复执行
+3. **线程隔离** — 通过 `thread_id` 确保不同对话的中断状态互不干扰
+
 ```python
 from langgraph.checkpoint.memory import MemorySaver
 
-## 蹇呴』鎻愪緵 checkpointer
+# 必须提供 checkpointer
 agent = create_deep_agent(
     model="claude-sonnet-4-5-20250929",
     tools=[...],
     interrupt_on={"execute": True, "write_file": True},
-    checkpointer=MemorySaver(),  # 蹇呴渶锛?)
+    checkpointer=MemorySaver(),  # 必需！
+)
 
-## 浣跨敤 thread_id 鏍囪瘑瀵硅瘽
+# 使用 thread_id 标识对话
 config = {"configurable": {"thread_id": "my-thread-123"}}
 
-## 绗竴娆¤皟鐢?鈥?鍙兘瑙﹀彂涓柇
-result = agent.invoke({"messages": [HumanMessage("鍐欎竴涓?hello.py")]}, config)
+# 第一次调用 — 可能触发中断
+result = agent.invoke({"messages": [HumanMessage("写一个 hello.py")]}, config)
 
-## 妫€鏌ヤ腑鏂姸鎬?state = agent.get_state(config)
+# 检查中断状态
+state = agent.get_state(config)
 if state.interrupts:
-    # 鎭㈠鎵ц
+    # 恢复执行
     result = agent.invoke(
         Command(resume={"decisions": [{"type": "approve"}]}),
         config
     )
 ```
 
-## 瀹夊叏寤鸿
+## 安全建议
 
-### 浣曟椂鍚敤 HITL
+### 何时启用 HITL
 
-| 鍦烘櫙 | 寤鸿 |
+| 场景 | 建议 |
 |------|------|
-| 浣跨敤 `FilesystemBackend`锛堢洿鎺ヨ闂湰鍦版枃浠剁郴缁燂級 | **寮虹儓寤鸿**鍚敤 HITL |
-| 浣跨敤 `LocalShellBackend`锛堟墽琛?Shell 鍛戒护锛?| **蹇呴』**鍚敤 HITL |
-| 浣跨敤 `StateBackend`锛堝唴瀛樹腑鎿嶄綔锛?| 鍙€?|
-| 浣跨敤 `BaseSandbox`锛堟矙绠辩幆澧冿級 | 鍙€夛紝浣嗗缓璁鏁忔劅鎿嶄綔鍚敤 |
-| 鐢熶骇鐜 | 鏍规嵁淇′换绾у埆鍐冲畾 |
+| 使用 `FilesystemBackend`（直接访问本地文件系统） | **强烈建议**启用 HITL |
+| 使用 `LocalShellBackend`（执行 Shell 命令） | **必须**启用 HITL |
+| 使用 `StateBackend`（内存中操作） | 可选 |
+| 使用 `BaseSandbox`（沙箱环境） | 可选，但建议对敏感操作启用 |
+| 生产环境 | 根据信任级别决定 |
 
-### 鏈€浣冲疄璺?
-1. **鏈€灏忔潈闄愬師鍒?* 鈥?鍙闇€瑕佺殑宸ュ叿鍚敤涓柇锛岄伩鍏嶈繃搴﹀鎵瑰鑷寸敤鎴风柌鍔?2. **Shell 鍛戒护濮嬬粓瀹℃壒** 鈥?`execute` 宸ュ叿鍙互缁曡繃鏂囦欢绯荤粺闄愬埗锛屽簲濮嬬粓鍚敤 HITL
-3. **闈炰氦浜掑紡浣跨敤鐧藉悕鍗?* 鈥?鍦?CI/CD 绛夐潪浜や簰寮忓満鏅腑锛屼娇鐢?`--shell-allow-list` 闄愬埗鍏佽鐨勫懡浠?4. **瀛愪唬鐞嗛厤缃?* 鈥?瀛愪唬鐞嗗彲浠ユ湁鏇村鏉炬垨鏇翠弗鏍肩殑 HITL 閰嶇疆锛屾牴鎹叾鑱岃矗璋冩暣
+### 最佳实践
 
----
+1. **最小权限原则** — 只对需要的工具启用中断，避免过度审批导致用户疲劳
+2. **Shell 命令始终审批** — `execute` 工具可以绕过文件系统限制，应始终启用 HITL
+3. **非交互式使用白名单** — 在 CI/CD 等非交互式场景中，使用 `--shell-allow-list` 限制允许的命令
+4. **子代理配置** — 子代理可以有更宽松或更严格的 HITL 配置，根据其职责调整
 
-**鏈郴鍒楁枃绔狅細**
-- [Deep Agents 鏋舵瀯鍏ㄦ櫙](/blog/2026/02/26/deepagents-architecture/)
-- [Deep Agents Human-in-the-Loop 鏈哄埗璇﹁В](/blog/2026/02/26/deepagents-hitl/)锛堟湰鏂囷級
-- [Deep Agents Memory 鏈哄埗璇﹁В](/blog/2026/02/26/deepagents-memory/)
-- [Deep Agents General-Purpose SubAgent 璇﹁В](/blog/2026/02/26/deepagents-subagent/)
+## 完整端到端示例
+
+```python
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import Command
+
+# 创建带 HITL 的 Agent
+agent = create_deep_agent(
+    model="claude-sonnet-4-5-20250929",
+    interrupt_on={
+        "execute": True,                                    # Shell 命令需要审批
+        "write_file": True,                                 # 文件写入需要审批
+        "edit_file": {"allowed_decisions": ["approve", "reject"]},  # 文件编辑只能批准或拒绝
+        "read_file": False,                                 # 文件读取不需要审批
+    },
+    checkpointer=MemorySaver(),
+)
+
+thread_id = "example-thread"
+config = {"configurable": {"thread_id": thread_id}}
+
+# 第一次调用
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "创建一个 Python 项目结构"}]},
+    config,
+)
+
+# 检查是否有中断
+state = agent.get_state(config)
+while state.interrupts:
+    interrupt_value = state.interrupts[0].value
+    action_requests = interrupt_value["action_requests"]
+    review_configs = interrupt_value["review_configs"]
+
+    # 显示待审批的操作
+    for req, cfg in zip(action_requests, review_configs):
+        print(f"工具: {req['name']}, 参数: {req['args']}")
+        print(f"允许的决策: {cfg['allowed_decisions']}")
+
+    # 做出决策（这里全部批准）
+    decisions = [{"type": "approve"} for _ in action_requests]
+    result = agent.invoke(Command(resume={"decisions": decisions}), config)
+
+    # 再次检查是否有新的中断
+    state = agent.get_state(config)
+
+print("执行完成！")
+```
