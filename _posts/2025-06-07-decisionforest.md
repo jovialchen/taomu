@@ -1,6 +1,11 @@
 ﻿---
+layout: post
+date: 2025-06-07
+title: "随机森林回归"
 type: Supporting
-
+categories: tech_coding
+tags:
+  - machine_learning
 ---
 
 ## 3. 闅忔満妫灄鍥炲綊

@@ -1,6 +1,8 @@
 ---
+layout: post
+date: 2026-02-03
+title: "我和我的 AI 助理 Sparkle"
 type: Blog
-create_date: 2026-02-03
 categories: just_fun
 tags:
   - 我的日常

@@ -1,5 +1,7 @@
 ---
-create_date: 2026-02-21
+layout: post
+date: 2026-02-21
+title: "AI Assisted Development And Agent Summary"
 type: Research
 source:
   - Anna Meng
