@@ -1,7 +1,7 @@
 ﻿---
 layout: post
 date: 2026-02-27
-title: "Agent Client Protocol (ACP) in Deepagents
+title: "Agent Client Protocol (ACP) in Deepagents"
 categories: tech_coding
 tags:
   - DeepAgents
