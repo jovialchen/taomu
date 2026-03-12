@@ -1,7 +1,7 @@
 ﻿---
 layout: post
 date: 2026-03-05
-title: "Deep Agents 涓殑 Hook 鏈哄埗璇﹁В"
+title: "Agent Hook"
 categories: tech_coding
 tags:
   - LLM
@@ -10,315 +10,111 @@ tags:
   - ProgrammingLanguage/Python
 ---
 
-## Deep Agents 涓殑 Hook 鏈哄埗璇﹁В
-
-> **鎽樿锛?* Hook锛堥挬瀛愶級鏄竴绉嶈蒋浠惰璁℃ā寮忥紝鍏佽寮€鍙戣€呭湪绋嬪簭鎵ц鐨勭壒瀹氶樁娈垫彃鍏ヨ嚜瀹氫箟閫昏緫锛岃€屾棤闇€淇敼鏍稿績浠ｇ爜銆傛湰鏂囨繁鍏ュ垎鏋?Deep Agents 椤圭洰涓殑 Hook 鏋舵瀯鍜屽疄鐜扮粏鑺傘€?
----
-
-## 1. 浠€涔堟槸 Hook锛?
-**Hook锛堥挬瀛愶級** 鏄竴绉嶈蒋浠惰璁℃ā寮忥紝鍏佽寮€鍙戣€呭湪绋嬪簭鎵ц鐨勭壒瀹氶樁娈垫彃鍏ヨ嚜瀹氫箟閫昏緫锛岃€屾棤闇€淇敼鏍稿績浠ｇ爜銆侶ook 鎻愪緵浜嗕竴绉?*鏉捐€﹀悎鐨勬墿灞曟満鍒?*锛屼娇寰楁鏋跺彲浠ュ湪棰勫畾涔夌殑鐢熷懡鍛ㄦ湡鐐逛笂璋冪敤鐢ㄦ埛鎻愪緵鐨勪唬鐮併€?
-### Hook 鐨勬牳蹇冪壒鐐?
-- **鎷︽埅鑳藉姏**锛氬湪鐗瑰畾鎵ц鐐瑰墠鍚庢彃鍏ラ€昏緫
-- **鍔ㄦ€佷慨鏀?*锛氬彲浠ヤ慨鏀硅緭鍏ュ弬鏁般€佽繑鍥炲€兼垨鎵ц娴佺▼
-- **鐘舵€佹寔涔呭寲**锛氬彲浠ュ湪澶氭璋冪敤涔嬮棿缁存姢鐘舵€?- **缁勫悎鎬?*锛氬涓?hook 鍙互閾惧紡缁勫悎浣跨敤
-
----
-
-## 2. Deep Agents 椤圭洰涓殑 Hook 鏋舵瀯
-
-鍦?Deep Agents 椤圭洰涓紝hook 鏈哄埗涓昏閫氳繃 **Middleware锛堜腑闂翠欢锛?* 妯″紡瀹炵幇銆傞」鐩殑 middleware 绯荤粺鍩轰簬 LangChain 鐨?`AgentMiddleware` 鍩虹被鏋勫缓銆?
-### 2.1 鏍稿績鍩虹被锛欰gentMiddleware
-
-鎵€鏈?middleware 閮界户鎵胯嚜 `langchain.agents.middleware.types.AgentMiddleware`锛岃绫诲畾涔変簡浠ヤ笅鏍稿績 hook 鏂规硶锛?
-```python
-class AgentMiddleware:
-    def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> Awaitable[ModelResponse]:
-        """鎷︽埅姣忔 LLM 璇锋眰鐨勬牳蹇?hook"""
-        pass
-```
-
-### 2.2 椤圭洰涓殑 Middleware 瀹炵幇
-
-椤圭洰瀹炵幇浜嗗绉?middleware锛屾瘡绉嶉兘鍦ㄧ壒瀹氱殑 hook 鐐逛笂娉ㄥ叆閫昏緫锛?
-| Middleware | 鏂囦欢浣嶇疆 | Hook 鐢ㄩ€?|
-|------------|----------|----------|
-| `FilesystemMiddleware` | `libs/deepagents/deepagents/middleware/filesystem.py` | 鍔ㄦ€佽繃婊ゅ伐鍏枫€佹敞鍏ユ枃浠剁郴缁熺姸鎬?|
-| `SkillsMiddleware` | `libs/deepagents/deepagents/middleware/skills.py` | 娉ㄥ叆 skill 鎸囦护鍒?system prompt |
-| `MemoryMiddleware` | `libs/deepagents/deepagents/middleware/memory.py` | 璺?turn 鐘舵€佺淮鎶?|
-| `SummarizationMiddleware` | `libs/deepagents/deepagents/middleware/summarization.py` | 鎴柇鍘嗗彶娑堟伅銆佹敞鍏ユ憳瑕?|
-| `SubAgentMiddleware` | `libs/deepagents/deepagents/middleware/subagents.py` | 瀛愪唬鐞嗗伐鍏锋敞鍏ュ拰璺敱 |
-
----
-
-## 3. Hook 鐨勫叿浣撳疄鐜板垎鏋?
-### 3.1 FilesystemMiddleware 鐨?Hook 瀹炵幇
-
-`FilesystemMiddleware` 灞曠ず浜嗗浣曞湪 `wrap_model_call` hook 涓姩鎬佷慨鏀硅姹傦細
-
-```python
-## libs/deepagents/deepagents/middleware/filesystem.py
-
-class FilesystemMiddleware(AgentMiddleware[FilesystemState, ToolRuntime]):
-    async def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> ModelResponse:
-        # Hook 鐐?1: 鍔ㄦ€佽繃婊ゅ伐鍏峰垪琛?        tools = list(request.tools)
-        if not self._backend_supports_execute():
-            # 濡傛灉鍚庣涓嶆敮鎸?execute锛岀Щ闄よ宸ュ叿
-            tools = [t for t in tools if t.name != "execute"]
-
-        # Hook 鐐?2: 娉ㄥ叆 system prompt 涓婁笅鏂?        modified_request = self._inject_filesystem_context(request, tools)
-
-        # 璋冪敤涓嬩竴涓?middleware 鎴栫洿鎺ヨ皟鐢ㄦā鍨?        response = await call_next(modified_request)
-
-        # Hook 鐐?3: 澶勭悊鍝嶅簲鍚庣殑閫昏緫
-        return self._process_response(response)
-```
-
-**鍏抽敭璁捐妯″紡**锛?1. **璇锋眰鎷︽埅**锛氬湪 LLM 璋冪敤鍓嶄慨鏀?`ModelRequest`
-2. **宸ュ叿杩囨护**锛氭牴鎹繍琛屾椂鏉′欢鍔ㄦ€佽皟鏁村彲鐢ㄥ伐鍏?3. **涓婁笅鏂囨敞鍏?*锛氬悜 system message 娉ㄥ叆鏂囦欢绯荤粺鐘舵€?4. **鍝嶅簲澶勭悊**锛氬湪杩斿洖鍓嶅鐞嗘ā鍨嬪搷搴?
-### 3.2 SkillsMiddleware 鐨?Hook 瀹炵幇
-
-`SkillsMiddleware` 灞曠ず浜嗗浣曟敞鍏?skill 鎸囦护锛?
-```python
-## libs/deepagents/deepagents/middleware/skills.py
-
-class SkillsMiddleware(AgentMiddleware[SkillsState, ToolRuntime]):
-    async def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> ModelResponse:
-        # 浠庨厤缃殑 sources 鍔犺浇 skill 鍏冩暟鎹?        skills_metadata = await self._load_skills_metadata()
-
-        # 鏋勫缓 skill 鎸囦护鏂囨湰
-        skill_instructions = self._build_skill_instructions(skills_metadata)
-
-        # Hook: 淇敼 system message锛岃拷鍔?skill 鎸囦护
-        modified_request = append_to_system_message(
-            request,
-            skill_instructions,
-            after_heading="### Skills Directory",
-        )
-
-        return await call_next(modified_request)
-```
-
-### 3.3 SummarizationMiddleware 鐨勫鏉?Hook 閫昏緫
-
-杩欐槸鏈€澶嶆潅鐨?middleware锛屽睍绀轰簡澶氶樁娈?hook 澶勭悊锛?
-```python
-## libs/deepagents/deepagents/middleware/summarization.py
-
-class SummarizationMiddleware(AgentMiddleware[SummarizationState, ToolRuntime]):
-    async def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> ModelResponse:
-        # Hook 闃舵 1: Token 璁℃暟鍜屼笂涓嬫枃绐楀彛妫€鏌?        current_tokens = self._count_tokens(request.messages)
-        context_limit = self._get_context_limit(request.model)
-
-        # Hook 闃舵 2: 濡傛灉瓒呭嚭闃堝€硷紝鎵ц鎴柇鍜屾憳瑕?        if current_tokens > self._truncation_threshold:
-            request = self._truncate_old_messages(request)
-            request = self._inject_summary_prompt(request)
-
-        # Hook 闃舵 3: 鍝嶅簲鍚庡鐞嗭紝鏇存柊鎽樿鐘舵€?        response = await call_next(request)
-        self._update_summarization_state(response)
-
-        return response
-```
-
----
-
-## 4. Hook 鐨勭姸鎬佺鐞?
-Middleware 浣跨敤 `AgentState` 鏉ョ淮鎶よ法 turn 鐨勭姸鎬侊細
-
-```python
-## 瀹氫箟鐘舵€佺粨鏋?class FilesystemState(AgentState):
-    files: Annotated[NotRequired[dict[str, FileData]], _file_data_reducer]
-    """Files in the filesystem."""
-
-class SkillsState(AgentState):
-    skills_metadata: NotRequired[Annotated[list[SkillMetadata], PrivateStateAttr]]
-    """List of loaded skill metadata from configured sources."""
-
-class SummarizationState(AgentState):
-    truncation_events: NotRequired[list[dict]]
-    """History of truncation events."""
-```
-
-**鐘舵€佺壒鎬?*锛?- `PrivateStateAttr`锛氭爣璁颁负绉佹湁鐘舵€侊紝涓嶄紶鎾埌鐖?agent
-- `Annotated[..., _reducer]`锛氬畾涔夌姸鎬佸悎骞剁殑 reducer 鍑芥暟
-- `NotRequired`锛氱姸鎬佸瓧娈垫槸鍙€夌殑
-
----
-
-## 5. Hook 鐨勬墽琛屾祦绋?
-<pre class="mermaid">
-flowchart TD
-    A[User Message] --> B[Agent Graph<br/>create_deep_agent]
-    B --> C[FilesystemMiddleware<br/>杩囨护宸ュ叿 + 娉ㄥ叆涓婁笅鏂嘳
-    C --> D[SkillsMiddleware<br/>娉ㄥ叆 skill 鎸囦护]
-    D --> E[SummarizationMiddleware<br/>Token 绠＄悊 + 鎴柇]
-    E --> F[SubAgentMiddleware<br/>瀛愪唬鐞嗚矾鐢盷
-    F --> G[LLM Model Call]
-    G --> H[Response Processing]
-    H --> I[Agent Response]
-</pre>
-
----
-
-## 6. CLI 灞傜殑 Hook 鎵╁睍
-
-闄や簡 SDK 灞傜殑 middleware锛孋LI 杩樻湁棰濆鐨?hook 鏈哄埗锛?
-### 6.1 鏈湴涓婁笅鏂?Hook (`local_context.py`)
-
-```python
-## libs/cli/deepagents_cli/local_context.py
-
-class LocalContextMiddleware(AgentMiddleware):
-    """CLI 鐗瑰畾鐨勪腑闂翠欢锛屽鐞嗘湰鍦伴」鐩笂涓嬫枃"""
-
-    async def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> ModelResponse:
-        # 妫€娴嬮」鐩牴鐩綍
-        project_root = self._find_project_root()
-
-        # 娉ㄥ叆椤圭洰鐗瑰畾鐨勯厤缃?        request = self._inject_project_context(request, project_root)
-
-        return await call_next(request)
-```
-
-### 6.2 Tool Call Hook锛堝伐鍏疯皟鐢ㄦ嫤鎴級
-
-CLI 鍦?`textual_adapter.py` 涓疄鐜颁簡瀵瑰伐鍏疯皟鐢ㄧ殑鎷︽埅锛?
-```python
-## libs/cli/deepagents_cli/textual_adapter.py
-
-async def execute_task_textual(...):
-    # Hook: 鍦ㄥ伐鍏疯皟鐢ㄥ墠璇锋眰鐢ㄦ埛鎵瑰噯
-    if tool_call.requires_approval:
-        approved = await self._request_user_approval(tool_call)
-        if not approved:
-            return self._reject_tool_call(tool_call)
-
-    # Hook: 宸ュ叿璋冪敤鍚庢洿鏂?UI
-    result = await execute_tool(tool_call)
-    await self._update_ui_with_tool_result(result)
-```
-
----
-
-## 7. Hook 鐨勫疄闄呭簲鐢ㄥ満鏅?
-### 鍦烘櫙 1: 鍔ㄦ€佸伐鍏疯繃婊?
-褰撳悗绔笉鏀寔鏌愪簺鍔熻兘鏃讹紝`FilesystemMiddleware` 鍦?hook 涓Щ闄ょ浉鍏冲伐鍏凤細
-
-```python
-if not self._backend_supports_execute():
-    tools = [t for t in tools if t.name != "execute"]
-```
-
-### 鍦烘櫙 2: System Prompt 娉ㄥ叆
-
-`SkillsMiddleware` 鍦ㄦ瘡娆?LLM 璋冪敤鍓嶆敞鍏?skill 鎸囦护锛?
-```python
-skill_instructions = self._build_skill_instructions(skills_metadata)
-modified_request = append_to_system_message(
-    request,
-    skill_instructions,
-    after_heading="### Skills Directory",
-)
-```
-
-### 鍦烘櫙 3: 涓婁笅鏂囩獥鍙ｇ鐞?
-`SummarizationMiddleware` 鍦?hook 涓鐞?token 浣跨敤锛?
-```python
-if current_tokens > self._truncation_threshold:
-    request = self._truncate_old_messages(request)
-    request = self._inject_summary_prompt(request)
-```
-
-### 鍦烘櫙 4: Human-in-the-Loop 瀹℃壒
-
-CLI 鍦ㄥ伐鍏疯皟鐢ㄥ墠鎷︽埅骞惰姹傜敤鎴锋壒鍑嗭紙閫氳繃 `approval.py` widget锛夛細
-
-```python
-## libs/cli/deepagents_cli/widgets/approval.py
-class ApprovalMenu:
-    async def request_approval(self, tool_call: ToolCall) -> bool:
-        # 鏄剧ず瀹℃壒瀵硅瘽妗?        # 绛夊緟鐢ㄦ埛鍐崇瓥
-        # 杩斿洖 Approve/Reject/Edit
-        pass
-```
-
----
-
-## 8. 鍒涘缓鑷畾涔?Hook
-
-瑕佸垱寤鸿嚜瀹氫箟 hook锛岄渶瑕佺户鎵?`AgentMiddleware` 骞跺疄鐜?`wrap_model_call`锛?
-```python
-from langchain.agents.middleware import AgentMiddleware
-from langchain.agents.middleware.types import ModelRequest, ModelResponse
-
-class CustomMiddleware(AgentMiddleware[CustomState, ToolRuntime]):
-    async def wrap_model_call(
-        self,
-        request: ModelRequest,
-        call_next: Callable[[ModelRequest], Awaitable[ModelResponse]],
-    ) -> ModelResponse:
-        # 鍓嶇疆澶勭悊锛氫慨鏀硅姹?        modified_request = self._preprocess(request)
-
-        # 璋冪敤涓嬩竴涓?middleware 鎴栨ā鍨?        response = await call_next(modified_request)
-
-        # 鍚庣疆澶勭悊锛氫慨鏀瑰搷搴?        return self._postprocess(response)
-```
-
-鐒跺悗鍦ㄥ垱寤?agent 鏃舵敞鍐岋細
-
-```python
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(
-    tools=my_tools,
-    middleware=[
-        CustomMiddleware(...),
-        # ... other middleware
-    ],
-)
-```
-
----
-
-## 9. 鎬荤粨
-
-Deep Agents 椤圭洰涓殑 hook 鏈哄埗鍏锋湁浠ヤ笅鐗圭偣锛?
-1. **鍩轰簬 Middleware 妯″紡**锛氭墍鏈?hook 閮介€氳繃 `AgentMiddleware` 鍩虹被瀹炵幇
-2. **閾惧紡鎵ц**锛氬涓?middleware 鎸夋敞鍐岄『搴忓舰鎴愬鐞嗛摼
-3. **鐘舵€侀殧绂?*锛氭瘡涓?middleware 鏈夎嚜宸辩殑绉佹湁鐘舵€佺┖闂?4. **鍔ㄦ€佷慨鏀硅兘鍔?*锛氬彲浠ュ湪 hook 涓慨鏀硅姹傘€佸搷搴斻€佸伐鍏峰垪琛ㄣ€乻ystem prompt
-5. **缁勫悎鎬?*锛歮iddleware 鍙互缁勫悎浣跨敤锛屽舰鎴愬鏉傜殑澶勭悊閫昏緫
-
-杩欑璁捐浣垮緱 Deep Agents 鑳藉锛?- 鐏垫椿鎵╁睍鏂板姛鑳借€屾棤闇€淇敼鏍稿績浠ｇ爜
-- 鏀寔澶氱鍚庣鍜岃繍琛屾椂鐜
-- 瀹炵幇 fine-grained 鐨勮闂帶鍒跺拰宸ュ叿杩囨护
-- 鎻愪緵璺?turn 鐨勪笂涓嬫枃绠＄悊鍜岀姸鎬佽窡韪?
----
-
-**鍙傝€冭祫鏂欙細**
-- Deep Agents Repository: https://github.com/langchain-ai/deepagents
-- LangChain Agents Middleware: https://python.langchain.com/docs/modules/agents/middleware
-
----
-
-*Published: 2026-03-05*  
-*Categories: Tech & Coding*  
-*Tags: LLM, AIAgent, DeepAgents, Python*
+
+在追求极致效率的开发世界中，我们总在与一些重复性任务纠缠：保存代码后总要手动运行一遍格式化命令，写完功能还得记得补测试，提交前必须检查是否有调试语句遗漏... 这些琐事不断切割着我们的专注力。
+
+Kiro Hook 的出现，正是为了终结这种状态。它并非一个简单的自动化工具，而是一个**事件驱动的智能协作者**，其核心哲学是：**将“人驱动AI”转变为“事件驱动AI”**，让你设定的自动化规则在后台静默运行，而你只需专注创造。
+
+## 一、Hook 的核心价值：从被动响应到主动协助
+
+传统开发中，无论是代码检查还是测试运行，都需要开发者**主动**触发。Kiro Hook 颠覆了这一模式，通过在特定开发事件（如保存文件、任务完成）上挂载自动化任务，实现了四大价值转变：
+
+1. **解放双手**：格式化、Lint修复、文档生成等操作在保存瞬间自动完成。
+    
+2. **防患未然**：提交前自动检查敏感信息，代码变更后自动运行关联测试。
+    
+3. **规范流程**：新文件自动添加标准化文件头，依赖变更自动安装更新。
+    
+4. **智能赋能**：复杂会话后自动生成总结笔记，为你预加载开发上下文。
+    
+
+## 二、四大核心事件：精准触发的自动化枢纽
+
+Hook 的强大源于其精准的事件触发机制，覆盖了开发流程的关键节点：
+
+|事件类型|触发时机|典型应用场景|
+|---|---|---|
+|**保存时**​ (On File Save)|按下 Ctrl+S 时|自动格式化、Lint修复、触发增量编译|
+|**完成时**​ (On Agent Stop)|AI 任务或会话结束时|自动运行测试、更新文档、发送通知|
+|**创建时**​ (On File Create)|新建项目文件时|注入版权信息、基础模板、初始化配置|
+|**手动触发**​ (Manual)|通过快捷键或命令面板|执行定制化的复杂重构或分析脚本|
+
+## 三、三步上手：可视化与代码的双重配置
+
+### 方案一：可视化配置（推荐初学者）
+
+1. 打开命令面板（`Ctrl+Shift+P`）
+    
+2. 搜索“Open Kiro Hook UI”并打开
+    
+3. 点击“+”按钮，用自然语言描述你的需求
+    
+4. Kiro 会自动生成 Hook 配置，你只需微调目标文件和触发条件
+    
+
+### 方案二：代码配置（适合高级用户）
+
+1. 在项目根目录创建 `.kiro/hooks/`文件夹
+    
+2. 新建 JavaScript 文件，如 `on-file-save.js`
+    
+3. 编写具体的自动化逻辑
+    
+4. 重启 Kiro 即可生效
+    
+
+## 四、实战场景：Hook 如何提升你的日常效率
+
+### 场景1：代码质量守护者
+
+- **问题**：每次保存都要手动运行格式化，经常忘记导致代码风格混乱
+    
+- **Hook方案**：创建“保存时”Hook，匹配所有 `*.js`文件，执行 `prettier --write`命令
+    
+- **效果**：从此编码只需专注逻辑，保存瞬间代码自动整洁统一
+    
+
+### 场景2：测试覆盖率保障
+
+- **问题**：开发新功能时容易遗漏测试，回归测试需手动执行
+    
+- **Hook方案**：设置“完成时”Hook，当开发任务标记完成后，自动运行 `npm test -- --coverage`
+    
+- **效果**：每个功能完成后即时获得测试反馈，确保质量底线
+    
+
+### 场景3：智能知识管理
+
+- **问题**：长时间调试后的解决方案分散在聊天记录中，难以追溯
+    
+- **Hook方案**：配置“会话结束”Hook，自动调用AI总结对话要点，保存至项目知识库
+    
+- **效果**：所有技术决策和问题解决都有迹可循，形成团队知识沉淀
+    
+
+## 五、设计最佳实践：打造高效的 Hook 生态
+
+1. **单一职责原则**：每个 Hook 只做一件事，便于维护和调试
+    
+2. **精准匹配策略**：避免使用 `**/*.*`这种全局匹配，细化到具体文件类型和目录
+    
+3. **性能优先考虑**：高频触发的 Hook（如保存时）确保逻辑轻量，避免阻塞主线程
+    
+4. **优雅降级处理**：在 Hook 指令中加入错误处理，失败时友好提示而非静默崩溃
+    
+5. **开关灵活控制**：善用 Hook UI 中的👁️图标，临时禁用不常用的自动化任务
+    
+
+## 六、未来展望：Hook 驱动的开发新范式
+
+Kiro Hook 不仅仅是一个工具，更代表了一种开发范式的演进。当基础的自动化成为基础设施，开发者得以从重复劳动中彻底解放，AI 则从被动的问答工具，进化为能洞察上下文、预判需求、主动提供支持的“开发伴侣”。
+
+想象这样的工作流：你专注于业务逻辑的实现，而代码风格检查、测试运行、文档更新、依赖同步、知识沉淀等任务，都在后台由智能 Hook 静默处理。这种“零手动，全专注”的开发体验，正是 Kiro Hook 带来的终极价值。
+
+## 结语
+
+优秀的工具不应增加认知负荷，而应成为思考的自然延伸。Kiro Hook 通过巧妙的事件驱动设计，将自动化无缝编织进开发流程的每一个关键节点。它不要求你改变工作习惯，而是在你习惯的每一个动作背后，默默添加了一层智能增强。
+
+开始尝试创建你的第一个 Hook 吧——或许只是简单的保存时格式化，你会发现，当重复性劳动开始自动消失，你便能更纯粹地享受创造的乐趣。
+
+_（本篇博客基于 Kiro Hook 功能总结，实际功能请以官方文档为准。愿你在这个丙午马年，驾驭智能工具，跑出开发效率的新速度！）_
