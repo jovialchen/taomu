@@ -11,8 +11,6 @@ tags:
   - Promise
 ---
 
-# 两个厨房的厨师：Python vs TypeScript 异步编程对比 🍳👨‍🍳
-
 用「两个厨房的厨师」来对比——左边是 **Python 厨师**（用 asyncio），右边是 **TypeScript 厨师**（用 Promise/async-await）。两人都在同一个厨房（单线程），但用不同的「任务管理法」，效率一样高，但风格截然不同！
 
 ## 🎯 共同目标
